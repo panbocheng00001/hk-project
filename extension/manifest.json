@@ -1,0 +1,55 @@
+{
+  "manifest_version": 3,
+  "name": "TDABS Auto (no-CDP)",
+  "version": "1.0.0",
+  "description": "运输署免试签发预约：用页面内脚本操作，全程不经过 CDP。",
+  "minimum_chrome_version": "110",
+  "permissions": [
+    "storage",
+    "scripting",
+    "tabs",
+    "cookies",
+    "webRequest",
+    "debugger",
+    "webNavigation"
+  ],
+  "host_permissions": [
+    "<all_urls>",
+    "http://127.0.0.1/*",
+    "*://abs1.td.gov.hk/*",
+    "*://abs2.td.gov.hk/*",
+    "*://abs3.td.gov.hk/*",
+    "*://abs4.td.gov.hk/*",
+    "*://www.gov.hk/*",
+    "*://*.queue-it.net/*",
+    "*://*.queue-it.com/*",
+    "*://*.mtcaptcha.com/*",
+    "*://*.mtcaptcha.net/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://abs1.td.gov.hk/*",
+        "*://abs2.td.gov.hk/*",
+        "*://abs3.td.gov.hk/*",
+        "*://abs4.td.gov.hk/*",
+        "*://www.gov.hk/*",
+        "*://*.queue-it.net/*",
+        "*://*.queue-it.com/*",
+        "*://*.mtcaptcha.com/*",
+        "*://*.mtcaptcha.net/*",
+        "http://127.0.0.1/*"
+      ],
+      "js": [
+        "captcha_solver.js",
+        "content.js"
+      ],
+      "all_frames": true,
+      "match_about_blank": true,
+      "run_at": "document_start"
+    }
+  ]
+}

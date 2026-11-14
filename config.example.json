@@ -1,0 +1,18 @@
+{
+  "_说明": "复制本文件为 config.json 后填写。所有资料必须与证件/驾照完全一致，错一个字预约会被取消。",
+  "headless": true,
+  "workers": 3,
+  "country": "mainland",
+  "applicant": {
+    "title": "先生",
+    "name_cn": "张三",
+    "doc_no": "C12345678",
+    "dl_no": "110101199001011234",
+    "email": "your.name@example.com",
+    "doc_file": "files/id_front.jpg",
+    "dl_file": "files/dl_front.jpg"
+  },
+  "bureau_preference": ["九龙牌照事务处", "观塘牌照事务处", "沙田牌照事务处", "香港牌照事务处"],
+  "_bureau_note": "九龙/观塘/沙田只收内地驾照；香港牌照事务处收所有认可地区（含内地）。按想去程度排序。",
+  "headless_note": "演练可设 true；正式抢位建议 false，真实窗口更容易通过排队系统，也方便你接手填 OTP。"
+}

@@ -1,0 +1,23 @@
+[
+  {
+    "domain": "abs3.td.gov.hk",
+    "name": "HWWAFSESID",
+    "value": "7748873347c0f2d3b1",
+    "path": "/",
+    "secure": false
+  },
+  {
+    "domain": "abs3.td.gov.hk",
+    "name": "HWWAFSESTIME",
+    "value": "1794011888515",
+    "path": "/",
+    "secure": false
+  },
+  {
+    "domain": "abs2.td.gov.hk",
+    "name": "JSESSIONID",
+    "value": "wzdJg4zoAVNP8m01rLnX-Cc4-R4f5gCty45Bzr-w.node1",
+    "path": "/tdab2/tdabs_di_external",
+    "secure": true
+  }
+]

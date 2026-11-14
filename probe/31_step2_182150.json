@@ -1,0 +1,48 @@
+{
+ "url": "https://abs4.td.gov.hk/?c=tdabsditest&e=tdabsd261106lcq&ver=v3-lua-3.7.0&kupver=nginx-1029002&cver=146&man=PRD_TDABS3_DI_SC&cid=zh-CN&t=http%3A%2F%2Fabs3.td.gov.hk%2FSelectCountry%3Flang%3Dsc%26actionType%3Dapply%26authMethod%3DwithOutIas",
+ "fields": [
+  {
+   "tag": "select",
+   "type": "select-one",
+   "name": "",
+   "id": "SharedTexts_Languages_SelectedValue",
+   "value": "",
+   "required": false,
+   "accept": "",
+   "label": "",
+   "ctx": "选择语言："
+  },
+  {
+   "tag": "input",
+   "type": "email",
+   "name": "notificationEmailAddress",
+   "id": "MainPart_inpEmailAddress",
+   "value": "",
+   "required": false,
+   "accept": "",
+   "label": "请输入电子邮件地址",
+   "ctx": "请输入电子邮件地址 发送电子邮件通知我"
+  }
+ ],
+ "texts": [
+  "BTN:是的。",
+  "BTN:发送电子邮件通知我",
+  "BTN:你可在轮候期间将浏览器视窗最小化，但如果你在中途关闭网页或浏览器，你必须重新排队。",
+  "BTN:",
+  "BTN:复制我的链接",
+  "你现正在等候进入预约免试签发香港正式驾驶执照／临时驾驶执照柜位服务，轮到你后你将会被自动连接至有关网站。",
+  "登记预约的有效时间为20分钟。如未能于限时内完成，需重新排队进入系统。",
+  "申请人可在登入系统前准备以下资料，以方便输入：",
+  "申请人已登记的「智方便」帐户",
+  "申请人的驾驶执照号码及中文姓名（如适用）",
+  "电邮地址",
+  "申请人的身分证明文件（如护照/往来港澳通行证等）影像档案*及号码",
+  "申请人的驾驶执照影像档案*及号码",
+  "*档案格式：JPEG/JPG (5MB 或以下) 或PDF (1MB 或以下)",
+  "提供的资料必须与申请人的身份证明文件及牌照资料完全相同。否则有关申请将不获处理。",
+  "轮到你开始在",
+  "请确认你想继续访问这个网站。",
+  "要将您在队伍中的排位转移到另一个浏览器或设备，请复制下方您的独有链接。 如果您与别人分享您的链接，他们可以取代您在队伍中的排位，而您需要重新进入等候室。"
+ ],
+ "radios": []
+}

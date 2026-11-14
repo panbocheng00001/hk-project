@@ -1,0 +1,9 @@
+# 运行时/二进制目录（本地重新生成，不入库）
+cft/
+runs/
+profiles/
+chrome_sys/
+chrome_dry_w*/
+chrome_ext_w*/
+__pycache__/
+*.pyc
