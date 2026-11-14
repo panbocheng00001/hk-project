@@ -50,6 +50,7 @@
 | 判据与复刻题基准逐条对齐（0.00px） | `captcha-lab/solver/overlap.py` | `tests/test_overlap.py` |
 | 轨迹末点精确等于目标位移，风险分 < 0.5 | `captcha-lab/solver/track.py` | `tests/test_track_gen.py` |
 | 轮询有硬下限，且不提供关闭开关 | `throttle.py`、`site_monitor.py` | — |
+| 回归闸门固定题号段，同一 `--start/--n` 结果一致 | `tools/captcha_regress.py` | `tests/test_captcha_regress_offline.py` |
 
 新增能力若与其中任何一条冲突，先改文档的"不变量"、再改测试、最后改代码，**同一个提交**。
 
@@ -74,7 +75,7 @@
 
 ```bash
 python tools/wording_lint.py --root .                        # 0 block
-pwsh -File tools/check.ps1                                   # lint + 58 + 166 全绿
+pwsh -File tools/check.ps1                                   # lint + 96 + 166 全绿
 # 没有 pwsh（Windows PowerShell 5.1 环境）时等价写法：
 #   powershell -ExecutionPolicy Bypass -File tools\check.ps1
 ```

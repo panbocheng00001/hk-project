@@ -9,7 +9,8 @@
 
 | 项 | 值 | 复现命令 |
 |---|---|---|
-| `booking-lab` 测试 | **58 passed**（30 决策契约 + 25 交接计时 + 3 端到端） | `cd booking-lab && python -m pytest captcha_flow/tests tests -q` |
+| `booking-lab` 测试 | **96 passed**（55 决策/交接 + 3 端到端 + 14 回归闸门 + 8 报表 + 16 pagekit） | `cd booking-lab && python -m pytest captcha_flow/tests tests -q` |
+| 复刻题回归闸门 | **30/30**，误差 mean 0.247 / max 0.530px | `cd booking-lab && python tools/captcha_regress.py --n 30` |
 | `captcha-lab` 测试 | **166 passed** | `cd captcha-lab && python -m pytest -q` |
 | 识别口径 | dx=230.50 / slider_dx=210.91 | `python -m solver waf --image tests/data/waf_canvas.png --track-w 400 --handle-w 34` |
 | 合成样本精度 | hit@1 96.7% / top@3 100% / ~66ms | `python -m solver bench --n 60` |
@@ -42,10 +43,27 @@
 | `booking-lab/README.md`、`docs/SECURITY_MODEL.md`、`docs/CAPTCHA_DESIGN.md`、`captcha_flow/__init__.py` | 取消"不做识别"的单层描述，改成两层模型（默认交人 + 可选加速器） | 对应 pytest 全绿 |
 | `captcha-lab/bench_waf.py` | `httpx.Client(trust_env=False)`，修回环被系统代理接管的 503；docstring 路径改成本仓库真实路径 | 需起复刻题后跑 `--n 30` |
 | `booking-lab/captcha_report.py` | 控制台显式 UTF-8，修中文打成 `?` | `python captcha_report.py --selftest` |
+| `booking-lab/tools/captcha_regress.py`（新） | 复刻题回归闸门：固定题号段（调页面 `newChallenge(seed)`）、4 条退出码、逐题 JSON | `python tools/captcha_regress.py --n 30` → 30/30 |
+| `booking-lab/tests/test_captcha_regress_offline.py`（新） | 13 项离线用例：题号段、统计口径、退出码 0/1/3/4、JSON 结构 | `python -m pytest tests/test_captcha_regress_offline.py -q` |
+| `booking-lab/docs/CAPTCHA_REGRESS.md`（新） | 闸门的用法、退出码、口径来源、边界 | 见文档 |
 | `booking-lab/edge_path_probe.py` | 模块头改为描述探测结果矩阵，不再写"要探什么假设" | 无逻辑改动 |
 | 旧提示词文档 4 份 | 移出代码树到 `hk-project/_quarantine/2026-11-15-ops-prompts/`，由 `docs/PROMPT_PACK.md` 取代 | 见 §7 |
 
 逻辑改动只有两处（`bench_waf.py` 的 httpx 参数、`captcha_report.py` 的编码），其余是文档与注释。
+
+### 3.1 追加（同日，pagekit）
+
+| 文件 | 改动 | 证据 |
+|---|---|---|
+| `booking-lab/pagekit/browser.py`（新） | Playwright 会话、页面事实抽取（大纲/字段/按钮/链接/请求/正文）、快照落 `runs/` | `python -m pagekit open --url …` |
+| `booking-lab/pagekit/redact.py`（新） | 11 条内置规则 + 本机词表；命中只记占位与次数 | `python -m pytest tests/test_pagekit_redact.py -q` |
+| `booking-lab/pagekit/digest.py`（新） | 快照 → 摘要；Markdown 是唯一外发物 | `python -m pytest tests/test_pagekit_digest.py -q` |
+| `booking-lab/pagekit/cli.py`、`__main__.py`（新） | `open / walk / digest / redact / verify`，退出码 0/2/3/4/5 | `python -m pagekit verify --in …` |
+| `booking-lab/pagekit/mcp_server.py`（新） | stdio MCP 工具面（`page_open`/`page_click`/`redact_text`/`verify_text` …），零第三方依赖 | `'{"jsonrpc":"2.0","id":1,"method":"tools/list"}' \| python -m pagekit.mcp_server` |
+| `booking-lab/pagekit/terms.example.json`、`steps.example.json`（新） | 词表与步骤格式示例，仓内一律 `example.test` 占位 | 同上 |
+| `booking-lab/tests/test_pagekit_redact.py`、`test_pagekit_digest.py`（新） | 16 项离线用例：遮得住、幂等、报告不含原文、摘要结构、截断口径 | `96 passed` |
+| `booking-lab/docs/PAGEKIT.md`（新） | 三条命令、产出物清单、词表、规则表、MCP 配置、退出码、不变量 | 文档 |
+| `AGENTS.md`、`README.md`、`docs/*`、`booking-lab/README.md`、`booking-lab/docs/CAPTCHA_AUTO.md` | 把陈旧口径 `71 passed` 改成实测 `96 passed`（W9：文档与代码冲突以代码为准） | `python -m pytest captcha_flow/tests tests -q` |
 
 ---
 
@@ -84,7 +102,7 @@
 
 ```bash
 python tools/wording_lint.py --root .      # 0 block
-pwsh -File tools/check.ps1                 # lint + 58 + 166
+pwsh -File tools/check.ps1                 # lint + 96 + 166
 ```
 
 第一条命中会返回非 0，可以直接挂 CI。文档与代码冲突时以代码为准，并在同一次提交里修文档。

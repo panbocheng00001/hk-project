@@ -64,7 +64,13 @@ booking-lab/
 ├─ journal.py / runlog.py   全链路事件账本与逐步回放
 ├─ notifier.py              关键节点通知（webhook，未配置则静默）
 ├─ ext_server.py            扩展的本地数据服务（127.0.0.1:8765）
-├─ tools/                   一次性排查脚本（captcha_solve / captcha_selftest / bench_captcha_auto）
+├─ pagekit/                 页面渲染 → 结构摘要 → 脱敏外发（见 docs/PAGEKIT.md）
+│  ├─ browser.py            Playwright 会话与快照落盘
+│  ├─ digest.py             快照 → 摘要（Markdown 可外发）
+│  ├─ redact.py             个人资料与口径词换占位；verify 查残留
+│  ├─ cli.py                open / walk / digest / redact / verify
+│  └─ mcp_server.py         stdio MCP 工具面（page_open / page_click / redact_text …）
+├─ tools/                   排查与回归：captcha_regress（闸门）/ captcha_solve / captcha_selftest / bench_captcha_auto
 └─ docs/                    行为边界、验证码设计、加速层、交接 SLA（索引见 ../../docs/README.md）
 ```
 
@@ -117,11 +123,23 @@ python http_flow.py --probe
 
 ```bash
 python -m pytest captcha_flow/tests -q          # 55 passed（30 决策契约 + 25 交接计时）
-python -m pytest captcha_flow/tests tests -q    # 58 passed（另加 3 项端到端）
+python -m pytest captcha_flow/tests tests -q    # 71 passed（30 契约 + 25 计时 + 3 端到端 + 13 闸门）
 ```
 
 覆盖：分类映射、策略边界、自动预算上限、超时降级、
 「滑块路径不产生任何自动点击」这条硬约束、加速层关闭时不产生拖动、交接耗时口径与提醒次数上限。
+
+---
+
+### 3.5 跑页面、出摘要（供页面内容分析）
+
+```bash
+python -m pagekit open --url "https://abs3.example.test/?lang=sc" --name home
+python -m pagekit walk --url "https://abs3.example.test/?lang=sc" --steps pagekit/steps.example.json
+python -m pagekit verify --in runs/pagekit/<时间戳>/home.digest.md   # 退出码 0 才外发
+```
+
+只有 `*.digest.md` 是外发物；词表在 `~/.hk-project/pagekit_terms.json`。细节见 [`docs/PAGEKIT.md`](docs/PAGEKIT.md)。
 
 ---
 
@@ -163,5 +181,7 @@ python -m pytest captcha_flow/tests tests -q    # 58 passed（另加 3 项端到
 - 分层与开关：`docs/SECURITY_MODEL.md` 第 2 节
 - 状态机的设计取舍：`docs/CAPTCHA_DESIGN.md`
 - 加速层怎么开、怎么关、失败怎么退：`docs/CAPTCHA_AUTO.md`
+- 改完怎么确认链路还能跑通（一条命令 + 退出码）：`docs/CAPTCHA_REGRESS.md`
 - 人工交接耗时口径与提醒节奏：`docs/CAPTCHA_HANDOFF_SLA.md`
+- 页面渲染、结构摘要与外发脱敏：`docs/PAGEKIT.md`
 - 归档说明（哪些原始记录被移出、为什么）：`ARCHIVE_MANIFEST.md`

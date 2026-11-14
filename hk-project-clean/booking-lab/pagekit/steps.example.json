@@ -1,0 +1,8 @@
+{
+  "steps": [
+    { "click": "css=input[name=conditionsCheck]" },
+    { "click": "text=预约" },
+    { "wait": 1500 },
+    { "snapshot": "02-auth" }
+  ]
+}

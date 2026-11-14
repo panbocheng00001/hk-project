@@ -1,0 +1,6 @@
+{"iso": "2026-11-11T10:00:00.000+08:00", "src": "captcha", "ev": "renotify", "who": "w1", "kind": "slider", "n": 1, "waited_s": 45}
+{"iso": "2026-11-11T10:00:00.000+08:00", "src": "captcha", "ev": "handoff_done", "who": "w1", "kind": "slider", "waited_s": 30, "result": "solved", "renotify_n": 1, "timeout": false}
+{"iso": "2026-11-11T10:00:00.000+08:00", "src": "captcha", "ev": "handoff_done", "who": "w3", "kind": "unknown", "waited_s": 181, "result": "timeout", "renotify_n": 3, "timeout": true}
+{"iso": "2026-11-11T10:00:01.000+08:00", "src": "pool", "ev": "mint", "ok": true}
+{"iso": "2026-11-11T10:00:00.000+08:00", "src": "captcha", "ev": "handoff_done", "who": "w4", "kind": "slider", "waited_s": "bad", "result": "timeout", "renotify_n": 0, "timeout": true}
+{bad-line

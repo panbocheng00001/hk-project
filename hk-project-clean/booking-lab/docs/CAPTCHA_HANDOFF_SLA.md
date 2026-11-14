@@ -67,20 +67,33 @@ t_appear                     首次 handoff 事件（policy 判定交人的那�
 没有发生交接（无验证码 / 自动通过）时不写 `handoff_done`。
 写入失败（磁盘、权限、journal 初始化异常）只经 `say` 打一行日志，`guard()` 返回值不受影响。
 
-## 4. 报表
+## 4. 报表口径与命令
 
+| 参数 | 用途 |
+|---|---|
+| `--days N` | 读取最近 N 天（含今天）的 `YYYY-MM-DD.jsonl`，默认 7 天 |
+| `--dir DIR` | 指定 journal 目录，默认 `runs/journal` |
+| `--json PATH` | 把与终端表格同源的统计结构写成 UTF-8 JSON，父目录不存在时创建 |
+| `--selftest` | 用构造事件流检查统计函数，打印 27 项结果与 PASS/FAIL |
+
+```powershell
+python captcha_report.py --days 7
+python captcha_report.py --dir tests\fixtures\journal --days 7
+python captcha_report.py --dir tests\fixtures\journal --json runs\report.json
+python captcha_report.py --selftest
 ```
-python captcha_report.py --days 7      # 最近 7 天（含今天）
-python captcha_report.py --selftest    # 用构造事件流校验统计口径，打印 PASS/FAIL
-```
 
-输出：交接总次数（其中滑块）、人工完成率、完成耗时 P50/P90/max、超时次数、
-平均再提醒次数、按 kind 分组、按天趋势。
+终端表格与 JSON 都来自 `summarize()`：交接总次数（其中滑块）、人工完成率、
+完成耗时 P50/P90/max、超时次数、平均再提醒次数、按 kind 分组、按天趋势。
+JSON 固定输出 `days / n / solved / timeout / rate / p50 / p90 / max /
+avg_renotify / slider / by_kind / by_day`。
 
-口径：
-- 耗时分位数只统计 `result=solved` 的记录，线性插值（同 numpy 默认）；超时单独计数。
-- 完成率 = solved / 全部 `handoff_done`。
-- 读不到 journal 或窗口内无记录时打印"无数据"，退出码 0。
+统计口径：
+- 完成率 = `result=solved` 的条数 / 全部 `handoff_done` 条数。
+- P50/P90/max 只取 `result=solved` 且 `waited_s` 为有限数值的记录；超时单列，不进入耗时序列。
+- 分位数先按 `waited_s` 升序排列，再取位置 `(样本数 - 1) × q`；位置落在两个样本之间时线性插值，`q` 分别为 0.5 和 0.9。
+- `avg_renotify` = 全部 `handoff_done.renotify_n` 之和 / 交接总次数；缺失或非数值按 0。
+- 坏 JSON 行、非 captcha 事件与空行跳过；读不到 journal 或窗口内无记录时打印“无数据”，退出码 0。
 
 ## 5. 目标值（初始，按报表数据校准）
 

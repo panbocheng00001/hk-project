@@ -3,7 +3,7 @@
 > 这份文档回答一个问题：**下次让模型（或人）改这个仓库时，新写出来的代码、注释、文档应该长什么样，才不需要任何人回头重新解释一遍意图。**
 >
 > 生效方式：`AGENTS.md` 第 2 条要求开工前读这一份；`tools/wording_lint.py` 把它里面可以机械检查的部分变成一条命令。
-> 本版基线：2026-11-15，`booking-lab` 58 passed、`captcha-lab` 166 passed。
+> 本版基线：2026-11-15，`booking-lab` 96 passed、`captcha-lab` 166 passed。
 
 ---
 
@@ -210,7 +210,7 @@ booking-lab/（宿主：表单填写、会话、交接、扩展）
 # 1) 文案与注释（必须 0 block）
 python tools/wording_lint.py --root .
 
-# 2) 宿主侧测试（期望 58 passed）
+# 2) 宿主侧测试（期望 96 passed）
 cd booking-lab && python -m pytest captcha_flow/tests tests -q
 
 # 3) 识别内核测试（期望 166 passed）

@@ -1,17 +1,30 @@
 # -*- coding: utf-8 -*-
-"""captcha_report.py —— 验证码人工交接耗时报表（只读 journal）
-=====================================================================
-数据来源：runs/journal/YYYY-MM-DD.jsonl 里 captcha.py 写入的两类事件
+"""captcha_report.py —— 验证码人工交接耗时报表。
+
+定位
+----
+只读 journal 里的交接事件，输出人工完成率、完成耗时、提醒次数及分组趋势。
+
+输入输出
+--------
+数据来源：runs/journal/YYYY-MM-DD.jsonl 里 captcha.py 写入的两类事件：
     src=captcha ev=handoff_done   who / kind / waited_s / result / renotify_n / timeout
     src=captcha ev=renotify       who / kind / n / waited_s
 
 用法：
     python captcha_report.py --days 7        # 最近 7 天（含今天）
+    python captcha_report.py --dir DIR       # 指定 journal 目录（缺省 runs/journal）
+    python captcha_report.py --json PATH     # 额外把统计结果写成 JSON（与表格同源）
     python captcha_report.py --selftest      # 用构造事件流校验统计逻辑
 
-口径：
+不变量
+------
     耗时 = 首次交接 → 人工完成（handoff_done.waited_s），只统计 result=solved 的；
     超时的单独计数，不混进耗时分位数。分位数用线性插值（与 numpy 默认一致）。
+
+失败路径
+--------
+坏行与不完整数值按无数据处理；目录为空时打印“无数据”并返回 0；JSON 不可写时返回 1。
 """
 from __future__ import annotations
 
@@ -161,6 +174,42 @@ def render(s: dict, days: int) -> str:
     return "\n".join(L)
 
 
+def to_json(s: dict, days: int) -> dict:
+    """把 summarize 的结果裁成对外 JSON 结构（与 render 同源）。
+
+    定位：报表的机器可读出口，供 CI 闸门与趋势看板消费，与 render 读同一个 s。
+    输入：summarize() 的返回 s；统计窗口天数 days。
+    输出：{days, n, solved, timeout, rate, p50, p90, max, avg_renotify, slider,
+          by_kind, by_day}，数值字段逐个取自 s，不重算。
+    不变量：所有口径沿用 summarize / _group，这里只做字段挑选与打包。
+    失败路径：s 缺字段时抛 KeyError（summarize 负责字段齐全，这里不兜底）。
+    """
+    flat = ("n", "solved", "timeout", "rate", "p50", "p90", "max", "avg_renotify", "slider")
+    out: dict = {"days": int(days)}
+    for k in flat:
+        out[k] = s[k]
+    out["by_kind"] = s["by_kind"]
+    out["by_day"] = s["by_day"]
+    return out
+
+
+def dump_json(s: dict, days: int, path: str | Path) -> Path:
+    """把 to_json 的结构写到 path（UTF-8，缩进 2），返回落盘路径。
+
+    定位：--json 的落盘实现，统计口径全部复用 to_json / summarize。
+    输入：summarize 结果 s、天数 days、目标路径 path（父目录缺失自动创建）。
+    输出：写好的 Path。
+    不变量：落盘内容等于 to_json(s, days)，不丢字段、不改口径。
+    失败路径：路径不可写时抛 OSError，交由命令层转成提示并以退出码 1 结束。
+    """
+    p = Path(path)
+    if p.parent and not p.parent.exists():
+        p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(to_json(s, days), ensure_ascii=False, indent=2),
+                 encoding="utf-8")
+    return p
+
+
 # ============================================================================
 # 自测
 # ============================================================================
@@ -262,6 +311,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--days", type=int, default=7, help="最近 N 天（含今天），默认 7")
     ap.add_argument("--dir", default=str(JDIR), help="journal 目录，默认 runs/journal")
     ap.add_argument("--selftest", action="store_true", help="用构造事件流校验统计逻辑")
+    ap.add_argument("--json", default="", help="把统计结果写成 JSON 文件（与表格同源）")
     a = ap.parse_args(argv)
     if a.selftest:
         return selftest()
@@ -271,6 +321,13 @@ def main(argv: list[str] | None = None) -> int:
     except Exception as e:
         print(f"无数据（读取 journal 出错：{type(e).__name__}: {e}）")
         return 0
+    if a.json:
+        try:
+            out = dump_json(s, a.days, a.json)
+        except OSError as e:
+            print(f"[report] JSON 落盘失败：{type(e).__name__}: {e}")
+            return 1
+        print(f"[report] 统计已写入 {out}（n={s['n']}）")
     if not s["n"]:
         print(f"无数据：{a.dir} 最近 {a.days} 天没有 captcha/handoff_done 记录")
         return 0

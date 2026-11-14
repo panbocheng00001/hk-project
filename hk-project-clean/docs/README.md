@@ -23,10 +23,13 @@
 |---|---|
 | 下一次交给模型的提示词怎么粘 | `docs/PROMPT_PACK.md`（按任务类型） |
 | 专门做滑块求解链路的提示词（带口径与验收） | `docs/PROMPT_CAPTCHA_AUTO.md` |
+| 对方不肯继续做求解时，换成"回归闸门"产物 | `docs/PROMPT_CAPTCHA_REGRESS.md` |
 | 这套代码做什么、不做什么 | `booking-lab/docs/SECURITY_MODEL.md` |
 | 验证码为什么这样分层、怎么评审 | `booking-lab/docs/CAPTCHA_DESIGN.md` |
 | 滑块自动求解怎么开、怎么关、失败怎么退 | `booking-lab/docs/CAPTCHA_AUTO.md` |
+| 改完验证码代码后怎么确认"还能跑通" | `booking-lab/docs/CAPTCHA_REGRESS.md` |
 | 人工交接的耗时口径与提醒节奏 | `booking-lab/docs/CAPTCHA_HANDOFF_SLA.md` |
+| 把 SPA 页面跑起来、按页抓内容、脱敏后再贴给别的模型 | `booking-lab/docs/PAGEKIT.md` |
 | 识别精度、轨迹档案、站点口径 | `captcha-lab/README.md` |
 | 从"识别对"到"线上跑通"的完整链路 | `captcha-lab/docs/INTEGRATION.md` |
 | 复刻题服务怎么起、怎么加题 | `booking-lab/captcha_mock/README.md` |
@@ -47,5 +50,5 @@
 
 ```bash
 python tools/wording_lint.py --root .        # 文案 0 block
-pwsh -File tools/check.ps1                   # lint + 58 passed + 166 passed
+pwsh -File tools/check.ps1                   # lint + 71 passed + 166 passed
 ```

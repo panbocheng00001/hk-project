@@ -20,7 +20,7 @@ python tools\bench_captcha_auto.py 20
 提交误差 mean=0.225px max=0.540px
 
 pytest captcha_flow\tests tests -q
-58 passed          # 30 原契约 + 25 交接提速 + 3 端到端
+96 passed          # 55 契约/计时 + 41 宿主侧（含 16 pagekit）
 ```
 
 单题链路（`tests/test_captcha_auto_e2e.py`）：
