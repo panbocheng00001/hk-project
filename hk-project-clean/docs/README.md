@@ -21,6 +21,8 @@
 
 | 你想知道 | 去哪 |
 |---|---|
+| 下一次交给模型的提示词怎么粘 | `docs/PROMPT_PACK.md`（按任务类型） |
+| 专门做滑块求解链路的提示词（带口径与验收） | `docs/PROMPT_CAPTCHA_AUTO.md` |
 | 这套代码做什么、不做什么 | `booking-lab/docs/SECURITY_MODEL.md` |
 | 验证码为什么这样分层、怎么评审 | `booking-lab/docs/CAPTCHA_DESIGN.md` |
 | 滑块自动求解怎么开、怎么关、失败怎么退 | `booking-lab/docs/CAPTCHA_AUTO.md` |
