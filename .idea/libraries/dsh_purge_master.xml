@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="dsh-purge-master">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/hKdriver/dsh-purge-master.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
