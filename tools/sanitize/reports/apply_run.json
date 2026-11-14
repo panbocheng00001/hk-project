@@ -1,0 +1,32 @@
+{
+ "removed": [
+  "extension/captcha_solver.js"
+ ],
+ "added": [
+  "extension/captcha_guard.js",
+  "../HANDOFF.md",
+  "../README.md",
+  "docs/CAPTCHA_DESIGN.md",
+  "docs/SECURITY_MODEL.md",
+  "captcha_flow/",
+  ".gitignore"
+ ],
+ "patched": [
+  "extension/background.js",
+  "extension/background.js (debugger removed)",
+  "extension/content.js",
+  "http_flow.py (--align 改为可选依赖)",
+  "ext_server.py (/captcha 改为仅存档)",
+  "fill_form.py (config 读取兼容 BOM)",
+  "http_flow.py (config 读取兼容 BOM)",
+  "ext_server.py (config 读取兼容 BOM)",
+  "notifier.py (config 读取兼容 BOM)",
+  "flow_verify.py (config 读取兼容 BOM)"
+ ],
+ "rewritten": [
+  "captcha.py → captcha_flow 适配器",
+  "README.md",
+  "extension/manifest.json",
+  "config.example.json"
+ ]
+}

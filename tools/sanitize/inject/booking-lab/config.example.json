@@ -1,0 +1,48 @@
+{
+  "_说明": "复制本文件为 config.json 后填写，config.json 不入库。所有资料必须与证件/驾照逐字一致，错一个字预约会被取消。",
+  "_字段说明": "applicants 是数组，可以放多个申请人；每个申请人用 id 区分（w1/w2…）。",
+  "headless": false,
+  "_headless_note": "演练可设 true；正式提交建议 false —— 真实窗口更容易排上队，也方便你亲手完成验证码与 OTP。",
+  "channel": "chrome",
+  "_channel_note": "用本机已装的 Chrome 作内核（UA/版本与本机一致）。留空则用 Playwright 自带 chromium。",
+  "attach": "http://127.0.0.1:9222",
+  "_attach_note": "接管模式：先跑 launch_chrome.ps1，再跑 fill_form.py。留空则退回「用 Playwright 启动本机 Chrome」。",
+  "locale": "zh-CN",
+  "timezone": "Asia/Shanghai",
+  "_locale_note": "必须与本机真实环境一致。刻意设成别的地区会让语言、时区、UA 互相矛盾，反而更异常。",
+  "workers": 2,
+  "country": "mainland",
+  "bureau_preference": [
+    "九龙牌照事务处",
+    "香港牌照事务处",
+    "观塘牌照事务处",
+    "沙田牌照事务处"
+  ],
+  "_bureau_note": "按想去程度排序，脚本取第一个有可用时段的。",
+  "files_dir": "files/",
+  "_files_note": "证件影像目录。JPEG/JPG ≤5MB 或 PDF ≤1MB，150–200dpi，文件名只用字母数字中文与 _ - . ( ) 空格。",
+  "notify": {
+    "_说明": "通知通道，全部可选。未配置时静默跳过，不影响主流程。",
+    "enabled": false,
+    "dingtalk_webhook": "",
+    "dingtalk_secret": "",
+    "at_mobiles": [],
+    "min_interval": 5,
+    "dingtalk_keyword": "",
+    "_说明2": "凭据建议从环境变量读：BOOKING_WEBHOOK_URL / BOOKING_WEBHOOK_SECRET。写进本文件也请确保 config.json 已被 git 忽略。"
+  },
+  "applicants": [
+    {
+      "id": "w1",
+      "title": "先生",
+      "name_cn": "YOUR_NAME",
+      "doc_type": "EEP（往来港澳通行证）",
+      "doc_no": "YOUR_DOC_NO",
+      "dl_no": "YOUR_DL_NO_18",
+      "email": "your.name@example.com",
+      "phone": "",
+      "doc_file": "files/id_front.jpg",
+      "dl_file": "files/dl_front.jpg"
+    }
+  ]
+}

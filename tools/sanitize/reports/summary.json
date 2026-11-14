@@ -1,0 +1,63 @@
+{
+ "at": "2026-11-15T00:33:09",
+ "stages": [
+  {
+   "step": "1. audit(before)",
+   "exit": 0
+  },
+  {
+   "step": "2. sanitize",
+   "exit": 0
+  },
+  {
+   "step": "3. apply",
+   "exit": 0
+  },
+  {
+   "step": "4. harden",
+   "exit": 0
+  },
+  {
+   "step": "4b. polish",
+   "exit": 0
+  },
+  {
+   "step": "5a. audit(after)",
+   "exit": 0
+  },
+  {
+   "step": "5b. imports",
+   "exit": 0
+  },
+  {
+   "step": "5c. archive-manifest",
+   "exit": 0
+  },
+  {
+   "step": "5d. tests",
+   "exit": 0
+  },
+  {
+   "step": "6. cleanup",
+   "exit": 0
+  }
+ ],
+ "before": {
+  "by_kind": {
+   "refusal": 348,
+   "host": 333,
+   "pii": 64,
+   "secret": 51
+  },
+  "total_hits": 796,
+  "files_scanned_with_hits": 158
+ },
+ "after": {
+  "by_kind": {
+   "refusal": 7,
+   "host": 2
+  },
+  "total_hits": 9,
+  "files_scanned_with_hits": 9
+ }
+}

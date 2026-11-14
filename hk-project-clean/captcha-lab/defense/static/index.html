@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>captcha-lab · 滑块验证码防守实验室</title>
+<style>
+  :root { --w: 340px; --accent: #2563eb; --ok: #16a34a; --bad: #dc2626; }
+  * { box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC", sans-serif;
+         background: #f4f5f7; color: #1f2937; margin: 0; display: grid;
+         place-items: center; min-height: 100vh; }
+  .card { background: #fff; border-radius: 12px; padding: 20px;
+          box-shadow: 0 6px 24px rgba(0,0,0,.08); width: calc(var(--w) + 40px); }
+  h1 { font-size: 16px; margin: 0 0 12px; }
+  .stage { position: relative; width: var(--w); border-radius: 6px; overflow: hidden;
+           background: #e5e7eb; user-select: none; }
+  .stage img.bg { display: block; width: 100%; }
+  .stage img.piece { position: absolute; left: 0; top: 0; pointer-events: none;
+                     filter: drop-shadow(0 1px 2px rgba(0,0,0,.4)); }
+  .rail { position: relative; height: 40px; margin-top: 12px; background: #eef2f7;
+          border-radius: 20px; border: 1px solid #dbe2ea; touch-action: none; }
+  .rail .hint { position: absolute; inset: 0; display: grid; place-items: center;
+                font-size: 13px; color: #6b7280; pointer-events: none; }
+  .handle { position: absolute; top: -1px; left: 0; width: 52px; height: 40px;
+            border-radius: 20px; background: var(--accent); color: #fff;
+            display: grid; place-items: center; cursor: grab; font-size: 18px;
+            touch-action: none; }
+  .handle:active { cursor: grabbing; }
+  .msg { min-height: 22px; margin-top: 10px; font-size: 13px; }
+  .msg.ok { color: var(--ok); } .msg.bad { color: var(--bad); }
+  .row { display: flex; justify-content: space-between; align-items: center;
+         margin-top: 10px; font-size: 12px; color: #6b7280; }
+  button { border: 1px solid #d1d5db; background: #fff; border-radius: 6px;
+           padding: 4px 10px; cursor: pointer; font-size: 12px; }
+</style>
+</head>
+<body>
+<nav style="position:fixed;top:12px;left:12px;font-size:13px">
+  <a href="/" style="color:#2563eb;margin-right:10px">直线拼图</a><a href="/curve" style="color:#2563eb">曲线重合</a>
+</nav>
+<div class="card">
+  <h1>拖动滑块完成拼图</h1>
+  <div class="stage" id="stage">
+    <img class="bg" id="bg" alt="">
+    <img class="piece" id="piece" alt="">
+  </div>
+  <div class="rail" id="rail">
+    <div class="hint">按住滑块向右拖动</div>
+    <div class="handle" id="handle">→</div>
+  </div>
+  <div class="msg" id="msg"></div>
+  <div class="row">
+    <label><input type="checkbox" id="record"> 录制为真人样本（校准检测器用）</label>
+    <button id="refresh">换一张</button>
+  </div>
+</div>
+<script>
+const $ = (id) => document.getElementById(id);
+const bg = $("bg"), piece = $("piece"), rail = $("rail"), handle = $("handle"), msg = $("msg");
+let ch = null, dragging = false, startX = 0, startY = 0, t0 = 0, track = [], offset = 0;
+
+function scale() { return ch.width / bg.clientWidth; }   // 显示像素 -> 图片像素
+
+async function load() {
+  msg.textContent = ""; msg.className = "msg";
+  setOffset(0);
+  const r = await fetch("/api/challenge", { method: "POST" });
+  if (!r.ok) { msg.textContent = r.status === 429 ? "请求太频繁，请稍后再试" : "加载失败"; return; }
+  ch = await r.json();
+  bg.src = ch.bg;
+  piece.src = ch.piece;
+  bg.onload = () => {
+    const k = 1 / scale();
+    piece.style.top = (ch.piece_y * k) + "px";
+    piece.style.width = (piece.naturalWidth * k) + "px";
+  };
+}
+
+function setOffset(px) {
+  const max = rail.clientWidth - handle.clientWidth;
+  offset = Math.max(0, Math.min(px, max));
+  handle.style.left = offset + "px";
+  piece.style.left = offset + "px";
+}
+
+function push(e) {
+  track.push([e.clientX - startX, e.clientY - startY, performance.now() - t0]);
+}
+
+handle.addEventListener("pointerdown", (e) => {
+  if (!ch) return;
+  dragging = true; track = [];
+  startX = e.clientX; startY = e.clientY; t0 = performance.now();
+  handle.setPointerCapture(e.pointerId);
+  push(e);
+});
+
+handle.addEventListener("pointermove", (e) => {
+  if (!dragging) return;
+  // 合并事件保留浏览器的真实采样密度，比只取 pointermove 本身更接近原始输入
+  const evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+  for (const ev of evs) push(ev);
+  setOffset(e.clientX - startX);
+});
+
+handle.addEventListener("pointerup", async (e) => {
+  if (!dragging) return;
+  dragging = false;
+  push(e);
+  const x = offset * scale();
+  const token = ch.token; ch = null;
+  if ($("record").checked) {
+    fetch("/api/record", { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ track, label: "human" }) }).catch(() => {});
+  }
+  const r = await fetch("/api/verify", { method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token, x, track }) });
+  const j = await r.json();
+  if (j.ok) {
+    msg.className = "msg ok"; msg.textContent = `验证通过（轨迹风险 ${j.risk}）`;
+  } else {
+    msg.className = "msg bad";
+    const why = { position: "位置不对", behavior: "行为异常", expired_or_used: "已过期" }[j.reason] || j.reason;
+    msg.textContent = `验证失败：${why}` + (j.risk !== undefined ? `（风险 ${j.risk}）` : "");
+    setTimeout(load, 1200);
+  }
+});
+
+$("refresh").onclick = load;
+load();
+</script>
+</body>
+</html>

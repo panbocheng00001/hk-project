@@ -1,0 +1,345 @@
+{
+ "root": "E:\\googleProduct\\hk-project\\hk-project-clean",
+ "files_scanned_with_hits": 15,
+ "total_hits": 37,
+ "by_kind": {
+  "refusal": 35,
+  "host": 2
+ },
+ "top_patterns": {
+  "impersonate": 23,
+  "伪造": 10,
+  "host": 2,
+  "绕过": 1,
+  "伪装": 1
+ },
+ "files": [
+  {
+   "path": "booking-lab\\http_flow.py",
+   "score": 24,
+   "n": 8,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 189,
+     "snippet": "impersonate: str = \"chrome\", http1: bool = False):"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 208,
+     "snippet": "# chrome 画像会稳定超时；此时用 --impersonate none --http1 走普通 TLS/1.1。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 216,
+     "snippet": "self.impersonate = \"\" if (impersonate or \"\").lower() in (\"none\", \"off\", \"0\", \"\") else impersonate"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 228,
+     "snippet": "if self.impersonate:"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 229,
+     "snippet": "kwargs[\"impersonate\"] = self.impersonate"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 914,
+     "snippet": "ap.add_argument(\"--impersonate\", default=\"chrome\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 916,
+     "snippet": "ap.add_argument(\"--http1\", action=\"store_true\", help=\"强制 HTTP/1.1（配合 --impersonate none）\")"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 957,
+     "snippet": "session=align_session, impersonate=a.impersonate, http1=a.http1)"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\session_pool.py",
+   "score": 15,
+   "n": 5,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 522,
+     "snippet": "impersonate: str = \"\", verify: bool = False):"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 529,
+     "snippet": "self.impersonate = impersonate or self._auto_impersonate()"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 534,
+     "snippet": "def _auto_impersonate() -> str:"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 536,
+     "snippet": "from curl_cffi.requests.impersonate import DEFAULT_CHROME"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 566,
+     "snippet": "sess = self._cr.Session(impersonate=self.impersonate)"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\docs\\SECURITY_MODEL.md",
+   "score": 12,
+   "n": 4,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 35,
+     "snippet": "| 2 | 伪造输入可信度（`isTrusted=true` 合成事件） | 该字段的语义就是\"是否由用户产生\"，伪造它等于对站点说谎 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 36,
+     "snippet": "| 3 | 修改/伪造浏览器指纹冒充他人设备 | UA/时区/语言一律取本机真值；`preflight.py` 会校验自洽性 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 37,
+     "snippet": "| 4 | 伪造证件、修改证件影像 | 影像按原件上传，代码不做任何图像改动 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 39,
+     "snippet": "| 6 | 绕过站点的人机校验或访问限制 | 遇到挑战就退避 + 交人，见 `edge_challenge.py` |"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\README.md",
+   "score": 9,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 126,
+     "snippet": "2. **不伪造输入可信度**。不使用调试协议一类能生成 `isTrusted=true` 事件的通道。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪装",
+     "line": 127,
+     "snippet": "页面看到的输入就是脚本合成的事件，不伪装成硬件输入。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 144,
+     "snippet": "- 不伪造身份、不修改浏览器指纹、不绕开人机校验"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\site_monitor.py",
+   "score": 9,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 31,
+     "snippet": "* 移除硬编码静态资源伪造（会在前端发版后产生 404，只会制造无效请求）"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 77,
+     "snippet": "from curl_cffi.requests.impersonate import DEFAULT_CHROME"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 317,
+     "snippet": "impersonate=IMPERSONATE,"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\edge_probe.py",
+   "score": 6,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 57,
+     "snippet": "kw = {\"impersonate\": \"chrome\", \"timeout\": timeout, \"allow_redirects\": False,"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 86,
+     "snippet": "ap.add_argument(\"--xff\", default=\"\", help=\"伪造 X-Forwarded-For 试探 WAF 是否信任回源头\")"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\edge_token.py",
+   "score": 6,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 6,
+     "snippet": "纯 vm 伪造环境会掉进它的死循环（实测 OOM 4GB），不是几个小时能补完的活；"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 58,
+     "snippet": "kw = {\"impersonate\": \"chrome\", \"timeout\": 20, \"allow_redirects\": False, \"verify\": False,"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\preflight.py",
+   "score": 6,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 99,
+     "snippet": "impersonate: str = \"chrome136\") -> Dict[str, Any]:"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 111,
+     "snippet": "kw: Dict[str, Any] = {\"impersonate\": impersonate, \"timeout\": timeout,"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\extension\\captcha_guard.js",
+   "score": 5,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 13,
+     "snippet": "//     · 不使用 chrome.debugger 之类能伪造 isTrusted 的输入通道"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 80,
+     "snippet": "if (q('iframe[src*=\"challenges.cloudflare.com\"], .cf-turnstile')) {"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\abs1_probe.py",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 45,
+     "snippet": "kw = {\"impersonate\": \"chrome\", \"timeout\": 25, \"verify\": False,"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\edge_handshake.py",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 27,
+     "snippet": "kw = {\"impersonate\": \"chrome\", \"timeout\": 25, \"verify\": False,"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\edge_path_probe.py",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 57,
+     "snippet": "kw = {\"impersonate\": \"chrome\", \"timeout\": 20, \"verify\": False,"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\edge_replay.py",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 27,
+     "snippet": "kw = {\"impersonate\": imp, \"timeout\": 25, \"allow_redirects\": False,"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\extension\\background.js",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 224,
+     "snippet": "// 那个字段的语义是\"这条输入是否来自用户\"，伪造它等于向站点提供虚假信息。"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\captcha_flow\\detect.py",
+   "score": 2,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 42,
+     "snippet": "if (q('iframe[src*=\"challenges.cloudflare.com\"], .cf-turnstile'))"
+    }
+   ]
+  }
+ ]
+}

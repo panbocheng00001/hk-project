@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+# 真人轨迹录制样本可能含个人行为数据，默认不入库
+data/
+cache.sqlite
+gap_debug.png
+
+# ?????
+out/batch/
+examples/*_debug.png
+*.log

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>captcha-lab · 曲线图形重合</title>
+<style>
+  :root { --w: 400px; --accent: #2563eb; --ok: #16a34a; --bad: #dc2626; }
+  * { box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC", sans-serif;
+         background: #eeeeee; margin: 0; display: grid; place-items: center; min-height: 100vh; }
+  .card { background: #111827; border-radius: 12px; padding: 0 0 18px; width: calc(var(--w) + 20px);
+          box-shadow: 0 6px 24px rgba(0,0,0,.18); overflow: hidden; }
+  .stage { position: relative; width: var(--w); margin: 0 auto; user-select: none; }
+  .stage img.bg { display: block; width: 100%; }
+  .stage img.piece { position: absolute; left: 0; top: 0; pointer-events: none;
+                     transform-origin: 50% 50%; }
+  .prompt { position: absolute; top: 6px; left: 0; right: 0; text-align: center;
+            color: #e5e7eb; font-size: 13px; text-shadow: 0 1px 2px #000; pointer-events: none; }
+  .rail { position: relative; height: 28px; margin: 18px 24px 0; touch-action: none; }
+  .rail .bar { position: absolute; top: 11px; left: 0; right: 0; height: 6px;
+               border-radius: 3px; background: #d1d5db; }
+  .rail .fill { position: absolute; top: 11px; left: 0; height: 6px; border-radius: 3px;
+                background: var(--accent); }
+  .knob { position: absolute; top: 3px; left: 0; width: 22px; height: 22px; border-radius: 50%;
+          background: var(--accent); border: 4px solid #fff; box-shadow: 0 0 0 2px var(--accent);
+          cursor: grab; touch-action: none; transform: translateX(-11px); }
+  .actions { display: flex; justify-content: center; margin-top: 18px; }
+  .submit { border: 0; background: var(--accent); color: #fff; font-size: 15px;
+            border-radius: 18px; padding: 8px 52px; cursor: pointer; }
+  .msg { min-height: 20px; margin-top: 10px; text-align: center; font-size: 13px; color: #9ca3af; }
+  .msg.ok { color: #4ade80; } .msg.bad { color: #f87171; }
+  nav { position: fixed; top: 12px; left: 12px; font-size: 13px; }
+  nav a { color: var(--accent); margin-right: 10px; }
+</style>
+</head>
+<body>
+<nav><a href="/">直线拼图</a><a href="/curve">曲线重合</a></nav>
+<div class="card">
+  <div class="stage" id="stage">
+    <img class="bg" id="bg" alt="">
+    <img class="piece" id="piece" alt="">
+    <div class="prompt" id="prompt"></div>
+  </div>
+  <div class="rail" id="rail">
+    <div class="bar"></div>
+    <div class="fill" id="fill"></div>
+    <div class="knob" id="knob"></div>
+  </div>
+  <div class="actions"><button class="submit" id="submit">提交</button></div>
+  <div class="msg" id="msg"></div>
+</div>
+<script>
+const $ = (id) => document.getElementById(id);
+const bg = $("bg"), piece = $("piece"), rail = $("rail"), knob = $("knob"), fill = $("fill"), msg = $("msg");
+let ch = null, s = 0, dragging = false, t0 = null, track = [];
+
+function k() { return bg.clientWidth / ch.width; }            // 图片像素 -> 显示像素
+
+function place() {
+  if (!ch) return;
+  const i = Math.round(s * (ch.path.length - 1));
+  const [x, y] = ch.path[i];
+  const size = piece.naturalWidth * k();
+  piece.style.width = size + "px";
+  piece.style.left = (x * k() - size / 2) + "px";
+  piece.style.top = (y * k() - size / 2) + "px";
+  piece.style.transform = `rotate(${ch.angle0 + ch.rotate_deg * s}deg)`;
+  const px = s * rail.clientWidth;
+  knob.style.left = px + "px";
+  fill.style.width = px + "px";
+}
+
+async function load() {
+  msg.textContent = ""; msg.className = "msg";
+  s = 0; track = []; t0 = null;
+  const r = await fetch("/api/challenge?kind=curve", { method: "POST" });
+  if (!r.ok) { msg.textContent = r.status === 429 ? "请求太频繁，请稍后再试" : "加载失败"; return; }
+  ch = await r.json();
+  $("prompt").textContent = ch.prompt;
+  bg.src = ch.bg; piece.src = ch.piece;
+  piece.onload = bg.onload = place;
+}
+
+function setFromPointer(e) {
+  const r = rail.getBoundingClientRect();
+  s = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
+  place();
+}
+
+function push(e) {
+  const r = rail.getBoundingClientRect();
+  if (t0 === null) t0 = performance.now();
+  track.push([e.clientX - r.left, e.clientY - r.top, performance.now() - t0]);
+}
+
+knob.addEventListener("pointerdown", (e) => {
+  if (!ch) return;
+  dragging = true;
+  knob.setPointerCapture(e.pointerId);
+  push(e);
+});
+knob.addEventListener("pointermove", (e) => {
+  if (!dragging) return;
+  const evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+  for (const ev of evs) push(ev);
+  setFromPointer(e);
+});
+knob.addEventListener("pointerup", (e) => { if (dragging) { dragging = false; push(e); } });
+
+$("submit").onclick = async () => {
+  if (!ch) return;
+  const token = ch.token; ch = null;
+  const r = await fetch("/api/verify", { method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token, s, track }) });
+  const j = await r.json();
+  if (j.ok) {
+    msg.className = "msg ok"; msg.textContent = `验证通过（轨迹风险 ${j.risk}）`;
+  } else {
+    msg.className = "msg bad";
+    const why = { position: "没有重合", behavior: "行为异常", expired_or_used: "已过期" }[j.reason] || j.reason;
+    msg.textContent = `验证失败：${why}` + (j.risk !== undefined ? `（风险 ${j.risk}）` : "");
+    setTimeout(load, 1200);
+  }
+};
+
+window.addEventListener("resize", place);
+load();
+</script>
+</body>
+</html>

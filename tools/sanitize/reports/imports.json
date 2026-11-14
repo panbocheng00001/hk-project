@@ -1,0 +1,35 @@
+{
+ "root": "E:\\googleProduct\\hk-project\\hk-project-clean\\booking-lab",
+ "problems": [
+  {
+   "file": "captcha_lab_bridge.py",
+   "line": 84,
+   "module": "solver",
+   "why": "本地模块不存在"
+  },
+  {
+   "file": "captcha_lab_bridge.py",
+   "line": 85,
+   "module": "solver",
+   "why": "本地模块不存在"
+  },
+  {
+   "file": "captcha_lab_bridge.py",
+   "line": 86,
+   "module": "solver",
+   "why": "本地模块不存在"
+  },
+  {
+   "file": "captcha_lab_bridge.py",
+   "line": 87,
+   "module": "solver",
+   "why": "本地模块不存在"
+  },
+  {
+   "file": "http_flow.py",
+   "line": 973,
+   "module": "align_client",
+   "why": "本地模块不存在"
+  }
+ ]
+}

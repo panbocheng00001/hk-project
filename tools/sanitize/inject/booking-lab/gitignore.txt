@@ -1,0 +1,45 @@
+# 运行时目录（本地生成，不入库）
+runs/
+profiles/
+cft/
+chrome_sys/
+chrome_dry_w*/
+chrome_ext_w*/
+
+# 个人配置与凭据 —— 绝不入库
+config.json
+config.json.*
+mail.json
+mail.json.*
+*.token
+otp.txt
+webhook.txt
+proxies.txt
+proxies_*.txt
+session_export.json
+.tdabs_session.json
+
+# 个人物料
+files/
+资料/
+
+# 采集与日志
+probe/
+*.log
+*.png
+*.jpg
+*.jsonl
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+*.egg-info/
+build/
+dist/
+
+# 编辑器
+.idea/
+.vscode/
+*.iml

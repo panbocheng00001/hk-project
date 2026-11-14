@@ -1,0 +1,70 @@
+{
+ "_说明": "占位域名 ↔ 真实域名映射。含真实目标地址，不要提交、不要分享。",
+ "_用法": "python tools/sanitize/targets.py --restore 用它对本地树做还原",
+ "map": [
+  {
+   "real": "abs1.td.gov.hk",
+   "placeholder": "abs1.example.test"
+  },
+  {
+   "real": "abs2.td.gov.hk",
+   "placeholder": "abs2.example.test"
+  },
+  {
+   "real": "abs3.td.gov.hk",
+   "placeholder": "abs3.example.test"
+  },
+  {
+   "real": "abs4.td.gov.hk",
+   "placeholder": "abs4.example.test"
+  },
+  {
+   "real": "www.gov.hk/sc/apps/tddiabs.htm",
+   "placeholder": "portal.example.test/apps/booking.htm"
+  },
+  {
+   "real": "www.gov.hk",
+   "placeholder": "portal.example.test"
+  },
+  {
+   "real": "td.gov.hk",
+   "placeholder": "td.example.test"
+  },
+  {
+   "real": "gov.hk",
+   "placeholder": "gov.example.test"
+  },
+  {
+   "real": "challenges.cloudflare.com",
+   "placeholder": "challenge.example.test"
+  },
+  {
+   "real": "queue-it.net",
+   "placeholder": "queue.example.test"
+  },
+  {
+   "real": "queue-it.com",
+   "placeholder": "queue.example.test"
+  },
+  {
+   "real": "mtcaptcha.com",
+   "placeholder": "captcha.example.test"
+  },
+  {
+   "real": "mtcaptcha.net",
+   "placeholder": "captcha.example.test"
+  },
+  {
+   "real": "oapi.dingtalk.com",
+   "placeholder": "webhook.example.test"
+  },
+  {
+   "real": "juliangip.com",
+   "placeholder": "proxy-vendor.example.test"
+  },
+  {
+   "real": "tdabs@td.gov.hk",
+   "placeholder": "notify@example.test"
+  }
+ ]
+}

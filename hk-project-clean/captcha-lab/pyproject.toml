@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "captcha-lab"
+version = "2.0.0"
+description = "滑块验证码识别工具包：缺口定位、拟人轨迹、站点适配、HTTP 服务"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+keywords = ["captcha", "slider-captcha", "opencv", "automation", "qa"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Image Recognition",
+]
+dependencies = [
+    "opencv-python-headless>=4.8",
+    "numpy>=1.24",
+]
+
+[project.optional-dependencies]
+server = ["fastapi>=0.110", "uvicorn[standard]>=0.27", "pydantic>=2"]
+http = ["httpx>=0.27"]
+browser = ["playwright>=1.42"]
+ml = ["scikit-learn>=1.3"]
+train = ["ultralytics>=8.2"]
+dev = [
+    "pytest>=7",
+    "httpx>=0.27",
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.27",
+]
+
+[project.scripts]
+solver = "solver.cli:main"
+captcha-api = "solver.serve:main"
+
+[project.urls]
+Homepage = "https://github.com/your-org/captcha-lab"
+Issues = "https://github.com/your-org/captcha-lab/issues"
+
+[tool.setuptools.packages.find]
+include = ["defense*", "solver*"]
+
+[tool.setuptools.package-data]
+defense = ["static/*.html"]
+solver = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

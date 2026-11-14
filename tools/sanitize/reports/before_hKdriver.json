@@ -1,0 +1,5865 @@
+{
+ "root": "E:\\googleProduct\\hk-project\\hKdriver",
+ "files_scanned_with_hits": 155,
+ "total_hits": 790,
+ "by_kind": {
+  "refusal": 342,
+  "host": 333,
+  "pii": 64,
+  "secret": 51
+ },
+ "top_patterns": {
+  "host": 333,
+  "impersonate": 102,
+  "抢号": 74,
+  "stealth": 35,
+  "email": 28,
+  "oauth_refresh": 23,
+  "打码": 19,
+  "反检测": 18,
+  "黑名单": 16,
+  "伪造": 15,
+  "oauth_access": 15,
+  "phone_cn": 13,
+  "id_photo_path": 12,
+  "自动过": 11,
+  "cn_id_or_dl": 8,
+  "抢位": 8,
+  "api_sign": 7,
+  "绕过": 7,
+  "住宅代理": 7,
+  "逆向": 6,
+  "伪装": 5,
+  "作战": 4,
+  "过验证码": 4,
+  "封号": 3,
+  "proxy_cred": 3
+ },
+ "files": [
+  {
+   "path": "build_doc.py",
+   "score": 226,
+   "n": 70,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 2,
+     "snippet": "\"\"\"生成《内地驾照换香港正式驾照·抢号作战手册》Word 文档。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 4,
+     "snippet": "输出：内地驾照换香港驾照_抢号作战手册.docx"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 18,
+     "snippet": "OUT = BASE / \"内地驾照换香港驾照_抢号作战手册.docx\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 232,
+     "snippet": "r = p.add_run(\"免试签发 · 网上预约抢号作战手册\")"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 283,
+     "snippet": "[\"15:50\", \"跑一次 python check.py，确认站点可用\", \"502/维护时当天不具备抢号条件\"],"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 285,
+     "snippet": "[\"16:30\", \"从 gov.hk 页面进：勾同意→预约→不使用智方便→中国内地，停在排队页\", \"拿到“抽签券”\"],"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 339,
+     "snippet": "\"gov.hk/sc/apps/tddiabs.htm          ← 入口（3 秒 meta refresh）\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 340,
+     "snippet": "\"  └─ abs3.td.gov.hk  (React 单页)   ← 勾同意 → 预约 → 不使用智方便 → 中国内地\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 341,
+     "snippet": "\"       └─ abs4.td.gov.hk  (排队)    ← 随机分配排队位，闲时 20–35 秒放行\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 342,
+     "snippet": "\"            └─ abs1/abs2.td.gov.hk   ← 老式 JSP：有名额才给表单\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 365,
+     "snippet": "h2(doc, \"4.1 官方原文（gov.hk diabs.htm）\")"
+    },
+    {
+     "kind": "pii",
+     "pattern": "cn_id_or_dl",
+     "line": 427,
+     "snippet": "[\"驾驶执照号码\", \"441781…2728\", \"18 位，与驾驶证“证号”栏一致\"],"
+    },
+    {
+     "kind": "pii",
+     "pattern": "phone_cn",
+     "line": 429,
+     "snippet": "[\"电邮（收 OTP）\", \"13631539547@163.com\", \"建议换成 Gmail/Outlook，见第六节\"],"
+    },
+    {
+     "kind": "pii",
+     "pattern": "id_photo_path",
+     "line": 431,
+     "snippet": "[\"身份证明文件影像\", \"files/港澳通行证.jpg\", \"卡片正面，号码与照片清晰，≤5MB\"],"
+    },
+    {
+     "kind": "pii",
+     "pattern": "id_photo_path",
+     "line": 432,
+     "snippet": "[\"驾驶执照影像\", \"files/内地驾驶证.jpg\", \"正页正面，≤5MB\"],"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 472,
+     "snippet": "\"平台：econtact.td.gov.hk/vansweb/app895_sc.html —— 选“驾驶执照”，\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 486,
+     "snippet": "[\"收 OTP\", \"不需要\", \"OTP 由 tdabs@td.gov.hk 发到电邮\"],"
+    },
+    {
+     "kind": "pii",
+     "pattern": "id_photo_path",
+     "line": 510,
+     "snippet": "\"config.json   files\\\\港澳通行证.jpg   files\\\\内地驾驶证.jpg\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 516,
+     "snippet": "body(doc, \"目的不是抢号，是确认「浏览器→官方系统」这条路通不通。三步，共约 4 分钟。\", size=10)"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 528,
+     "snippet": "\"final_url = https://abs3.td.gov.hk/?lang=sc\\n\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 562,
+     "snippet": "\"22:08:45 [w1] …0s https://abs4.td.gov.hk/     ← 进入排队\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 563,
+     "snippet": "\"22:09:09 [w1] …24s https://abs3.td.gov.hk/SelectCountry?lang=sc   ← 排队 24 秒放行\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 573,
+     "snippet": "h2(doc, \"8.2 场景 B：工作日抢号（16:20 — 17:20）\")"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 586,
+     "snippet": "\"确认站点可用。若返回 30（502）→ 当天不具备抢号条件，别浪费排队机会\"],"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 604,
+     "snippet": "\"看到「★★★ 拿到预约」+ 电邮收到 tdabs@td.gov.hk 确认信，才算完\"],"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 614,
+     "snippet": "\"① 邮件来自 tdabs@td.gov.hk，里面有一串数字\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 676,
+     "snippet": "\"python grab.py --workers 3           ← 正式抢号（3 条队列）\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 716,
+     "snippet": "\"17:00:41 [w2] …41s https://abs3.td.gov.hk/SelectCountry?lang=sc\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 732,
+     "snippet": "\"20:18:10 [30] 官方返回错误页（502/维护），不是名额问题 url=https://abs3.td.gov.hk/?lang=sc\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 766,
+     "snippet": "\"抢号前把 tdabs@td.gov.hk 加白名单；电脑和手机同时开邮箱\"],"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 766,
+     "snippet": "\"抢号前把 tdabs@td.gov.hk 加白名单；电脑和手机同时开邮箱\"],"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢位",
+     "line": 798,
+     "snippet": "[\"grab.py\", \"抢位主程序\", \"别删\"],"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 807,
+     "snippet": "[\"profiles\\\\\", \"各队列的浏览器 profile（存排队会话）\", \"抢号期间别删\"],"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 808,
+     "snippet": "[\"chrome_profile\\\\\", \"接管模式的 Chrome 用户数据\", \"抢号期间别删\"],"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 823,
+     "snippet": "\"邮箱收到 tdabs@td.gov.hk 的邮件\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 825,
+     "snippet": "\"认出 From 含 td.gov.hk 的邮件 → 抓 4–8 位验证码\","
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 839,
+     "snippet": "'  \"email\": \"KalbEssick4488@outlook.com\",',"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 856,
+     "snippet": "body(doc, \"明天抢号时开两个窗口：\", size=10, bold=True)"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 870,
+     "snippet": "\"③  抢号前 30 分钟先跑 mail_watch.py --test，登不上就立刻换自己注册的邮箱。\","
+    },
+    {
+     "kind": "pii",
+     "pattern": "phone_cn",
+     "line": 879,
+     "snippet": "[\"163 → 该 Outlook 跨域投递\", \"成功（收到一封来自 13631539547@163.com 的测试信）\"],"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "打码",
+     "line": 947,
+     "snippet": "\"隐私：证件号已自动打码\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "打码",
+     "line": 949,
+     "snippet": "\"但**截图是像素级的，无法打码**，所以 runs\\\\ 目录不要外传、不要发群。\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 957,
+     "snippet": "\"| 01 | 22:26:51 +0.0s | 01_entry | abs3.td.gov.hk | 入口页已加载 | 1 | 预约, 更改/取消预约, 查询预约 |\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 963,
+     "snippet": "body(doc, \"「+30.7s」是相对第一步的耗时——抢号时看这一列就知道时间花在哪；\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "自动过",
+     "line": 979,
+     "snippet": "\"走不到那一步，所以平时看不到。处理原则是「宽检测 + 保守兜底」：能自动过的自动过，\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "打码",
+     "line": 1076,
+     "snippet": "[\"NN_<类型>.html\", \"当时页面源码（已打码）\", \"挑战容器的 DOM 结构、隐藏字段\"],"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "打码",
+     "line": 1091,
+     "snippet": "\"  01_recaptcha_checkbox.html             754 B   源码（已打码）\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 1097,
+     "snippet": "body(doc, \"抢号当天你的动作只有一件：\", size=10, bold=True)"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "自动过",
+     "line": 1100,
+     "snippet": "\"勾选框能自动过就自动过；弹图片题就你点，点完脚本自己继续。\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 1146,
+     "snippet": "\"添加完会给你一个地址，形如：https://oapi.dingtalk.com/robot/send?access_token=一长串\"),"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 1166,
+     "snippet": "'  \"dingtalk_webhook\": \"https://oapi.dingtalk.com/robot/send?access_token=xxxx\",',"
+    },
+    {
+     "kind": "pii",
+     "pattern": "phone_cn",
+     "line": 1169,
+     "snippet": "'  \"at_mobiles\": [\"13631539547\"],      // 要 @ 谁，可留空',"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 1190,
+     "snippet": "\"③ 没配置时所有通知静默跳过，不影响抢号——这一点自测过。\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 1193,
+     "snippet": "body(doc, \"实现细节：发送在后台线程里做，网络慢或钉钉挂了都不会卡住抢号流程；\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "反检测",
+     "line": 1215,
+     "snippet": "h2(doc, \"8.16 反检测审计：逐项比对，找出还会被看出来的地方\")"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 1289,
+     "snippet": "\"说实话：有一个检测点我们伪造不了\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 1293,
+     "snippet": "\"而且真要伪造只能靠 JS 补丁，补丁本身更容易被抓。所以这一项保持现状。\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 1307,
+     "snippet": "body(doc, \"你可能听说过这类东西：playwright-stealth、undetected-chromedriver、nodriver、\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 1308,
+     "snippet": "\"camoufox、selenium-stealth。它们确实存在，但原理和代价差别很大，这里给实测结论。\", size=10)"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 1314,
+     "snippet": "[\"playwright-stealth\", \"用 add_init_script 往页面注入一堆 JS 补丁，\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 1323,
+     "snippet": "[\"selenium-stealth\", \"同 playwright-stealth，Selenium 版\", \"不适用\"],"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 1329,
+     "snippet": "body(doc, \"实测 playwright-stealth（2026-11-08，Chrome 156.0.8078.80 + Playwright 1.57）：\", size=10, bold=True)"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 1333,
+     "snippet": "\"=== B：playwright-stealth ===\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 1348,
+     "snippet": "[\"对比项\", \"我们的做法（启动参数 + 真实 Chrome）\", \"stealth 类库\"],"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 1365,
+     "snippet": "\"所以：现阶段不用任何 stealth 库；将来若真要对抗更高强度检测，选 nodriver 重写，而不是往 Playwright 上贴补丁。\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "反检测",
+     "line": 1368,
+     "snippet": "# ---------------- 反检测"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "封号",
+     "line": 1405,
+     "snippet": "\"所以最坏情况是预约被取消、重新排队，不是封号。这也是为什么纯人工（脚本只提醒）永远是兜底。\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 1410,
+     "snippet": "body(doc, \"2026-11-08 20:15 起实测：gov.hk 入口 200，abs3 与 abs4 同时 502 —— 这是官方后端故障，\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 1433,
+     "snippet": "(\"书签旧链接：\", \"16:00–16:30 更新后链接会变，每次从 gov.hk 页面进。\"),"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 1453,
+     "snippet": "[\"11-08 20:17\", \"curl 状态码\", \"gov.hk 200；abs3 502；abs4 502 —— 官方网关故障\"],"
+    }
+   ]
+  },
+  {
+   "path": "邮箱-新.txt",
+   "score": 180,
+   "n": 20,
+   "hits": [
+    {
+     "kind": "secret",
+     "pattern": "oauth_refresh",
+     "line": 3,
+     "snippet": "\"KalbEssick4488@outlook.com---…---M.C511_BAY.0.U.MsaArtifacts.-Cn5zpyD!VXxtVo9E00gSS*bQfmV2CIDyCvN*pN2MCK…TLT9*545m!cMF*5fwmTU…oAkj*pnVmKZ…nBeU*3NtHrbHECYmm*cPA"
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 3,
+     "snippet": "\"KalbEssick4488@outlook.com---…---M.C511_BAY.0.U.MsaArtifacts.-Cn5zpyD!VXxtVo9E00gSS*bQfmV2CIDyCvN*pN2MCK…TLT9*545m!cMF*5fwmTU…oAkj*pnVmKZ…nBeU*3NtHrbHECYmm*cPA"
+    },
+    {
+     "kind": "secret",
+     "pattern": "oauth_refresh",
+     "line": 9,
+     "snippet": "\"SmolskiClare303@outlook.com---…---M.C529_SN1.0.U.MsaArtifacts.-CvS4Z…Lzjo*4656HU…Rq5i*n1hC!NeE2re…S9xP*ruk8cC…j5PZ*R7e!Z4CxKgdq6!F7UHsU…WBn6*yVJnvW…nD4c!pq9Urn"
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 9,
+     "snippet": "\"SmolskiClare303@outlook.com---…---M.C529_SN1.0.U.MsaArtifacts.-CvS4Z…Lzjo*4656HU…Rq5i*n1hC!NeE2re…S9xP*ruk8cC…j5PZ*R7e!Z4CxKgdq6!F7UHsU…WBn6*yVJnvW…nD4c!pq9Urn"
+    },
+    {
+     "kind": "secret",
+     "pattern": "oauth_refresh",
+     "line": 14,
+     "snippet": "\"ChimalTodd268@outlook.com---…---M.C513_BAY.0.U.MsaArtifacts.-CpzQP…F5Oe*vitmYo…2G0o*5DjFcq…xRpR*telITO…8TDI!p0Z2JR…HIJI!C3w!0sQ1BN…4M6y!Uhpv1t…3X3w$$\""
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 14,
+     "snippet": "\"ChimalTodd268@outlook.com---…---M.C513_BAY.0.U.MsaArtifacts.-CpzQP…F5Oe*vitmYo…2G0o*5DjFcq…xRpR*telITO…8TDI!p0Z2JR…HIJI!C3w!0sQ1BN…4M6y!Uhpv1t…3X3w$$\""
+    },
+    {
+     "kind": "secret",
+     "pattern": "oauth_refresh",
+     "line": 21,
+     "snippet": "\"CaffreyHerridge49@outlook.com---…---M.C552_BL2.0.U.MsaArtifacts.-Ch9jaGBg4Vtza*wncHBLU*MwSP1X*9fCyoapM39Conxi4*nV8vopqPfLVZb6!pQjPsSEwpoBSN*1P*6HJNPN…Vi13!9gpc"
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 21,
+     "snippet": "\"CaffreyHerridge49@outlook.com---…---M.C552_BL2.0.U.MsaArtifacts.-Ch9jaGBg4Vtza*wncHBLU*MwSP1X*9fCyoapM39Conxi4*nV8vopqPfLVZb6!pQjPsSEwpoBSN*1P*6HJNPN…Vi13!9gpc"
+    },
+    {
+     "kind": "secret",
+     "pattern": "oauth_refresh",
+     "line": 26,
+     "snippet": "\"VannaMatthey19@outlook.com---…---M.C504_BL2.0.U.MsaArtifacts.-CmNlW…UXFd*0Yy66C…lM4N*F!GBw39oTl!MqOD6L…SEKL!35pqCP…SmtU!h5EWxd…celG*yuijBg3*60yymIEJdRWfo!eF1rs"
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 26,
+     "snippet": "\"VannaMatthey19@outlook.com---…---M.C504_BL2.0.U.MsaArtifacts.-CmNlW…UXFd*0Yy66C…lM4N*F!GBw39oTl!MqOD6L…SEKL!35pqCP…SmtU!h5EWxd…celG*yuijBg3*60yymIEJdRWfo!eF1rs"
+    },
+    {
+     "kind": "secret",
+     "pattern": "oauth_refresh",
+     "line": 31,
+     "snippet": "\"DetweilerYakow797@outlook.com---…---M.C524_BAY.0.U.MsaArtifacts.-CkuJm…M9uC*fyFknH…Ggu3!VsutHE…LKhO*WW6yL0…iDjV!zQowCl…B3iO*j4Akho…KntK*MQSrt3…RRNv*aYSlwt…shMn"
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 31,
+     "snippet": "\"DetweilerYakow797@outlook.com---…---M.C524_BAY.0.U.MsaArtifacts.-CkuJm…M9uC*fyFknH…Ggu3!VsutHE…LKhO*WW6yL0…iDjV!zQowCl…B3iO*j4Akho…KntK*MQSrt3…RRNv*aYSlwt…shMn"
+    },
+    {
+     "kind": "secret",
+     "pattern": "oauth_refresh",
+     "line": 36,
+     "snippet": "\"Schune…an24@outlook.com---…---M.C504_BL2.0.U.MsaArtifacts.-CkUV0…1A43*3B0fa7…Na5y!zf4yuv…5P66!BtgEgS…QNPC!MQLsA2K*aUcJas…vgui!EiZSr5T6SiLfQ*2L!8EYEG7jir*JZnMVw"
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 36,
+     "snippet": "\"Schune…an24@outlook.com---…---M.C504_BL2.0.U.MsaArtifacts.-CkUV0…1A43*3B0fa7…Na5y!zf4yuv…5P66!BtgEgS…QNPC!MQLsA2K*aUcJas…vgui!EiZSr5T6SiLfQ*2L!8EYEG7jir*JZnMVw"
+    },
+    {
+     "kind": "secret",
+     "pattern": "oauth_refresh",
+     "line": 41,
+     "snippet": "\"Dorion…4324@outlook.com---…---M.C507_SN1.0.U.MsaArtifacts.-CkCJG…2Pd4!SHj5xl…719n!euUN6J9EWg6fIjuu*UwJwHX…1TKj*0K2Luq…AFvq*wUwIyu…9J80!wjNPyZ0IUysALDmMc!!WtmAs"
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 41,
+     "snippet": "\"Dorion…4324@outlook.com---…---M.C507_SN1.0.U.MsaArtifacts.-CkCJG…2Pd4!SHj5xl…719n!euUN6J9EWg6fIjuu*UwJwHX…1TKj*0K2Luq…AFvq*wUwIyu…9J80!wjNPyZ0IUysALDmMc!!WtmAs"
+    },
+    {
+     "kind": "secret",
+     "pattern": "oauth_refresh",
+     "line": 46,
+     "snippet": "\"DoolenAlleva90@outlook.com---…---M.C560_SN1.0.U.MsaArtifacts.-CgeJBFqAHTez!ojS4YX…J6Gq!1CpCHhAZ!I6fFHPjrxgEg*xidu02…FCaP!lliBUQ…ZgAt!9A5vKhwn!DhmZ22BeLZxtD*dWI"
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 46,
+     "snippet": "\"DoolenAlleva90@outlook.com---…---M.C560_SN1.0.U.MsaArtifacts.-CgeJBFqAHTez!ojS4YX…J6Gq!1CpCHhAZ!I6fFHPjrxgEg*xidu02…FCaP!lliBUQ…ZgAt!9A5vKhwn!DhmZ22BeLZxtD*dWI"
+    },
+    {
+     "kind": "secret",
+     "pattern": "oauth_refresh",
+     "line": 51,
+     "snippet": "\"RyderSteenberg50@outlook.com---…---M.C550_BAY.0.U.MsaArtifacts.-Cm2SG…m3pZ*jLJ40j…uF0f*3weu*bM*tPUVxN…7CNv*hCpKBp…DI8Z*tVOYxPJupE23xi!a61H6H…Bo6t!NZDpHP…p9dw!C"
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 51,
+     "snippet": "\"RyderSteenberg50@outlook.com---…---M.C550_BAY.0.U.MsaArtifacts.-Cm2SG…m3pZ*jLJ40j…uF0f*3weu*bM*tPUVxN…7CNv*hCpKBp…DI8Z*tVOYxPJupE23xi!a61H6H…Bo6t!NZDpHP…p9dw!C"
+    }
+   ]
+  },
+  {
+   "path": "邮箱.txt",
+   "score": 180,
+   "n": 20,
+   "hits": [
+    {
+     "kind": "secret",
+     "pattern": "oauth_refresh",
+     "line": 1,
+     "snippet": "KalbEssick4488@outlook.com---…---M.C511_BAY.0.U.MsaArtifacts.-Cpaaf…PZSU!cF8GCp…UUkY*3VAkf0…65oN*1JaQVO9GE*yVh0x9…GRjT!FzKmmu*jWPisX…pn75!ZLm!DruoGF…HyHy!6HuKEr"
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 1,
+     "snippet": "KalbEssick4488@outlook.com---…---M.C511_BAY.0.U.MsaArtifacts.-Cpaaf…PZSU!cF8GCp…UUkY*3VAkf0…65oN*1JaQVO9GE*yVh0x9…GRjT!FzKmmu*jWPisX…pn75!ZLm!DruoGF…HyHy!6HuKEr"
+    },
+    {
+     "kind": "secret",
+     "pattern": "oauth_refresh",
+     "line": 2,
+     "snippet": "SmolskiClare303@outlook.com---…---M.C529_BAY.0.U.MsaArtifacts.-ColHu…nzdd*8HvT1LirrbZ!mRbvuy…3Zpd!M4LLOt…OwED!Z6Poq2lbp*LEZgw5Fro*fa*sEHl8j…YdtP*J1CN836YY2JMp!x"
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 2,
+     "snippet": "SmolskiClare303@outlook.com---…---M.C529_BAY.0.U.MsaArtifacts.-ColHu…nzdd*8HvT1LirrbZ!mRbvuy…3Zpd!M4LLOt…OwED!Z6Poq2lbp*LEZgw5Fro*fa*sEHl8j…YdtP*J1CN836YY2JMp!x"
+    },
+    {
+     "kind": "secret",
+     "pattern": "oauth_refresh",
+     "line": 3,
+     "snippet": "ChimalTodd268@outlook.com---…---M.C513_BAY.0.U.MsaArtifacts.-Cv8ck…w6Wb!ui43Cd…yMqE*Ojk2ua…OM14!lnCJmZxXUn5*741UAu…nGnN*4exfRn…7Gm8*iT*eOVm1n…okXn!mVNtlC…83pN*o"
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 3,
+     "snippet": "ChimalTodd268@outlook.com---…---M.C513_BAY.0.U.MsaArtifacts.-Cv8ck…w6Wb!ui43Cd…yMqE*Ojk2ua…OM14!lnCJmZxXUn5*741UAu…nGnN*4exfRn…7Gm8*iT*eOVm1n…okXn!mVNtlC…83pN*o"
+    },
+    {
+     "kind": "secret",
+     "pattern": "oauth_refresh",
+     "line": 4,
+     "snippet": "CaffreyHerridge49@outlook.com---…---M.C552_BAY.0.U.MsaArtifacts.-CrH*SiQmfq…9svs*npu5jyV*bs2SYHidhyhkCe*WgaHUI…ZICT*43hrE9…Xd6O*ZdzTi5…4XvQ*av9mpt2adahF!l7fjZP…"
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 4,
+     "snippet": "CaffreyHerridge49@outlook.com---…---M.C552_BAY.0.U.MsaArtifacts.-CrH*SiQmfq…9svs*npu5jyV*bs2SYHidhyhkCe*WgaHUI…ZICT*43hrE9…Xd6O*ZdzTi5…4XvQ*av9mpt2adahF!l7fjZP…"
+    },
+    {
+     "kind": "secret",
+     "pattern": "oauth_refresh",
+     "line": 5,
+     "snippet": "VannaMatthey19@outlook.com---…---M.C504_BAY.0.U.MsaArtifacts.-ChLJ2…MtL4*BFOOsz…cvjF!JLxKgq…wOGU*eRBtVVbO9utBvE0*xXghMe…oWJf*fJ6REQ…oAVK!kSKtGM…FuHh!pt3bFgTgg*K"
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 5,
+     "snippet": "VannaMatthey19@outlook.com---…---M.C504_BAY.0.U.MsaArtifacts.-ChLJ2…MtL4*BFOOsz…cvjF!JLxKgq…wOGU*eRBtVVbO9utBvE0*xXghMe…oWJf*fJ6REQ…oAVK!kSKtGM…FuHh!pt3bFgTgg*K"
+    },
+    {
+     "kind": "secret",
+     "pattern": "oauth_refresh",
+     "line": 6,
+     "snippet": "DetweilerYakow797@outlook.com---…---M.C524_BAY.0.U.MsaArtifacts.-Cp1uT…xr7T!GQOIgH…ToZx!knuIcLPTHsV!H0hV5B…VmK8*gOEJXs…5HZO*M7FWCA…eAma*V*WKQ3X8…qHro*AOjbeN!rB4"
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 6,
+     "snippet": "DetweilerYakow797@outlook.com---…---M.C524_BAY.0.U.MsaArtifacts.-Cp1uT…xr7T!GQOIgH…ToZx!knuIcLPTHsV!H0hV5B…VmK8*gOEJXs…5HZO*M7FWCA…eAma*V*WKQ3X8…qHro*AOjbeN!rB4"
+    },
+    {
+     "kind": "secret",
+     "pattern": "oauth_refresh",
+     "line": 7,
+     "snippet": "Schune…an24@outlook.com---…---M.C504_BAY.0.U.MsaArtifacts.-CqXLw…0KLW!vHd!UzPNyD…sSct*7GcKuK…fCre!gYmLkkrGs23f2xcH2*bhRGG0…RsWO*9nZNGY…eGt7!Qr651t…60Te*qOjX6D…k"
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 7,
+     "snippet": "Schune…an24@outlook.com---…---M.C504_BAY.0.U.MsaArtifacts.-CqXLw…0KLW!vHd!UzPNyD…sSct*7GcKuK…fCre!gYmLkkrGs23f2xcH2*bhRGG0…RsWO*9nZNGY…eGt7!Qr651t…60Te*qOjX6D…k"
+    },
+    {
+     "kind": "secret",
+     "pattern": "oauth_refresh",
+     "line": 8,
+     "snippet": "Dorion…4324@outlook.com---…---M.C507_BAY.0.U.MsaArtifacts.-Cp6EK…dxTW*4AD1iv…9knH!NSqiax…4fvg!8n6B5B!N613f8…dKMB!dt8f8v…erRF*8rU7d*KRhjHd…pizK!cmxN9K…vP2w$$"
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 8,
+     "snippet": "Dorion…4324@outlook.com---…---M.C507_BAY.0.U.MsaArtifacts.-Cp6EK…dxTW*4AD1iv…9knH!NSqiax…4fvg!8n6B5B!N613f8…dKMB!dt8f8v…erRF*8rU7d*KRhjHd…pizK!cmxN9K…vP2w$$"
+    },
+    {
+     "kind": "secret",
+     "pattern": "oauth_refresh",
+     "line": 9,
+     "snippet": "DoolenAlleva90@outlook.com---…---M.C560_BAY.0.U.MsaArtifacts.-CkuIJ…qok3*EkrC4o…TauG*KXPN7q…1p4C*cX2777…aFBC!ovDC0b…kCAk*vndEuJ…vEjP!dY5zQxOOvcCDtFrW!VCU8fi…CXU"
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 9,
+     "snippet": "DoolenAlleva90@outlook.com---…---M.C560_BAY.0.U.MsaArtifacts.-CkuIJ…qok3*EkrC4o…TauG*KXPN7q…1p4C*cX2777…aFBC!ovDC0b…kCAk*vndEuJ…vEjP!dY5zQxOOvcCDtFrW!VCU8fi…CXU"
+    },
+    {
+     "kind": "secret",
+     "pattern": "oauth_refresh",
+     "line": 10,
+     "snippet": "RyderSteenberg50@outlook.com---…---M.C550_BAY.0.U.MsaArtifacts.-CgF2R…PveT*Jl11!co0oqz…e1fk!!7FKHPz…BW2l!jQP2gO…zWLF*9atqns…XQ6O!wWnfmv…LNU5!JiOhhwEEjnR9*Jdrqbh"
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 10,
+     "snippet": "RyderSteenberg50@outlook.com---…---M.C550_BAY.0.U.MsaArtifacts.-CgF2R…PveT*Jl11!co0oqz…e1fk!!7FKHPz…BW2l!jQP2gO…zWLF*9atqns…XQ6O!wWnfmv…LNU5!JiOhhwEEjnR9*Jdrqbh"
+    }
+   ]
+  },
+  {
+   "path": "config.json",
+   "score": 132,
+   "n": 18,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 23,
+     "snippet": "\"_说明\": \"钉钉自定义机器人。没配置时所有通知静默跳过，不影响抢号。\","
+    },
+    {
+     "kind": "secret",
+     "pattern": "dingtalk_hook",
+     "line": 25,
+     "snippet": "\"dingtalk_webhook\": \"https://oapi.dingtalk.com/robot/send?access…2e43\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 25,
+     "snippet": "\"dingtalk_webhook\": \"https://oapi.dingtalk.com/robot/send?access_token=016fe6728159b75c3708e71dd79fdb81a1897ec7d336d0178173849a4d6a2e43\","
+    },
+    {
+     "kind": "secret",
+     "pattern": "dingtalk_sign",
+     "line": 26,
+     "snippet": "\"dingtalk_secret\": \"SEC91c…f1bd\","
+    },
+    {
+     "kind": "pii",
+     "pattern": "phone_cn",
+     "line": 28,
+     "snippet": "\"13631539547\""
+    },
+    {
+     "kind": "pii",
+     "pattern": "cn_name_line",
+     "line": 37,
+     "snippet": "\"name_cn\": \"潘郁明\","
+    },
+    {
+     "kind": "pii",
+     "pattern": "cn_id_or_dl",
+     "line": 41,
+     "snippet": "\"dl_no\": \"441781…2728\","
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 43,
+     "snippet": "\"email\": \"KalbEssick4488@outlook.com\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 44,
+     "snippet": "\"_email_todo\": \"已改为买来的 Outlook（已验证能收信、能读信）；163 作为备用。2026-11-09 15:20 实测：refresh_token 可用、IMAP 可登录、access_token 过期后能自动刷新并写回 mail.json；密码直连已被微软禁用（Basic authentica"
+    },
+    {
+     "kind": "pii",
+     "pattern": "phone_cn",
+     "line": 45,
+     "snippet": "\"phone\": \"13631539547\","
+    },
+    {
+     "kind": "pii",
+     "pattern": "id_photo_path",
+     "line": 47,
+     "snippet": "\"doc_file\": \"files/港澳通行证.jpg\","
+    },
+    {
+     "kind": "pii",
+     "pattern": "id_photo_path",
+     "line": 48,
+     "snippet": "\"dl_file\": \"files/内地驾驶证.jpg\","
+    },
+    {
+     "kind": "pii",
+     "pattern": "id_photo_path",
+     "line": 60,
+     "snippet": "\"doc_file\": \"files/同事1_通行证.jpg\","
+    },
+    {
+     "kind": "pii",
+     "pattern": "id_photo_path",
+     "line": 61,
+     "snippet": "\"dl_file\": \"files/同事1_驾驶证.jpg\","
+    },
+    {
+     "kind": "pii",
+     "pattern": "id_photo_path",
+     "line": 73,
+     "snippet": "\"doc_file\": \"files/同事2_通行证.jpg\","
+    },
+    {
+     "kind": "pii",
+     "pattern": "id_photo_path",
+     "line": 74,
+     "snippet": "\"dl_file\": \"files/同事2_驾驶证.jpg\","
+    },
+    {
+     "kind": "pii",
+     "pattern": "id_photo_path",
+     "line": 86,
+     "snippet": "\"doc_file\": \"files/同事3_通行证.jpg\","
+    },
+    {
+     "kind": "pii",
+     "pattern": "id_photo_path",
+     "line": 87,
+     "snippet": "\"dl_file\": \"files/同事3_驾驶证.jpg\","
+    }
+   ]
+  },
+  {
+   "path": "README.md",
+   "score": 56,
+   "n": 23,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "抢名额",
+     "line": 1,
+     "snippet": "# 内地驾照 → 香港正式驾照（免试签发）抢名额作战手册"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "战术",
+     "line": 11,
+     "snippet": "2. **\"抢\"不是抢刷新速度，是抢 17:00 那次随机排队**：16:30–17:00 进池子的人，在 17:00 被**随机洗牌**，早进没有优势；17:00 之后进的按实际时间排序。所以战术是\"16:30 后进池 + 多一个会话 + 17:00 一到手上资料齐、40 秒填完\"。"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 34,
+     "snippet": "gov.hk/sc/apps/tddiabs.htm            ← 入口（3 秒 meta refresh）"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 35,
+     "snippet": "└─ abs3.td.gov.hk  (React 单页)     ← 勾「同意」→ 点「预约」→ 选「不使用智方便」→ 选「中国内地」"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 36,
+     "snippet": "└─ abs4.td.gov.hk  (排队)      ← 随机分配排队位；实测闲时 20–35 秒放行，17:00 高峰可达数十分钟"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 37,
+     "snippet": "└─ abs1/abs2.td.gov.hk/tdab2/tdabs_di_external/AdminServlet?cmd=cmdGetOfficeQuotaDIAction"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "作战",
+     "line": 49,
+     "snippet": "## 3. 作战时刻表（工作日）"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 55,
+     "snippet": "| 16:30 | 从 gov.hk 页面重新进入（唯一可靠入口），勾同意 → 预约 → 不用智方便 → 中国内地，停在排队页 |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 59,
+     "snippet": "| 17:00 + 20 分钟内 | 填资料 → 收 OTP → 选日期时段 → 递交 → 收到 tdabs@td.gov.hk 确认电邮 |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 85,
+     "snippet": "- 电邮把 `tdabs@td.gov.hk` 加白名单，OTP 就是它发的。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢位",
+     "line": 120,
+     "snippet": "| `grab.py` | **抢位助手**。`--probe` 只侦察不提交；正式跑会勾同意→预约→不用智方便→选内地→按 `config.json` 填资料→上传图片→挑最早日期时段 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢位",
+     "line": 124,
+     "snippet": "| `runs/` | 每次运行的截图、页面 JSON/HTML，抢位出问题时可回溯 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢位",
+     "line": 138,
+     "snippet": "# 正式抢位：3 条独立队列同时排"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "封号",
+     "line": 212,
+     "snippet": "有一点必须说清：官方原文写着「任何涉及**异常或可疑活动、未经授权工具**或提供可疑资料的预约亦将会被**取消**」。所以最坏情况是**预约被取消、要重新排队**，而不是被封号。这也是为什么方案 A（人工点、脚本只提醒）永远是兜底。"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 218,
+     "snippet": "当晚 20:15 起 `abs3.td.gov.hk` 与 `abs4.td.gov.hk` 同时返回 **502 Bad Gateway**，而 `gov.hk` 入口页仍是 200 —— 这是**官方后端故障**，不是被限速、也不是脚本问题。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 235,
+     "snippet": "**对明天的意义**：16:30 进池之前先跑一次 `python check.py`。如果那时站点已经是 502，说明当天不具备抢号条件，别在 17:00 白白消耗一次排队机会。"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 241,
+     "snippet": "预演时用 WARP/代理出口（`104.28.x.x`，Cloudflare 网段）跑，链路前段全通，但一点「继续」就进到 `abs4.td.gov.hk` 的拦截页："
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 275,
+     "snippet": "- 浏览器打开 `abs3.td.gov.hk` 一片空白，`body` 只有几十字节"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "自动过",
+     "line": 331,
+     "snippet": "| Chrome 自己导航（命令行/地址栏） | ✅ 200，挑战自动过，页面正常 |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 357,
+     "snippet": "注入 gov.hk 入口 → 跳 abs3 → 注入"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 468,
+     "snippet": "2. **书签旧链接**：16:00–16:30 更新后链接会变，每次从 `www.gov.hk/sc/residents/transport/drivinglicense/diabs.htm` 进。"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 484,
+     "snippet": "`https://econtact.td.gov.hk/vansweb/app895_sc.html`"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 489,
+     "snippet": "- 核实记录**有效期 3 个月**，一次核实可用于多个牌证申请，覆盖整个预约就诊周期，抢号前后做都行，但必须在**去柜台之前**完成。"
+    }
+   ]
+  },
+  {
+   "path": "align_client.py",
+   "score": 55,
+   "n": 19,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 52,
+     "snippet": "# 本机已装 0.13（支持 impersonate），贸然插路径会把能用的换成不能用的。"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 55,
+     "snippet": "CHECK_URL = \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 184,
+     "snippet": "from curl_cffi.requests.impersonate import BrowserTypeLiteral"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 222,
+     "snippet": "def __init__(self, ticket: Dict[str, Any], impersonate: str = \"\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 228,
+     "snippet": "self.impersonate = impersonate or ticket.get(\"impersonate\") or \\"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 236,
+     "snippet": "kw: Dict[str, Any] = {\"impersonate\": self.impersonate,"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 274,
+     "snippet": "实测（412 结论第五节）：给 abs3 发 `Referer: https://abs1.td.gov.hk/` → 400 被判非法。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "黑名单",
+     "line": 333,
+     "snippet": "res[\"verdict\"] = \"被判非法：画像/UA/出口 与铸票时不符，或出口已进黑名单\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 363,
+     "snippet": "if ticket.get(\"impersonate\") and ticket.get(\"probe\", {}).get(\"ok\"):"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 364,
+     "snippet": "log(f\"票已绑定画像 {ticket['impersonate']}（探测过，跳过）\")"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 365,
+     "snippet": "return {\"impersonate\": ticket[\"impersonate\"], \"hit\": True, \"cached\": True,"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 376,
+     "snippet": "s = AlignedSession(ticket, impersonate=imp, timeout=25,"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 382,
+     "snippet": "rows.append({\"impersonate\": imp, **r})"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 388,
+     "snippet": "ticket[\"impersonate\"] = imp"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 393,
+     "snippet": "return {\"hit\": True, \"impersonate\": imp, \"rows\": rows, \"tried\": tried}"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 427,
+     "snippet": "log(f\"对齐会话就绪：画像 {s.impersonate}  UA {ua_val[:60]}\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 456,
+     "snippet": "print(f\"绑定画像: {t.get('impersonate') or '未探测'}\")"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 475,
+     "snippet": "print(f\"\\n结果: {'命中 ' + info['impersonate'] if info.get('hit') else info.get('reason')}\")"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 484,
+     "snippet": "print(f\"\\n画像 {s.impersonate} → HTTP {r.get('code')} {r.get('len', 0)}B \""
+    }
+   ]
+  },
+  {
+   "path": "sniper.py",
+   "score": 53,
+   "n": 20,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 79,
+     "snippet": "ABS3 = \"https://abs3.td.gov.hk\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 80,
+     "snippet": "ABS4 = \"https://abs4.td.gov.hk\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 81,
+     "snippet": "ABS1 = \"https://abs1.td.gov.hk\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 89,
+     "snippet": "QUOTA_CMD = (\"https://abs2.td.gov.hk/tdab2/tdabs_di_external/AdminServlet_schinese\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 91,
+     "snippet": "STATUS_CMD = (\"https://abs1.td.gov.hk/tdab2/tdabs_di_external/AdminServlet_tchinese\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 101,
+     "snippet": "# （第 1 步页面的 CSP 里本来就有 service.mtcaptcha.com，只按字符串匹配会天天误报）"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 189,
+     "snippet": "impersonate: str = \"chrome\", http1: bool = False):"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "黑名单",
+     "line": 193,
+     "snippet": "2026-11-11 的事实是「一个出口 2~3 次就进黑名单」，所以这个闸门不是可选项。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 208,
+     "snippet": "# chrome 画像会稳定超时；此时用 --impersonate none --http1 走普通 TLS/1.1。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 216,
+     "snippet": "self.impersonate = \"\" if (impersonate or \"\").lower() in (\"none\", \"off\", \"0\", \"\") else impersonate"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 228,
+     "snippet": "if self.impersonate:"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 229,
+     "snippet": "kwargs[\"impersonate\"] = self.impersonate"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "黑名单",
+     "line": 258,
+     "snippet": "· curl (35) Connection was reset  → TLS 握手被 RST，出口 IP 已进黑名单"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "黑名单",
+     "line": 268,
+     "snippet": "return \"TLS_RESET：握手被 RST —— 出口 IP 大概率已进黑名单，换出口\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 351,
+     "snippet": "注意：CSP 头里出现 `service.mtcaptcha.com` 不算 —— 第 1 步页面一直有那一行。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "打码",
+     "line": 372,
+     "snippet": "self.log(\"   ② 或接打码平台：MTCaptcha 用 sitekey+pageurl 换 token\", \"!!\")"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "打码",
+     "line": 383,
+     "snippet": "f\"- 处置：浏览器接手 / 打码平台 / 空 token 先试\\n\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 914,
+     "snippet": "ap.add_argument(\"--impersonate\", default=\"chrome\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 916,
+     "snippet": "ap.add_argument(\"--http1\", action=\"store_true\", help=\"强制 HTTP/1.1（配合 --impersonate none）\")"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 957,
+     "snippet": "session=align_session, impersonate=a.impersonate, http1=a.http1)"
+    }
+   ]
+  },
+  {
+   "path": "t0_bindprobe.py",
+   "score": 52,
+   "n": 18,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 77,
+     "snippet": "URL = \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 116,
+     "snippet": "from curl_cffi.requests.impersonate import BrowserTypeLiteral"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 175,
+     "snippet": "def _session(self, impersonate: str, headers: dict, http2: bool = True):"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 176,
+     "snippet": "kw: dict[str, Any] = {\"impersonate\": impersonate, \"verify\": False,"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 188,
+     "snippet": "def once(self, tag: str, cookies: list, impersonate: str, headers: dict,"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 193,
+     "snippet": "s = self._session(impersonate, headers, http2)"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 199,
+     "snippet": "domain=c.get(\"domain\") or \"abs3.td.gov.hk\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 203,
+     "snippet": "rec = {\"tag\": tag, \"impersonate\": impersonate, \"http2\": http2,"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 235,
+     "snippet": "\"\"\"返回变体清单。字段：tag/cookies/impersonate/headers/http2"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 241,
+     "snippet": "dict(tag=\"0 分诊：裸 GET（无票）\", cookies=[], impersonate=\"chrome\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 244,
+     "snippet": "cookies=tick, impersonate=base_imp, headers=header_set(ua), http2=True),"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 246,
+     "snippet": "cookies=tick, impersonate=alt_imp, headers=header_set(ua), http2=True),"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 248,
+     "snippet": "cookies=tick, impersonate=alt_ua_imp, headers=header_set(alt_ua), http2=True),"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 250,
+     "snippet": "cookies=tick, impersonate=base_imp, headers=header_set(alt_ua), http2=True),"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 252,
+     "snippet": "impersonate=base_imp, headers=header_set(ua, minimal=True), http2=True),"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 254,
+     "snippet": "impersonate=base_imp, headers=header_set(ua), http2=False),"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 348,
+     "snippet": "print(f\"      impersonate={v['impersonate']}  http2={v['http2']}  \""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 364,
+     "snippet": "v[\"impersonate\"], v[\"headers\"], v[\"http2\"]))"
+    }
+   ]
+  },
+  {
+   "path": "patch_ch8.py",
+   "score": 47,
+   "n": 16,
+   "hits": [
+    {
+     "kind": "pii",
+     "pattern": "id_photo_path",
+     "line": 20,
+     "snippet": "\"config.json   files\\\\港澳通行证.jpg   files\\\\内地驾驶证.jpg\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 26,
+     "snippet": "body(doc, \"目的不是抢号，是确认「浏览器→官方系统」这条路通不通。三步，共约 1 分钟。\", size=10)"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 54,
+     "snippet": "\"…2s https://abs3.td.gov.hk/?lang=sc\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 65,
+     "snippet": "h2(doc, \"8.2 场景 B：工作日抢号（16:20 — 17:20）\")"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 78,
+     "snippet": "\"确认站点可用。若返回 30（502）→ 当天不具备抢号条件，别浪费排队机会\"],"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 96,
+     "snippet": "\"看到「★★★ 拿到预约」+ 电邮收到 tdabs@td.gov.hk 确认信，才算完\"],"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 106,
+     "snippet": "\"① 邮件来自 tdabs@td.gov.hk，里面有一串数字\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 168,
+     "snippet": "\"python grab.py --workers 3           ← 正式抢号（3 条队列）\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 208,
+     "snippet": "\"17:00:41 [w2] …41s https://abs3.td.gov.hk/SelectCountry?lang=sc\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 224,
+     "snippet": "\"20:18:10 [30] 官方返回错误页（502/维护），不是名额问题 url=https://abs3.td.gov.hk/?lang=sc\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 252,
+     "snippet": "\"抢号前把 tdabs@td.gov.hk 加白名单；电脑和手机同时开邮箱\"],"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 252,
+     "snippet": "\"抢号前把 tdabs@td.gov.hk 加白名单；电脑和手机同时开邮箱\"],"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢位",
+     "line": 284,
+     "snippet": "[\"grab.py\", \"抢位主程序\", \"别删\"],"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 293,
+     "snippet": "[\"profiles\\\\\", \"各队列的浏览器 profile（存排队会话）\", \"抢号期间别删\"],"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 294,
+     "snippet": "[\"chrome_profile\\\\\", \"接管模式的 Chrome 用户数据\", \"抢号期间别删\"],"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "反检测",
+     "line": 306,
+     "snippet": "end = next(i for i, l in enumerate(lines) if \"# ---------------- 反检测\" in l)"
+    }
+   ]
+  },
+  {
+   "path": "test_stealth.py",
+   "score": 42,
+   "n": 14,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 2,
+     "snippet": "\"\"\"【历史记录 · 已停用】实测 playwright-stealth 的收益与代价。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 4,
+     "snippet": "结论：playwright-stealth 1.0.6 在 Chrome 156 + Playwright 1.57 上会注入一个"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 9,
+     "snippet": "python -m pip install playwright-stealth"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 10,
+     "snippet": "否则会打印「stealth 应用失败」并按裸配置跑完。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 14,
+     "snippet": "B 加了 playwright-stealth"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 35,
+     "snippet": "def snapshot(use_stealth: bool) -> dict:"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 40,
+     "snippet": "if use_stealth:"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 42,
+     "snippet": "from playwright_stealth import stealth_sync"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 43,
+     "snippet": "stealth_sync(page)"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 45,
+     "snippet": "print(\"stealth 应用失败:\", type(e).__name__, e)"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 59,
+     "snippet": "print(\"\\n=== B：playwright-stealth ===\")"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 73,
+     "snippet": "print(f\"      stealth: {str(b.get(k))[:100]}\")"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 88,
+     "snippet": "print(\"  ⚠ stealth 留下了痕迹：\")"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 92,
+     "snippet": "print(\"  stealth 没有留下可测的 hasOwnProperty / native 痕迹\")"
+    }
+   ]
+  },
+  {
+   "path": "tdabs_monitor.py",
+   "score": 38,
+   "n": 17,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 10,
+     "snippet": "gov.hk 入口页 -> abs3.td.gov.hk 等候室（WAF 种 cookie）"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 11,
+     "snippet": "-> abs.td.gov.hk/tdabs/tdabs_di.htm 跳转桥"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 12,
+     "snippet": "-> abs2.td.gov.hk/tdab2/tdabs_di_external/AdminServlet?cmd=cmdIntoSelectAuthDI"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 31,
+     "snippet": "* 移除硬编码静态资源伪造（会在前端发版后产生 404，只会制造无效请求）"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪装",
+     "line": 33,
+     "snippet": "v2.1 人工接管优先（进一步减少自动化请求，把操作交还给人，而不是伪装请求）："
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 77,
+     "snippet": "from curl_cffi.requests.impersonate import DEFAULT_CHROME"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 96,
+     "snippet": "# 官方运作时间表（gov.hk diabs.htm，\"网上预约系统每个工作日运作安排\"）："
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 150,
+     "snippet": "#   www.gov.hk / abs.td.gov.hk / abs2.td.gov.hk  -> 校验通过"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 151,
+     "snippet": "#   abs3.td.gov.hk（等候室）服务端未下发中间 CA -> 校验失败"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 155,
+     "snippet": "\"insecure_tls_hosts\": [\"abs3.td.gov.hk\"],"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 166,
+     "snippet": "GOV_ENTRY = \"https://www.gov.hk/sc/apps/tddiabs.htm\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 317,
+     "snippet": "impersonate=IMPERSONATE,"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 329,
+     "snippet": "self.abs_host = \"abs3.td.gov.hk\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 516,
+     "snippet": "return (f\"https://abs.td.gov.hk/tdabs/tdabs_di.htm?func={CONFIG['func']}\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 549,
+     "snippet": "return f\"https://abs2.td.gov.hk{SERVLET_PATH}?{params}\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 585,
+     "snippet": "url = f\"https://abs.td.gov.hk{STATUS_SERVLET}\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 641,
+     "snippet": "log.info(\"  2. 打开 https://abs2.td.gov.hk/ （页面报错属正常）\")"
+    }
+   ]
+  },
+  {
+   "path": "运行记录_20261113_代理验证与WAF挑战期.md",
+   "score": 36,
+   "n": 16,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 3,
+     "snippet": "> 结论先放前面：**代理渠道今天不可用于抢号主线**（4 分钟就死），**16:30–17:40 是 WAF 强挑战期，浏览器也走不动**。"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 10,
+     "snippet": "接口：`http://v2.api.juliangip.com/company/postpay/getips`（企业版·按量，`auto_white=1 city=深圳 isp=3 pt=1`）"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 25,
+     "snippet": "而抢号需要覆盖 **17:00–17:20 的 20 分钟窗口**。时效差一个数量级，主线用不了。"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 83,
+     "snippet": "GET https://abs3.td.gov.hk/SelectCountry?qqF1dDzp=a4mA77AAqWxsSGVaCSTYj010..."
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 116,
+     "snippet": "# 0) 确认系统代理是关的（抢号期间必须）"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 120,
+     "snippet": "curl.exe -s -o NUL -w \"%{http_code}`n\" https://abs3.td.gov.hk/?lang=sc"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 141,
+     "snippet": "| `abs3.td.gov.hk/?lang=sc` | **000 超时**（15–25s 无响应），连测多次全是 000 |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 142,
+     "snippet": "| `abs1.td.gov.hk/` | **200，0.14s** ✅ |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 143,
+     "snippet": "| `abs4.td.gov.hk/` | 401（能连上，会回话） |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 144,
+     "snippet": "| `www.gov.hk` | 200 ✅ |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "自动过",
+     "line": 167,
+     "snippet": "`$_ts` + `nsd=78653` + 4 个 script + **无滑块** —— 纯 JS 计算型，正常浏览器可以自动过，"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 261,
+     "snippet": "22:47:12 queue   → abs4.td.gov.hk/?c=tdabsditest&e=tdabsd261113icg&ver=v3-lua-3.7.0"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 262,
+     "snippet": "22:47:27 country → abs3.td.gov.hk/SelectCountry?lang=sc&actionType=apply&authMethod=withOutIas"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 280,
+     "snippet": "22:47:27 req  https://abs3.td.gov.hk/static/js/main.fca89098.js"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 283,
+     "snippet": "22:48:10 req  https://abs3.td.gov.hk/static/js/main.fca89098.js   ← 重来"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 333,
+     "snippet": "22:53:34 → abs1.td.gov.hk/tdab2/tdabs_di_external/AdminServlet?cmd=cmdIntoSelectAuthDI"
+    }
+   ]
+  },
+  {
+   "path": "extension\\manifest.json",
+   "score": 36,
+   "n": 18,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 19,
+     "snippet": "\"*://abs1.td.gov.hk/*\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 20,
+     "snippet": "\"*://abs2.td.gov.hk/*\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 21,
+     "snippet": "\"*://abs3.td.gov.hk/*\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 22,
+     "snippet": "\"*://abs4.td.gov.hk/*\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 23,
+     "snippet": "\"*://www.gov.hk/*\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 24,
+     "snippet": "\"*://*.queue-it.net/*\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 25,
+     "snippet": "\"*://*.queue-it.com/*\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 26,
+     "snippet": "\"*://*.mtcaptcha.com/*\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 27,
+     "snippet": "\"*://*.mtcaptcha.net/*\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 35,
+     "snippet": "\"*://abs1.td.gov.hk/*\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 36,
+     "snippet": "\"*://abs2.td.gov.hk/*\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 37,
+     "snippet": "\"*://abs3.td.gov.hk/*\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 38,
+     "snippet": "\"*://abs4.td.gov.hk/*\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 39,
+     "snippet": "\"*://www.gov.hk/*\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 40,
+     "snippet": "\"*://*.queue-it.net/*\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 41,
+     "snippet": "\"*://*.queue-it.com/*\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 42,
+     "snippet": "\"*://*.mtcaptcha.com/*\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 43,
+     "snippet": "\"*://*.mtcaptcha.net/*\","
+    }
+   ]
+  },
+  {
+   "path": "fleet.py",
+   "score": 35,
+   "n": 10,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "作战",
+     "line": 4,
+     "snippet": "fleet.py —— 10 个代理 IP 的作战编排：谁排队、谁探号、谁跑业务"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 28,
+     "snippet": "python fleet.py --link \"http://v2.api.juliangip.com/company/dynamic/getips?...\" \\"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 58,
+     "snippet": "API_TMPL = (\"http://v2.api.juliangip.com/company/dynamic/getips?auto_white=1\""
+    },
+    {
+     "kind": "secret",
+     "pattern": "api_sign",
+     "line": 60,
+     "snippet": "\"&trade_…6488&sign=d…da8c\")"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "过验证码",
+     "line": 273,
+     "snippet": "f\"# 需要人工过验证码 {time.strftime('%Y-%m-%d %H:%M:%S')}\\n\\n\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "打码",
+     "line": 279,
+     "snippet": "f\"2. MTCaptcha 打码平台（sitekey + pageurl 换 token）\\n\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 330,
+     "snippet": "它不参与抢号（不会变成 winner），只回答一个问题：**脚本现在还行不行**。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 368,
+     "snippet": "每轮落一份报告。它的作用是「脚本自己有没有退化」，不参与抢号。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "作战",
+     "line": 384,
+     "snippet": "ap = argparse.ArgumentParser(description=\"10 IP 作战编排：排队 / 探号 / 业务\")"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 405,
+     "snippet": "\"verify\": \"验证机：按轮跑 S1~S7 自检，不抢号，专验脚本\","
+    }
+   ]
+  },
+  {
+   "path": "go1630.py",
+   "score": 35,
+   "n": 10,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 27,
+     "snippet": "API = (\"http://v2.api.juliangip.com/company/postpay/getips?auto_white=1&city=%E6%B7%B1%E5%9C%B3\""
+    },
+    {
+     "kind": "secret",
+     "pattern": "api_sign",
+     "line": 29,
+     "snippet": "\"&trade_…0427&sign=0…576f\")"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 32,
+     "snippet": "TARGET = \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 51,
+     "snippet": "def triage(proxy: str, timeout: float = 25.0, impersonate: str = \"none\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 61,
+     "snippet": "if impersonate and impersonate.lower() not in (\"none\", \"off\", \"\"):"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 62,
+     "snippet": "kw[\"impersonate\"] = impersonate"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 94,
+     "snippet": "ap.add_argument(\"--impersonate\", default=\"none\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 124,
+     "snippet": "status, size, head = triage(proxy, impersonate=a.impersonate, http1=http1)"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 153,
+     "snippet": "\"--impersonate\", a.impersonate] + ([\"--http1\"] if http1 else [])"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 164,
+     "snippet": "\"--impersonate\", a.impersonate] + ([\"--http1\"] if http1 else [])"
+    }
+   ]
+  },
+  {
+   "path": "412实测结论_纯HTTP边界与打法_20261111.md",
+   "score": 33,
+   "n": 13,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "黑名单",
+     "line": 5,
+     "snippet": "> 继续用脚本硬撞，等于把 10 个 IP 一个个送进黑名单。**"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 15,
+     "snippet": "| 3 | `curl_cffi`（impersonate=chrome）裸 GET | **400**（不是 412） | WAF 对伪造指纹直接拒，连挑战都不给 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "黑名单",
+     "line": 30,
+     "snippet": "3. **封禁极快**：一个出口访问 2~3 次就进黑名单，表现是 400（轻）或 80/443 TCP 丢包（重，ping 还通）。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 87,
+     "snippet": "## 五之补：第二轮绕过矩阵（20:00–20:50，全部现场实测）"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 98,
+     "snippet": "| `X-Forwarded-For: 202.128.247.53`（自己白名单 IP） | **400** | WAF 看了 XFF，并判定伪造 → 直接拒 |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 101,
+     "snippet": "| `Referer: https://abs1.td.gov.hk/` | 400 | 被判非法 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 105,
+     "snippet": "**行为规律**：合规客户端 → 412 挑战；**疑似伪造/变形 → 400 直接拒**。"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 111,
+     "snippet": "www.gov.hk/sc/apps/tddiabs.htm        43.159.109.162   200  无 WAF"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 113,
+     "snippet": "abs.td.gov.hk/tdabs/tdabs_di.htm      202.128.247.53   200  无 WAF（759B 跳转页）"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 115,
+     "snippet": "abs1.td.gov.hk/tdab2/.../AdminServlet 202.128.247.53   无票 → 302 回 abs3"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 125,
+     "snippet": "旁证：`tdabsditest.queue-it.net`（Queue-it 源站，AWS 52.208.189.236）直连 403；"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 126,
+     "snippet": "`queue.e-auction.td.gov.hk`（另一个业务的 Queue-it custom domain）直连 200，但 customer 不同，不能复用。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "反检测",
+     "line": 130,
+     "snippet": "**patchright（反检测 playwright）headless 一次过挑战：**"
+    }
+   ]
+  },
+  {
+   "path": "运行记录_20261114_新代理实测.md",
+   "score": 31,
+   "n": 8,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 54,
+     "snippet": "impersonate=chrome / chrome136  →  curl (28) timed out after 25s"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 56,
+     "snippet": "impersonate=None + HTTP/1.1     →  200 708B，1.9s ✅"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 63,
+     "snippet": "**结论：纯脚本走这类代理，一律 `--impersonate none --http1`。** 站点不挑战时，"
+    },
+    {
+     "kind": "secret",
+     "pattern": "proxy_cred",
+     "line": 75,
+     "snippet": "已改用 `UTF8Encoding($false)` 写入，py 读回 `b'14.215.163.195:2018:jlipiLP7OB:boOKSVho\\r\\n'`。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 81,
+     "snippet": "| `sniper.py` | 新增 `--impersonate`（默认 chrome）与 `--http1`；`Sniper.__init__` 支持 `impersonate=\"\"/\"none\"` 与 `http1=True`（`_get/_post` 注入 `CurlHttpVersion.V1_1`） |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 82,
+     "snippet": "| `go1630.py` | 新增 `--proxy`（直接用指定出口，跳过巨量IP 取号）、`--impersonate`、`--http1`；`triage()` 改普通 TLS + HTTP/1.1 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 117,
+     "snippet": "2. **把 `--impersonate none --http1` 固化为「认证代理默认」**：`proxies.txt` 里凡是 `host:port:user:pass`"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 120,
+     "snippet": "抢号需要覆盖 17:00–17:20 的 20 分钟，中途换 IP 会让 Queue-it / WAF 票一起作废。"
+    }
+   ]
+  },
+  {
+   "path": "patch_ch8_m.py",
+   "score": 30,
+   "n": 10,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 2,
+     "snippet": "\"\"\"在 8.16 后追加「为什么没用 stealth 类库」的实测结论。\"\"\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 9,
+     "snippet": "body(doc, \"你可能听说过这类东西：playwright-stealth、undetected-chromedriver、nodriver、\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 10,
+     "snippet": "\"camoufox、selenium-stealth。它们确实存在，但原理和代价差别很大，这里给实测结论。\", size=10)"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 16,
+     "snippet": "[\"playwright-stealth\", \"用 add_init_script 往页面注入一堆 JS 补丁，\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 25,
+     "snippet": "[\"selenium-stealth\", \"同 playwright-stealth，Selenium 版\", \"不适用\"],"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 31,
+     "snippet": "body(doc, \"实测 playwright-stealth（2026-11-08，Chrome 156.0.8078.80 + Playwright 1.57）：\", size=10, bold=True)"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 35,
+     "snippet": "\"=== B：playwright-stealth ===\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 50,
+     "snippet": "[\"对比项\", \"我们的做法（启动参数 + 真实 Chrome）\", \"stealth 类库\"],"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 67,
+     "snippet": "\"所以：现阶段不用任何 stealth 库；将来若真要对抗更高强度检测，选 nodriver 重写，而不是往 Playwright 上贴补丁。\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "反检测",
+     "line": 73,
+     "snippet": "marker = \"    # ---------------- 反检测\""
+    }
+   ]
+  },
+  {
+   "path": "patch_ch8_d.py",
+   "score": 29,
+   "n": 7,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 13,
+     "snippet": "\"邮箱收到 tdabs@td.gov.hk 的邮件\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 15,
+     "snippet": "\"认出 From 含 td.gov.hk 的邮件 → 抓 4–8 位验证码\","
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 29,
+     "snippet": "'  \"email\": \"KalbEssick4488@outlook.com\",',"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 46,
+     "snippet": "body(doc, \"明天抢号时开两个窗口：\", size=10, bold=True)"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 60,
+     "snippet": "\"③  抢号前 30 分钟先跑 mail_watch.py --test，登不上就立刻换自己注册的邮箱。\","
+    },
+    {
+     "kind": "pii",
+     "pattern": "phone_cn",
+     "line": 69,
+     "snippet": "[\"163 → 该 Outlook 跨域投递\", \"成功（收到一封来自 13631539547@163.com 的测试信）\"],"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "反检测",
+     "line": 81,
+     "snippet": "marker = \"    # ---------------- 反检测\""
+    }
+   ]
+  },
+  {
+   "path": "token_pool.py",
+   "score": 29,
+   "n": 10,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 19,
+     "snippet": "· 抢号那一刻，票池只是「拿起来就用」，不做任何阻塞式铸票"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 59,
+     "snippet": "ENTRY = \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 82,
+     "snippet": "\"\"\"记一笔账；账本本身出问题不能影响抢号。\"\"\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "反检测",
+     "line": 274,
+     "snippet": "patchright  —— 反检测版，关掉 Runtime.enable/Console/CDP 注入。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "bypass",
+     "line": 345,
+     "snippet": "ctx_kw[\"proxy\"] = {\"server\": proxy, \"bypass\": BYPASS}"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 522,
+     "snippet": "impersonate: str = \"\", verify: bool = False):"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 529,
+     "snippet": "self.impersonate = impersonate or self._auto_impersonate()"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 534,
+     "snippet": "def _auto_impersonate() -> str:"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 536,
+     "snippet": "from curl_cffi.requests.impersonate import DEFAULT_CHROME"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 566,
+     "snippet": "sess = self._cr.Session(impersonate=self.impersonate)"
+    }
+   ]
+  },
+  {
+   "path": "接口直约_可行性.md",
+   "score": 29,
+   "n": 13,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 17,
+     "snippet": "| 1 | `curl_cffi(impersonate=chrome124)` GET `abs3.td.gov.hk` / `abs2…cmdGetOfficeQuotaDIAction` | **200**，708 字节 React 壳，下发 `HWWAFSESID` | 此刻 WAF 的 412 挑战**没有*"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 17,
+     "snippet": "| 1 | `curl_cffi(impersonate=chrome124)` GET `abs3.td.gov.hk` / `abs2…cmdGetOfficeQuotaDIAction` | **200**，708 字节 React 壳，下发 `HWWAFSESID` | 此刻 WAF 的 412 挑战**没有*"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 18,
+     "snippet": "| 2 | 上面这个 GET 实际被 **302 到 `abs3.td.gov.hk/?lang=en`** | 200 + SPA 壳 | host 路由：没有会话就只给 SPA，业务 JSP 不给你 |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 19,
+     "snippet": "| 3 | POST `AdminServlet_schinese?cmd=cmdGetOfficeQuotaDIAction`（带 `storedAppointmentServiceType=DI`、`isAuthConfirm=Y`、`IssuingCountry=CN`） | **302 → `abs3.td.g"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 28,
+     "snippet": "| 要素 | 从哪来 | 能否纯 HTTP 伪造 | 处理 |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 33,
+     "snippet": "| 邮箱 OTP（`storedAppointmentOtpCode`） | `tdabs@td.gov.hk` 发到登记邮箱 | 否 | `mail_watch.py` 已跑通 IMAP 取码，写 `otp.txt` → `ext_server` 的 `/otp` |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 45,
+     "snippet": "| 1 | GET | `https://www.gov.hk/sc/apps/tddiabs.htm` | 入口（3 秒 meta refresh） |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 46,
+     "snippet": "| 2 | — | `abs3.td.gov.hk`（React） | 勾同意 → 预约 → 不用智方便 → 中国内地；**MTCaptcha 在这层** |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 47,
+     "snippet": "| 3 | — | `abs4.td.gov.hk`（排队） | 17:00 随机洗牌，放行后写会话状态 |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 48,
+     "snippet": "| 4 | POST | `abs1/abs2.td.gov.hk/tdab2/tdabs_di_external/AdminServlet_schinese?cmd=cmdGetOfficeQuotaDIAction` | **第 1 步提交**。表单 `frmAppointment`，字段全明文；有名额才回第 2 "
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 52,
+     "snippet": "| 8 | POST | 第 4 步：递交确认（含 `storedAppointmentOtpCode`、`captchaToken`） | 成功后发 `tdabs@td.gov.hk` 确认信 |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 67,
+     "snippet": "→ background.js（顺手带出 td.gov.hk 全套 cookie，含 HttpOnly）"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪装",
+     "line": 72,
+     "snippet": "业务页已在 WAF 之后，风险最低。钩子函数的 `toString` 已伪装成 `[native code]`。"
+    }
+   ]
+  },
+  {
+   "path": "mail.json",
+   "score": 28,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 3,
+     "snippet": "\"email\": \"KalbEssick4488@outlook.com\","
+    },
+    {
+     "kind": "secret",
+     "pattern": "oauth_refresh",
+     "line": 5,
+     "snippet": "\"refresh_token\": \"M.C511_SN1.0.U.MsaArtifacts.-Cp0oc…qhZf!8W2UMj…aUfq!Won!9uOb7S*0BPXR*!D*JvqOszDlxQ0chK*dx!2NasXm7!lO0cyo…3rzR*EIu6*o3nPb7oT70T*TimMFt3!rVDoaK…"
+    },
+    {
+     "kind": "secret",
+     "pattern": "oauth_access",
+     "line": 10,
+     "snippet": "\"access_token\": \"EwA4BO…4zsD\""
+    }
+   ]
+  },
+  {
+   "path": "mail_watch.py",
+   "score": 28,
+   "n": 5,
+   "hits": [
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 9,
+     "snippet": "{\"email\":\"xxx@outlook.com\",\"client_id\":\"...\",\"refresh_token\":\"M.C...\"}"
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 11,
+     "snippet": "{\"email\":\"xxx@outlook.com\",\"password\":\"...\"}"
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 77,
+     "snippet": "'{\"accounts\":[{\"who\":\"w1\",\"email\":\"xxx@outlook.com\",\"client_id\":\"...\",\"refresh_token\":\"M.C...\"}]}')"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 280,
+     "snippet": "return (\"td.gov.hk\" in f) or (\"TDABS\" in s) or (\"预约\" in (subj or \"\"))"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 299,
+     "snippet": "flag = \"  ← tdabs\" if \"td.gov.hk\" in frm.lower() else \"\""
+    }
+   ]
+  },
+  {
+   "path": "config.example.json",
+   "score": 27,
+   "n": 4,
+   "hits": [
+    {
+     "kind": "pii",
+     "pattern": "cn_name_line",
+     "line": 8,
+     "snippet": "\"name_cn\": \"张三\","
+    },
+    {
+     "kind": "pii",
+     "pattern": "cn_pass",
+     "line": 9,
+     "snippet": "\"doc_no\": \"C12345678\","
+    },
+    {
+     "kind": "pii",
+     "pattern": "cn_id_or_dl",
+     "line": 10,
+     "snippet": "\"dl_no\": \"110101…1234\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢位",
+     "line": 17,
+     "snippet": "\"headless_note\": \"演练可设 true；正式抢位建议 false，真实窗口更容易通过排队系统，也方便你接手填 OTP。\""
+    }
+   ]
+  },
+  {
+   "path": "_cffi_probe.py",
+   "score": 26,
+   "n": 9,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 13,
+     "snippet": "URL = \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 16,
+     "snippet": "def run(tag: str, *, proxy=None, proxy_auth=None, impersonate=\"chrome136\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 24,
+     "snippet": "if impersonate:"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 25,
+     "snippet": "kw[\"impersonate\"] = impersonate"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 29,
+     "snippet": "s = cr.Session(verify=verify, **({\"impersonate\": impersonate} if impersonate else {}))"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 44,
+     "snippet": "res[\"uri+chrome+h1\"] = run(\"uri+chrome+h1\", proxy=URL_URI, impersonate=\"chrome136\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 47,
+     "snippet": "impersonate=\"chrome136\", http_version=CurlHttpVersion.V1_1)"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 48,
+     "snippet": "res[\"uri+noimp+h1\"] = run(\"uri+noimp+h1\", proxy=URL_URI, impersonate=None,"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 51,
+     "snippet": "impersonate=\"chrome136\")"
+    }
+   ]
+  },
+  {
+   "path": "实战问题志_20261109.md",
+   "score": 26,
+   "n": 11,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 1,
+     "snippet": "# 抢号脚本实战问题志 · 2026-11-09"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "自动过",
+     "line": 10,
+     "snippet": "> 但把「脚本无法自主进站」这个卡点彻底解决——最终用 Chrome 扩展方案实现全自动过 WAF。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 20,
+     "snippet": "3. **Chrome 新版本把 `--load-extension` 关了**——绕过 WAF 的唯一正解（扩展）差点因此起不来。"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 29,
+     "snippet": "| 14:24 | 发现被弹回 `abs3.td.gov.hk/?lang=en`（英文界面） | 定位到\"没有恢复分支\"缺陷 |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 115,
+     "snippet": "- 重入时若 URL 含 `lang=en/tc`，先 `goto abs3.td.gov.hk/?lang=sc` 拉回简体；"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 144,
+     "snippet": "- **现象**：`abs4.td.gov.hk` 返回拦截页："
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 157,
+     "snippet": "- **现象**：15:43 我为\"换 IP 后干净一点\"清掉了所有 `td.gov.hk` cookie；"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 205,
+     "snippet": "### 4.7 `Sec-Fetch-User` 无法伪造"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 266,
+     "snippet": "| `background.js` 注入改 `allFrames: true`，host 权限加 `*.queue-it.net` | Queue-it 的排队/放行界面常整个跑在跨域 iframe 里，主文档碰不到 |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 291,
+     "snippet": "- **实测**：INBOX 4 封、Junk 0、其余文件夹全 0，全文检索 `td.gov.hk/TDABS/運輸署` 无命中。"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 292,
+     "snippet": "- **风险**：`tdabs@td.gov.hk` 会不会被判垃圾、能否正常投递，**只有真正走到填邮箱那一步才知道**。"
+    }
+   ]
+  },
+  {
+   "path": "notifier.py",
+   "score": 25,
+   "n": 8,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 5,
+     "snippet": "POST https://oapi.dingtalk.com/robot/send?access_token=xxx"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 10,
+     "snippet": "\"dingtalk_webhook\": \"https://oapi.dingtalk.com/robot/send?access_token=xxxx\","
+    },
+    {
+     "kind": "pii",
+     "pattern": "phone_cn",
+     "line": 12,
+     "snippet": "\"at_mobiles\": [\"13631539547\"],        // 要 @ 谁，可留空"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 16,
+     "snippet": "没配置时所有调用都是空操作，不会打断抢号流程。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 75,
+     "snippet": "return \"钉钉限流（20 条/分钟），等一分钟再发；正常抢号不会触发。\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 139,
+     "snippet": "\"\"\"后台线程发送，绝不阻塞抢号主流程。网络慢/挂掉都不影响。\"\"\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 198,
+     "snippet": "f\"立刻去邮箱确认 tdabs@td.gov.hk 的确认信。\", \"alert\", key=\"success\")"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 211,
+     "snippet": "f\"1) 在 Chrome 窗口打开 `https://www.gov.hk/sc/apps/tddiabs.htm`\\n\""
+    }
+   ]
+  },
+  {
+   "path": "hunt.py",
+   "score": 24,
+   "n": 4,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 6,
+     "snippet": "LINK = (\"http://v2.api.juliangip.com/company/postpay/getips?auto_white=1&city=深圳&filter=1\""
+    },
+    {
+     "kind": "secret",
+     "pattern": "api_sign",
+     "line": 7,
+     "snippet": "\"&isp=3&num=1&pt=1&result_type=text&split=1&trade_…0427\""
+    },
+    {
+     "kind": "secret",
+     "pattern": "api_sign",
+     "line": 8,
+     "snippet": "\"&sign=0…576f\")"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 9,
+     "snippet": "TARGET = \"https://abs3.td.gov.hk/?lang=sc\""
+    }
+   ]
+  },
+  {
+   "path": "test_dingtalk_signed.py",
+   "score": 23,
+   "n": 4,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 14,
+     "snippet": "WEBHOOK = (\"https://oapi.dingtalk.com/robot/send?access_token=\""
+    },
+    {
+     "kind": "secret",
+     "pattern": "dingtalk_sign",
+     "line": 16,
+     "snippet": "SECRET = \"SEC91c…f1bd\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 40,
+     "snippet": "f\"这是 hKdriver 抢号助手的联调消息。\\n\\n\""
+    },
+    {
+     "kind": "pii",
+     "pattern": "phone_cn",
+     "line": 48,
+     "snippet": "\"at\": {\"atMobiles\": [\"13631539547\"], \"isAtAll\": False},"
+    }
+   ]
+  },
+  {
+   "path": "验证码取证与离线复刻.md",
+   "score": 23,
+   "n": 10,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "过验证码",
+     "line": 21,
+     "snippet": "所以「无浏览器判号」这条路**不需要过验证码**；真正需要 token 的是**第 4 步递交**。"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 116,
+     "snippet": "找 host = service.mtcaptcha.com 的那几条："
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 137,
+     "snippet": "| SDK 真实地址与版本 | 只知道域名 `service.mtcaptcha.com` | 同上，会出现在 `requests.jsonl` 的 script 请求里 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "自动过",
+     "line": 152,
+     "snippet": "| 4 | 打码平台（MTCaptcha 的 `sitekey + pageurl` 换 token 的标准接口） | 需要花钱、需要账号；`验证码自动过_改动说明.md` 已留好接口位（`solveMt()` 分支） |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 170,
+     "snippet": "hcaptcha.com/1/api.js  /  recaptcha/api.js  /  challenges.cloudflare.com/turnstile"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 173,
+     "snippet": "不算：CSP 头里的 service.mtcaptcha.com —— 第 1 步页面一直有那一行，按字符串匹配会天天误报"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "打码",
+     "line": 213,
+     "snippet": "| 2 | MTCaptcha 打码平台（`sitekey` + `pageurl` 换 token） | 要账号、要钱 |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 242,
+     "snippet": "python captcha_rescue.py --url \"https://abs1.td.gov.hk/...AdminServlet?cmd=...\" `"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 262,
+     "snippet": "导航 → https://abs3.td.gov.hk/?lang=sc"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 263,
+     "snippet": "… ABSDI token=0 url=https://abs3.td.gov.hk/?lang=sc"
+    }
+   ]
+  },
+  {
+   "path": "extension\\background.js",
+   "score": 23,
+   "n": 10,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 123,
+     "snippet": "} catch (e) { /* 截图失败不能影响抢号 */ }"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "逆向",
+     "line": 128,
+     "snippet": "// 供事后逆向「完整流程到底调了哪些接口、带了什么参数」。"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 132,
+     "snippet": "\"*://abs1.td.gov.hk/*\", \"*://abs2.td.gov.hk/*\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 133,
+     "snippet": "\"*://abs3.td.gov.hk/*\", \"*://abs4.td.gov.hk/*\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 134,
+     "snippet": "\"*://www.gov.hk/*\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 326,
+     "snippet": "for (const host of [\"abs1.td.gov.hk\", \"abs2.td.gov.hk\", \"abs3.td.gov.hk\", \"abs4.td.gov.hk\"]) {"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "逆向",
+     "line": 404,
+     "snippet": "// 用途：离线逆向出「浏览器过门之后，replay.py 需要带什么才能继续」。"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 411,
+     "snippet": "for (const host of [\"abs1.td.gov.hk\", \"abs2.td.gov.hk\", \"abs3.td.gov.hk\", \"abs4.td.gov.hk\"]) {"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 464,
+     "snippet": "// 接口记录：顺手把当时的 td.gov.hk cookie（含 HttpOnly）一起带上，"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 468,
+     "snippet": "const list = await chrome.cookies.getAll({ domain: \"td.gov.hk\" });"
+    }
+   ]
+  },
+  {
+   "path": "停机状态_20261114.md",
+   "score": 22,
+   "n": 5,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 23,
+     "snippet": "| dsh 定时任务 | 清空前 10 个（9 个 ended、1 个 paused：「明天 16:57 抢号前最后检查」） | **全部删除**，现有 0 个 |"
+    },
+    {
+     "kind": "secret",
+     "pattern": "proxy_cred",
+     "line": 30,
+     "snippet": "- `proxies.txt` = `14.215.163.195:2018:jlipiLP7OB:boOKSVho`（无 BOM）"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 32,
+     "snippet": "- `sniper.py` 已支持 `--impersonate none --http1`（走这条认证代理必须带这两个参数）"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "黑名单",
+     "line": 56,
+     "snippet": "2. 一个出口 2~3 次进黑名单 → 单出口间隔 ≥3s，见 400 立刻判死"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 59,
+     "snippet": "5. 纯脚本走认证代理一律 `--impersonate none --http1`（chrome 指纹必然 curl 28/35）"
+    }
+   ]
+  },
+  {
+   "path": "patch_ch8_h.py",
+   "score": 21,
+   "n": 6,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 32,
+     "snippet": "\"添加完会给你一个地址，形如：https://oapi.dingtalk.com/robot/send?access_token=一长串\"),"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 52,
+     "snippet": "'  \"dingtalk_webhook\": \"https://oapi.dingtalk.com/robot/send?access_token=xxxx\",',"
+    },
+    {
+     "kind": "pii",
+     "pattern": "phone_cn",
+     "line": 55,
+     "snippet": "'  \"at_mobiles\": [\"13631539547\"],      // 要 @ 谁，可留空',"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 76,
+     "snippet": "\"③ 没配置时所有通知静默跳过，不影响抢号——这一点自测过。\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 79,
+     "snippet": "body(doc, \"实现细节：发送在后台线程里做，网络慢或钉钉挂了都不会卡住抢号流程；\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "反检测",
+     "line": 85,
+     "snippet": "marker = \"    # ---------------- 反检测\""
+    }
+   ]
+  },
+  {
+   "path": "test_dingtalk_once.py",
+   "score": 21,
+   "n": 4,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 9,
+     "snippet": "WEBHOOK = (\"https://oapi.dingtalk.com/robot/send?access_token=\""
+    },
+    {
+     "kind": "pii",
+     "pattern": "phone_cn",
+     "line": 19,
+     "snippet": "notify.setdefault(\"at_mobiles\", [\"13631539547\"])"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 26,
+     "snippet": "f\"这是 hKdriver 抢号助手发出的第一条测试消息。\\n\\n\""
+    },
+    {
+     "kind": "pii",
+     "pattern": "phone_cn",
+     "line": 32,
+     "snippet": "\"at\": {\"atMobiles\": [\"13631539547\"], \"isAtAll\": False},"
+    }
+   ]
+  },
+  {
+   "path": "grab.py",
+   "score": 20,
+   "n": 8,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "抢位",
+     "line": 2,
+     "snippet": "\"\"\"TDABS 免试签发（内地驾照）预约抢位助手"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢位",
+     "line": 12,
+     "snippet": "3) 正式抢位（开 N 条独立排队的浏览器）："
+    },
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 16,
+     "snippet": "注意：本脚本只在本地驱动浏览器，不使用任何绕过设备指纹的手段；"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 45,
+     "snippet": "ENTRY = \"https://www.gov.hk/sc/apps/tddiabs.htm\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 47,
+     "snippet": "ENTRY_SC = \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 402,
+     "snippet": "return \"abs4.td.gov.hk\" in page.url"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "过验证码",
+     "line": 868,
+     "snippet": "# 提交前过验证码关（v3 隐形大多自动过；弹图片/图形码就响铃喊人）"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 975,
+     "snippet": "log(self.who, \"★★★ 拿到预约，请立刻检查电邮 tdabs@td.gov.hk ★★★\")"
+    }
+   ]
+  },
+  {
+   "path": "probe\\abs3_main.js",
+   "score": 20,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "pii",
+     "pattern": "cn_id_or_dl",
+     "line": 2,
+     "snippet": "(()=>{var e={90191(e,t){\"use strict\";var n=Symbol.for(\"react.transitional.element\"),r=Symbol.for(\"react.portal\"),i=Symbol.for(\"react.fragment\"),a=Symbol.for(\"re"
+    },
+    {
+     "kind": "secret",
+     "pattern": "oauth_access",
+     "line": 102,
+     "snippet": "`:null,ep=nl(\"span\",{name:\"MuiCir…ress\",slot:\"Root\",overridesResolver:(e,t)=>{const{ownerState:n}=e;return[t.root,t[n.variant],t[`color${Xu(n.color)}`]]}})(fl(e"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 102,
+     "snippet": "`:null,ep=nl(\"span\",{name:\"MuiCircularProgress\",slot:\"Root\",overridesResolver:(e,t)=>{const{ownerState:n}=e;return[t.root,t[n.variant],t[`color${Xu(n.color)}`]]"
+    }
+   ]
+  },
+  {
+   "path": "probe\\js\\main.decoded.js",
+   "score": 20,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "pii",
+     "pattern": "cn_id_or_dl",
+     "line": 4,
+     "snippet": "\\ \\᠎\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\　\",o=\"[\"+a+\"]\",s=\"\\\\d+\",c=\"[\"+n+\"]\",u=\"[\"+r+\"]\",l=\"[^\"+t+a+s+n+r+i+\"]\",d=\"(?:\\\\ud83c[\\\\udde6-\\\\uddff]){2}\",p=\"[\\\\ud800-\\\\udbff][\\"
+    },
+    {
+     "kind": "secret",
+     "pattern": "oauth_access",
+     "line": 104,
+     "snippet": "`:null,ep=nl(\"span\",{name:\"MuiCir…ress\",slot:\"Root\",overridesResolver:(e,t)=>{const{ownerState:n}=e;return[t.root,t[n.variant],t[`color${Xu(n.color)}`]]}})(fl(e"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 104,
+     "snippet": "`:null,ep=nl(\"span\",{name:\"MuiCircularProgress\",slot:\"Root\",overridesResolver:(e,t)=>{const{ownerState:n}=e;return[t.root,t[n.variant],t[`color${Xu(n.color)}`]]"
+    }
+   ]
+  },
+  {
+   "path": "probe\\js\\main.js",
+   "score": 20,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "pii",
+     "pattern": "cn_id_or_dl",
+     "line": 2,
+     "snippet": "(()=>{var e={90191(e,t){\"use strict\";var n=Symbol.for(\"react.transitional.element\"),r=Symbol.for(\"react.portal\"),i=Symbol.for(\"react.fragment\"),a=Symbol.for(\"re"
+    },
+    {
+     "kind": "secret",
+     "pattern": "oauth_access",
+     "line": 102,
+     "snippet": "`:null,ep=nl(\"span\",{name:\"MuiCir…ress\",slot:\"Root\",overridesResolver:(e,t)=>{const{ownerState:n}=e;return[t.root,t[n.variant],t[`color${Xu(n.color)}`]]}})(fl(e"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 102,
+     "snippet": "`:null,ep=nl(\"span\",{name:\"MuiCircularProgress\",slot:\"Root\",overridesResolver:(e,t)=>{const{ownerState:n}=e;return[t.root,t[n.variant],t[`color${Xu(n.color)}`]]"
+    }
+   ]
+  },
+  {
+   "path": "proxy_check.py",
+   "score": 19,
+   "n": 7,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 8,
+     "snippet": "③ 抢号窗口     粘性会话的长度决定一张票能用多久（10 分钟 = 只能覆盖半个表单窗口）"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 19,
+     "snippet": "python proxy_check.py --file proxies.txt --target \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 37,
+     "snippet": "TARGET = \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 96,
+     "snippet": "这样「来源 IP 被拒」的问题被跳板绕过，检查逻辑完全不用改。\"\"\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 127,
+     "snippet": "impersonate=\"chrome\", allow_redirects=True)"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 147,
+     "snippet": "b = cr.get(IPINFO, proxies=proxies, timeout=timeout, verify=False, impersonate=\"chrome\")"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 159,
+     "snippet": "impersonate=\"chrome\", allow_redirects=False)"
+    }
+   ]
+  },
+  {
+   "path": "逆向结论_sign与WAF_20261111.md",
+   "score": 19,
+   "n": 8,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "破解",
+     "line": 5,
+     "snippet": "> 它已经被我们实测绕过——不是破解了算法，而是发现**排队 API 根本不校验它**。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "打码",
+     "line": 18,
+     "snippet": "| 4 | `captchaToken` / `IAMSmartHelperJwt` | MTCaptcha 组件 / 页面 JS | 会话 + 页面 | 分钟级 | ❌ 需要打码或浏览器 |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 23,
+     "snippet": "POST https://abs4.td.gov.hk/spa-api/queue/tdabsditest/tdabsd261110kla/enqueue"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 38,
+     "snippet": "`https://abs3.td.gov.hk/RGOj2pQjqEKb/8qcykgusbcwc.5057567.js`，路径段随机）"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 146,
+     "snippet": "POST https://abs4.td.gov.hk/spa-api/queue/tdabsditest/tdabsd261110kla/enqueue"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 178,
+     "snippet": "location: {href: 'https://abs4.td.gov.hk/?c=...'},"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "打码",
+     "line": 206,
+     "snippet": "| `captchaToken` | MTCaptcha 组件（abs3 页面里，动态 iframe） | 服务端二次校验，**必须真过** | 扩展的 `captcha_solver.js` 自动拖滑块；图片点选需打码平台；兜底人工 |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 236,
+     "snippet": "\"https://abs4.td.gov.hk/spa-api/queue/tdabsditest/tdabsd261110kla/enqueue\""
+    }
+   ]
+  },
+  {
+   "path": "mint_pure.py",
+   "score": 18,
+   "n": 7,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 48,
+     "snippet": "SRC = \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 80,
+     "snippet": "ap.add_argument(\"--impersonate\", default=\"chrome136\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 96,
+     "snippet": "s = creq.Session(impersonate=a.impersonate, verify=False, trust_env=False)"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 110,
+     "snippet": "log(f\"① GET abs3 → {r.status_code}  {len(body)}B  {ms}ms  画像={a.impersonate}\")"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 137,
+     "snippet": "js_url = \"https://abs3.td.gov.hk\" + seed[\"js_path\"] if seed[\"js_path\"].startswith(\"/\") else seed[\"js_path\"]"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 187,
+     "snippet": "s.cookies.set(name, value, domain=\"abs3.td.gov.hk\", path=\"/\")"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 214,
+     "snippet": "\"proxy\": a.proxy, \"impersonate\": a.impersonate,"
+    }
+   ]
+  },
+  {
+   "path": "waf412.py",
+   "score": 18,
+   "n": 7,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "黑名单",
+     "line": 6,
+     "snippet": "一路重试 412 会把出口 IP 打进 WAF 黑名单（实测：80/443 直接丢包，ping 还通）。"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 11,
+     "snippet": "python waf412.py --url \"https://abs3.td.gov.hk/?lang=sc\" --proxy http://1.2.3.4:8080"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 12,
+     "snippet": "python waf412.py --proxies proxies.txt --url \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 57,
+     "snippet": "kw = {\"impersonate\": \"chrome\", \"timeout\": timeout, \"allow_redirects\": False,"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 86,
+     "snippet": "ap.add_argument(\"--xff\", default=\"\", help=\"伪造 X-Forwarded-For 试探 WAF 是否信任回源头\")"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 94,
+     "snippet": "urls = [\"https://abs3.td.gov.hk/?lang=sc\"]"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "黑名单",
+     "line": 128,
+     "snippet": "print(\"  DROP：该出口已进 WAF 黑名单（TCP 丢包）。停手 10~30 分钟或换出口；不要继续重试。\")"
+    }
+   ]
+  },
+  {
+   "path": "纯脚本方案_可行性_20261111.md",
+   "score": 18,
+   "n": 7,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 22,
+     "snippet": "www.gov.hk → abs.td.gov.hk → abs1/abs2  ← 这一整条没有华为云 WAF，门禁只有 Queue-it 票"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 40,
+     "snippet": "| TLS 画像 | Chrome 156 真实 ClientHello | `impersonate=chrome124/120/safari` |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪装",
+     "line": 111,
+     "snippet": "| 用 `Proxy` 万能 stub 伪装 DOM | 挑战 JS 会 `typeof`/`instanceof`/`toString` 全量探测，stub 处处返回真值 → 分支暴涨 → 4 GB OOM |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "打码",
+     "line": 148,
+     "snippet": "| 第 4 步是否强制 `captchaToken` | 强制 → 纯脚本要接打码平台（MTCaptcha 有第三方 API 生态，可行但要钱） | 抢到名额当场 |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 203,
+     "snippet": "- **跨源 Referer 一律不发**：实测过 `Referer: https://abs1.td.gov.hk/` 打 abs3 → 400 被判非法。"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 288,
+     "snippet": "→ 302  https://abs3.td.gov.hk/?lang=en   （会话没放行）"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "黑名单",
+     "line": 309,
+     "snippet": "代价不是 3 秒，是**把一个已经被打的出口又摸了 4 次**，而黑名单越摸越深。"
+    }
+   ]
+  },
+  {
+   "path": "preflight.py",
+   "score": 17,
+   "n": 6,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "黑名单",
+     "line": 8,
+     "snippet": "出口已进黑名单 → 铸票器照样启动浏览器 → goto 抛 SSL 错 →"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "黑名单",
+     "line": 12,
+     "snippet": "而 WAF 的黑名单是\"越摸越深\"（你的实测：2~3 次就 400，再重就 80/443 丢包）。"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 51,
+     "snippet": "TARGET = \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "黑名单",
+     "line": 83,
+     "snippet": "return \"DROP\", \"TLS 握手被 RST：出口 IP 大概率已进黑名单\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 99,
+     "snippet": "impersonate: str = \"chrome136\") -> Dict[str, Any]:"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 111,
+     "snippet": "kw: Dict[str, Any] = {\"impersonate\": impersonate, \"timeout\": timeout,"
+    }
+   ]
+  },
+  {
+   "path": "waf_handshake.py",
+   "score": 17,
+   "n": 8,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 19,
+     "snippet": "URL = \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 21,
+     "snippet": "ENQ = f\"https://abs4.td.gov.hk/spa-api/queue/{C}/{E}/enqueue\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 27,
+     "snippet": "kw = {\"impersonate\": \"chrome\", \"timeout\": 25, \"verify\": False,"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 85,
+     "snippet": "print(f\"     → GET #3 灌入 HIK0 {copy_hik0(s2, hk, 'abs3.td.gov.hk')} 条\")"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 90,
+     "snippet": "print(f\"     → GET #4 灌入 HIK0 {copy_hik0(s3, hk, 'abs3.td.gov.hk')} 条\", end=\"\")"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 94,
+     "snippet": "s3.cookies.set(k, v, domain=\"abs3.td.gov.hk\", path=\"/\")"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 100,
+     "snippet": "print(f\"     → enqueue 灌入 HIK0 {copy_hik0(s4, hk, 'abs4.td.gov.hk')} 条\", end=\"\")"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 104,
+     "snippet": "s4.cookies.set(k, v, domain=\"abs4.td.gov.hk\", path=\"/\")"
+    }
+   ]
+  },
+  {
+   "path": "probe412.py",
+   "score": 16,
+   "n": 6,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 9,
+     "snippet": "ABS3 = \"https://abs3.td.gov.hk\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 10,
+     "snippet": "ABS4 = \"https://abs4.td.gov.hk\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 36,
+     "snippet": "s = creq.Session(impersonate=IMP)"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 45,
+     "snippet": "s1 = creq.Session(impersonate=IMP)"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 52,
+     "snippet": "s2 = creq.Session(impersonate=IMP)"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 60,
+     "snippet": "s3 = creq.Session(impersonate=IMP)"
+    }
+   ]
+  },
+  {
+   "path": "waf_profiler.py",
+   "score": 16,
+   "n": 6,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 2,
+     "snippet": "\"\"\"waf_profiler.py —— 第 3 条：curl-impersonate 系（curl_cffi 的各 TLS profile）+ 浏览器 xP"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 6,
+     "snippet": "如果全 400，说明 WAF 拉黑的是\"伪造指纹库\"本身，这条路封死。"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 16,
+     "snippet": "URL = \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 42,
+     "snippet": "kw = {\"impersonate\": prof, \"timeout\": 20, \"verify\": False,"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 48,
+     "snippet": "s.cookies.set(c[\"name\"], c[\"value\"], domain=c.get(\"domain\") or \"abs3.td.gov.hk\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 64,
+     "snippet": "print(\"  全 400/412：WAF 拉黑的是伪造指纹库本身，curl-impersonate 这条路封死\")"
+    }
+   ]
+  },
+  {
+   "path": "资料\\潘郁明\\潘郁明.txt",
+   "score": 16,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "pii",
+     "pattern": "cn_id_or_dl",
+     "line": 5,
+     "snippet": "驾驶执照号码        : 441781…2728"
+    },
+    {
+     "kind": "pii",
+     "pattern": "email",
+     "line": 7,
+     "snippet": "电邮（收 OTP）      : KalbEssick4488@outlook.com"
+    }
+   ]
+  },
+  {
+   "path": "patch_ch8_g.py",
+   "score": 15,
+   "n": 5,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "打码",
+     "line": 37,
+     "snippet": "[\"NN_<类型>.html\", \"当时页面源码（已打码）\", \"挑战容器的 DOM 结构、隐藏字段\"],"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "打码",
+     "line": 52,
+     "snippet": "\"  01_recaptcha_checkbox.html             754 B   源码（已打码）\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 58,
+     "snippet": "body(doc, \"抢号当天你的动作只有一件：\", size=10, bold=True)"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "自动过",
+     "line": 61,
+     "snippet": "\"勾选框能自动过就自动过；弹图片题就你点，点完脚本自己继续。\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "反检测",
+     "line": 82,
+     "snippet": "marker = \"    # ---------------- 反检测\""
+    }
+   ]
+  },
+  {
+   "path": "patch_ch8_l.py",
+   "score": 15,
+   "n": 5,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "反检测",
+     "line": 2,
+     "snippet": "\"\"\"插入 8.16「反检测审计」一节。\"\"\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "反检测",
+     "line": 8,
+     "snippet": "h2(doc, \"8.16 反检测审计：逐项比对，找出还会被看出来的地方\")"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 82,
+     "snippet": "\"说实话：有一个检测点我们伪造不了\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 86,
+     "snippet": "\"而且真要伪造只能靠 JS 补丁，补丁本身更容易被抓。所以这一项保持现状。\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "反检测",
+     "line": 101,
+     "snippet": "marker = \"    # ---------------- 反检测\""
+    }
+   ]
+  },
+  {
+   "path": "patch_notify_wire.py",
+   "score": 15,
+   "n": 4,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 50,
+     "snippet": "log(self.who, \"★★★ 拿到预约，请立刻检查电邮 tdabs@td.gov.hk ★★★\")'''"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 54,
+     "snippet": "log(self.who, \"★★★ 拿到预约，请立刻检查电邮 tdabs@td.gov.hk ★★★\")"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 114,
+     "snippet": "\"_说明\": \"钉钉自定义机器人。没配置时所有通知静默跳过，不影响抢号。\","
+    },
+    {
+     "kind": "pii",
+     "pattern": "phone_cn",
+     "line": 118,
+     "snippet": "\"at_mobiles\": [\"13631539547\"],"
+    }
+   ]
+  },
+  {
+   "path": "代理实测_巨量IP_20261111.md",
+   "score": 15,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 12,
+     "snippet": "http://v2.api.juliangip.com/company/dynamic/getips"
+    },
+    {
+     "kind": "secret",
+     "pattern": "api_sign",
+     "line": 14,
+     "snippet": "&trade_…6488&sign=d…da8c"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "战术",
+     "line": 89,
+     "snippet": "## 五、由此得到的战术（17:00 用得上）"
+    }
+   ]
+  },
+  {
+   "path": "patch_ch8_e.py",
+   "score": 14,
+   "n": 5,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "打码",
+     "line": 66,
+     "snippet": "\"隐私：证件号已自动打码\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "打码",
+     "line": 68,
+     "snippet": "\"但**截图是像素级的，无法打码**，所以 runs\\\\ 目录不要外传、不要发群。\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 76,
+     "snippet": "\"| 01 | 22:26:51 +0.0s | 01_entry | abs3.td.gov.hk | 入口页已加载 | 1 | 预约, 更改/取消预约, 查询预约 |\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 82,
+     "snippet": "body(doc, \"「+30.7s」是相对第一步的耗时——抢号时看这一列就知道时间花在哪；\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "反检测",
+     "line": 98,
+     "snippet": "marker = \"    # ---------------- 反检测\""
+    }
+   ]
+  },
+  {
+   "path": "cdp_run.py",
+   "score": 13,
+   "n": 6,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "代理池",
+     "line": 2,
+     "snippet": "\"\"\"cdp_run.py —— 接管用户已打开的 Chrome（CDP），不依赖代理池"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 7,
+     "snippet": "2) 在这个 Chrome 里手动打开 https://abs3.td.gov.hk/?lang=sc ，过掉挑战，停在页面上别关"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 21,
+     "snippet": "ABS3 = \"https://abs3.td.gov.hk\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 22,
+     "snippet": "ABS4 = \"https://abs4.td.gov.hk\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 45,
+     "snippet": "pages = [pg for pg in ctx.pages if \"td.gov.hk\" in (pg.url or \"\")]"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 49,
+     "snippet": "if \"abs3.td.gov.hk\" not in (pg.url or \"\"):"
+    }
+   ]
+  },
+  {
+   "path": "extension\\content.js",
+   "score": 13,
+   "n": 6,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 269,
+     "snippet": "if (u.includes(\"abs4.td.gov.hk\")) return \"queue\";"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "逆向",
+     "line": 472,
+     "snippet": "// 有名额时要它做参数逆向，没名额时也要它验证「门票到底带不带得动接口」。"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 950,
+     "snippet": "const ENTRY_PROBE = \"https://abs3.td.gov.hk/?lang=sc\";"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 951,
+     "snippet": "const ENTRY_WWW = \"https://www.gov.hk/sc/apps/tddiabs.htm\";"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 955,
+     "snippet": "// 之前一判 unknown 就跳回 gov.hk，形成 abs3 ⇄ gov.hk 死循环（实测 10:07 每 2 秒一次，"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 965,
+     "snippet": "// 入口页（gov.hk）本该 3 秒 meta refresh 跳到 abs3。实测带 #inst= 时有时不跳，"
+    }
+   ]
+  },
+  {
+   "path": "proxies_api.txt",
+   "score": 12,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "secret",
+     "pattern": "api_sign",
+     "line": 1,
+     "snippet": "http://v2.api.juliangip.com/co…tips?auto_white=1&num={n}&pt=1&result_type=text&split=1&trade_…6488&sign=d…da8c"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 1,
+     "snippet": "http://v2.api.juliangip.com/company/dynamic/getips?auto_white=1&num={n}&pt=1&result_type=text&split=1&trade_no=2977409725466488&sign=d2210aad5b296a631c2a4181b52"
+    }
+   ]
+  },
+  {
+   "path": "proxies_fetch.py",
+   "score": 12,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 38,
+     "snippet": "\"http://v2.api.juliangip.com/company/dynamic/getips?auto_white=1&num={n}\""
+    },
+    {
+     "kind": "secret",
+     "pattern": "api_sign",
+     "line": 40,
+     "snippet": "\"&trade_…6488&sign=d…da8c\""
+    }
+   ]
+  },
+  {
+   "path": "recorder.py",
+   "score": 12,
+   "n": 4,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "打码",
+     "line": 12,
+     "snippet": "01_entry.html       当时页面源码（敏感串已打码）"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "自动过",
+     "line": 34,
+     "snippet": "# 验证码取证：把判断「是哪家验证码、能不能自动过」需要的东西一次抓全"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "自动过",
+     "line": 228,
+     "snippet": "\"\"\"验证码专项取证包：单独存到 captcha\\\\ 子目录，方便事后判断是哪家、能不能自动过。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "打码",
+     "line": 234,
+     "snippet": "NN_<类型>.html           页面源码（已打码）"
+    }
+   ]
+  },
+  {
+   "path": "run_guard.py",
+   "score": 12,
+   "n": 5,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 34,
+     "snippet": "ABS3 = \"https://abs3.td.gov.hk\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 35,
+     "snippet": "ABS4 = \"https://abs4.td.gov.hk\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 36,
+     "snippet": "ABS1 = \"https://abs1.td.gov.hk\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 142,
+     "snippet": "f\"{time.time()-t0:.1f}s stealth={json.dumps(stl, ensure_ascii=False) if stl else '-'}\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 144,
+     "snippet": "sec=round(time.time() - t0, 1), stealth=stl, cookies=ck)"
+    }
+   ]
+  },
+  {
+   "path": "verify_flow.py",
+   "score": 12,
+   "n": 5,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 4,
+     "snippet": "verify_flow.py —— 单 IP 全链路逐步骤自检（专门留一台机器验脚本，不抢号）"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 25,
+     "snippet": "# 走代理验（跟正式抢号同一条链路）"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 67,
+     "snippet": "r = sp._get(\"https://abs3.td.gov.hk/?lang=sc\", allow_redirects=True)"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 83,
+     "snippet": "r = sp._get(\"https://abs3.td.gov.hk/SelectCountry?\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 90,
+     "snippet": "sp.ctx.target = \"https://abs3.td.gov.hk/SelectCountry?\" \\"
+    }
+   ]
+  },
+  {
+   "path": "代理_来源IP限制_结论.md",
+   "score": 12,
+   "n": 4,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "住宅代理",
+     "line": 3,
+     "snippet": "> 2026-11-10 23:14–23:45 实测 + 厂商文档核对。对象：`us.ipwo.net:7878` 那批香港住宅代理。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "住宅代理",
+     "line": 33,
+     "snippet": "> 「香港 / 日本 / 新加坡 / 美国」为推荐地区；推荐形态是「海外 VPS → 住宅代理 → 浏览器/程序」。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "过验证码",
+     "line": 58,
+     "snippet": "适合还要人手过验证码、盯着钉钉的场景："
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 82,
+     "snippet": "`--warm` 全灭 = 出口被 WAF 判死，跟排队无关；过了 6 成以上才值得谈抢号。"
+    }
+   ]
+  },
+  {
+   "path": "预演报告_20261109.md",
+   "score": 12,
+   "n": 6,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 12,
+     "snippet": "2. **卡点不在代码，在出口 IP**：点「继续」后进入 `abs4.td.gov.hk`，被**华为云 WAF 直接拦成 `Restricted access`**，页面里写明 `Ip: 104.28.159.222`（Cloudflare/WARP 网段），并提示「避免任何隐藏 IP 的行为，代理/VPN 会触发"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 21,
+     "snippet": "| 1 | `runs/20261109-141956` | 选完「中国内地」点继续 → 被弹回 `abs3.td.gov.hk/?lang=en` → 干等 | `grab.py` 在「等资料页」阶段没有「被弹回」分支，只能等满 1800 秒 |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 30,
+     "snippet": "14:41:57 [w1] ⚠ 第 1 次被弹回入口页（https://abs3.td.gov.hk/?lang=en），自动重走"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 56,
+     "snippet": "- `Original URL: abs4.td.gov.hk/?c=tdabsditest&e=...&man=PRD_TDABS3_DI_ENG_DEFAULT&t=http%3A%2F%2Fabs3.td.gov.hk%2FSelectCountry...`"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 156,
+     "snippet": "| `grab.py` | 弹回后 SPA 停在英文版，第 2 步页面按钮是 `Continue` / `Home`，而填表关键词全是中文 | 重入时若 `lang=en/tc` 先 `goto abs3.td.gov.hk/?lang=sc` 拉回简体 |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 165,
+     "snippet": "3. **OTP 投递**：这个 Outlook 号至今 0 封 tdabs 邮件，`tdabs@td.gov.hk` 会不会被判垃圾，只有 17:00 才知道。"
+    }
+   ]
+  },
+  {
+   "path": "probe\\01_entry_181638.html",
+   "score": 12,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "secret",
+     "pattern": "oauth_access",
+     "line": 1,
+     "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><link rel=\"icon\" href=\"/gov_logo.jpg\"><meta name=\"viewport\" content=\"width=…idth,initial-scale=1\"><me"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 1,
+     "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><link rel=\"icon\" href=\"/gov_logo.jpg\"><meta name=\"viewport\" content=\"width=device-width,initial-scale"
+    }
+   ]
+  },
+  {
+   "path": "probe\\02_after_wait_181655.html",
+   "score": 12,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "secret",
+     "pattern": "oauth_access",
+     "line": 1,
+     "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><link rel=\"icon\" href=\"/gov_logo.jpg\"><meta name=\"viewport\" content=\"width=…idth,initial-scale=1\"><me"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 1,
+     "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><link rel=\"icon\" href=\"/gov_logo.jpg\"><meta name=\"viewport\" content=\"width=device-width,initial-scale"
+    }
+   ]
+  },
+  {
+   "path": "probe\\03_click1_181702.html",
+   "score": 12,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "secret",
+     "pattern": "oauth_access",
+     "line": 1,
+     "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><link rel=\"icon\" href=\"/gov_logo.jpg\"><meta name=\"viewport\" content=\"width=…idth,initial-scale=1\"><me"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 1,
+     "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><link rel=\"icon\" href=\"/gov_logo.jpg\"><meta name=\"viewport\" content=\"width=device-width,initial-scale"
+    }
+   ]
+  },
+  {
+   "path": "probe\\03_click2_181709.html",
+   "score": 12,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "secret",
+     "pattern": "oauth_access",
+     "line": 1,
+     "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><link rel=\"icon\" href=\"/gov_logo.jpg\"><meta name=\"viewport\" content=\"width=…idth,initial-scale=1\"><me"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 1,
+     "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><link rel=\"icon\" href=\"/gov_logo.jpg\"><meta name=\"viewport\" content=\"width=device-width,initial-scale"
+    }
+   ]
+  },
+  {
+   "path": "probe\\03_click3_181717.html",
+   "score": 12,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "secret",
+     "pattern": "oauth_access",
+     "line": 1,
+     "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><link rel=\"icon\" href=\"/gov_logo.jpg\"><meta name=\"viewport\" content=\"width=…idth,initial-scale=1\"><me"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 1,
+     "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><link rel=\"icon\" href=\"/gov_logo.jpg\"><meta name=\"viewport\" content=\"width=device-width,initial-scale"
+    }
+   ]
+  },
+  {
+   "path": "probe\\10_loaded_181750.html",
+   "score": 12,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "secret",
+     "pattern": "oauth_access",
+     "line": 1,
+     "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><link rel=\"icon\" href=\"/gov_logo.jpg\"><meta name=\"viewport\" content=\"width=…idth,initial-scale=1\"><me"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 1,
+     "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><link rel=\"icon\" href=\"/gov_logo.jpg\"><meta name=\"viewport\" content=\"width=device-width,initial-scale"
+    }
+   ]
+  },
+  {
+   "path": "probe\\11_checked_181751.html",
+   "score": 12,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "secret",
+     "pattern": "oauth_access",
+     "line": 1,
+     "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><link rel=\"icon\" href=\"/gov_logo.jpg\"><meta name=\"viewport\" content=\"width=…idth,initial-scale=1\"><me"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 1,
+     "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><link rel=\"icon\" href=\"/gov_logo.jpg\"><meta name=\"viewport\" content=\"width=device-width,initial-scale"
+    }
+   ]
+  },
+  {
+   "path": "probe\\12_after_booking_click_181758.html",
+   "score": 12,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "secret",
+     "pattern": "oauth_access",
+     "line": 1,
+     "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><link rel=\"icon\" href=\"/gov_logo.jpg\"><meta name=\"viewport\" content=\"width=…idth,initial-scale=1\"><me"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 1,
+     "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><link rel=\"icon\" href=\"/gov_logo.jpg\"><meta name=\"viewport\" content=\"width=device-width,initial-scale"
+    }
+   ]
+  },
+  {
+   "path": "probe\\13_poll1_181804.html",
+   "score": 12,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "secret",
+     "pattern": "oauth_access",
+     "line": 1,
+     "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><link rel=\"icon\" href=\"/gov_logo.jpg\"><meta name=\"viewport\" content=\"width=…idth,initial-scale=1\"><me"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 1,
+     "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><link rel=\"icon\" href=\"/gov_logo.jpg\"><meta name=\"viewport\" content=\"width=device-width,initial-scale"
+    }
+   ]
+  },
+  {
+   "path": "probe\\13_poll2_181810.html",
+   "score": 12,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "secret",
+     "pattern": "oauth_access",
+     "line": 1,
+     "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><link rel=\"icon\" href=\"/gov_logo.jpg\"><meta name=\"viewport\" content=\"width=…idth,initial-scale=1\"><me"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 1,
+     "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><link rel=\"icon\" href=\"/gov_logo.jpg\"><meta name=\"viewport\" content=\"width=device-width,initial-scale"
+    }
+   ]
+  },
+  {
+   "path": "probe\\13_poll3_181816.html",
+   "score": 12,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "secret",
+     "pattern": "oauth_access",
+     "line": 1,
+     "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><link rel=\"icon\" href=\"/gov_logo.jpg\"><meta name=\"viewport\" content=\"width=…idth,initial-scale=1\"><me"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 1,
+     "snippet": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><link rel=\"icon\" href=\"/gov_logo.jpg\"><meta name=\"viewport\" content=\"width=device-width,initial-scale"
+    }
+   ]
+  },
+  {
+   "path": "r2_flow.py",
+   "score": 11,
+   "n": 5,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 58,
+     "snippet": "ENTRY = \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 59,
+     "snippet": "SELECT = (\"https://abs3.td.gov.hk/SelectCountry?lang=sc&actionType=apply\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 61,
+     "snippet": "STEP1 = (\"https://abs1.td.gov.hk/tdab2/tdabs_di_external/AdminServlet\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 297,
+     "snippet": "# ctx.request 绕过钩子 → 即便有 HIK0 也 412（17:03 实测）。"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 412,
+     "snippet": "base = f\"https://abs4.td.gov.hk/spa-api/queue/{ce['c']}/{ce['e']}\""
+    }
+   ]
+  },
+  {
+   "path": "run_local.ps1",
+   "score": 11,
+   "n": 4,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "住宅代理",
+     "line": 3,
+     "snippet": "# 为什么用本地 IP：IPWO 那批香港住宅代理在大陆来源 IP 上被 403"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 22,
+     "snippet": "[string]$Url = \"https://www.gov.hk/sc/apps/tddiabs.htm\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 86,
+     "snippet": "Write-Host \"⚠ 出口不在中国内地 —— 若开了 VPN/WARP/代理，先关掉再抢号\" -ForegroundColor Yellow"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "bypass",
+     "line": 114,
+     "snippet": "# launch_ext.ps1 会自动摘掉 --no-proxy-server 并给 127.0.0.1 加 bypass。"
+    }
+   ]
+  },
+  {
+   "path": "waf_path_probe.py",
+   "score": 11,
+   "n": 4,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 2,
+     "snippet": "\"\"\"waf_path_probe.py —— WAF 路径/后缀绕过矩阵（专打\"按扩展名放行\"这个假设）"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪装",
+     "line": 5,
+     "snippet": "假设：如果 WAF 规则按 URL 后缀白名单放行，把 API 伪装成 .js 就可能直通后端"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 22,
+     "snippet": "HOST3, HOST4 = \"https://abs3.td.gov.hk\", \"https://abs4.td.gov.hk\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 57,
+     "snippet": "kw = {\"impersonate\": \"chrome\", \"timeout\": 20, \"verify\": False,"
+    }
+   ]
+  },
+  {
+   "path": "方案B_落地设计.md",
+   "score": 11,
+   "n": 4,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 46,
+     "snippet": "- 16:40 起把 WAF 层预热满（便宜，3.4 s/张，与抢号无关，失败了也不心疼）；"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 113,
+     "snippet": "r = c.post(\"https://abs1.td.gov.hk/tdab2/tdabs_di_external/AdminServlet_schinese?cmd=cmdGetOfficeQuotaDIAction\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 119,
+     "snippet": "`SlotClient` 干的事：挑剩余寿命最长的票 → 用**这张票的代理**建 `curl_cffi.Session`（`impersonate` 自动取 `DEFAULT_CHROME`）→ 灌 cookie → 发请求 → 命中 412 / `302 ?lang=en` 就把票判死、换下一张重试一次。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 133,
+     "snippet": "先看**你实际需要几条会话**。抢号的决定因素是 17:00 那次随机洗牌，不是「同时有 100 条队列」。"
+    }
+   ]
+  },
+  {
+   "path": ".tdabs_session.json",
+   "score": 10,
+   "n": 5,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 12,
+     "snippet": "\"domain\": \"abs3.td.gov.hk\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 31,
+     "snippet": "\"domain\": \"abs3.td.gov.hk\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 50,
+     "snippet": "\"domain\": \"abs2.td.gov.hk\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 69,
+     "snippet": "\"domain\": \"www.gov.hk\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 88,
+     "snippet": "\"domain\": \"abs.td.gov.hk\","
+    }
+   ]
+  },
+  {
+   "path": "launch_ext.ps1",
+   "score": 10,
+   "n": 4,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 13,
+     "snippet": "#   powershell -ExecutionPolicy Bypass -File .\\launch_ext.ps1 -Url \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 16,
+     "snippet": "[string]$Url = \"https://www.gov.hk/sc/apps/tddiabs.htm\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 120,
+     "snippet": "# 系统里有个已失效的代理（127.0.0.1:10809），不绕过它会连 localhost 都打不开"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "bypass",
+     "line": 132,
+     "snippet": "$args += \"--proxy-bypass-list=127.0.0.1;localhost;<local>\""
+    }
+   ]
+  },
+  {
+   "path": "proxies.txt",
+   "score": 10,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "secret",
+     "pattern": "proxy_cred",
+     "line": 1,
+     "snippet": "14.215.163.195:2018:jlipiLP7OB:boOKSVho"
+    }
+   ]
+  },
+  {
+   "path": "test_notifier.py",
+   "score": 10,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 16,
+     "snippet": "url = \"https://oapi.dingtalk.com/robot/send?access_token=abc123\""
+    },
+    {
+     "kind": "pii",
+     "pattern": "phone_cn",
+     "line": 31,
+     "snippet": "\"at_mobiles\": [\"13631539547\"],"
+    }
+   ]
+  },
+  {
+   "path": "token_probe.py",
+   "score": 10,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "secret",
+     "pattern": "oauth_refresh",
+     "line": 10,
+     "snippet": "RT = (\"M.C511_BAY.0.U.MsaArtifacts.-Cpaaf…PZSU!cF8GCp…UUkY*3VAkf0…9qNk\""
+    }
+   ]
+  },
+  {
+   "path": "token_probe2.py",
+   "score": 10,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "secret",
+     "pattern": "oauth_refresh",
+     "line": 8,
+     "snippet": "RT = (\"M.C511_BAY.0.U.MsaArtifacts.-Cpaaf…PZSU!cF8GCp…UUkY*3VAkf0…9qNk\""
+    }
+   ]
+  },
+  {
+   "path": "abs1_probe.py",
+   "score": 9,
+   "n": 4,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 5,
+     "snippet": "abs1.td.gov.hk = 202.128.247.53，直连 200（\"Powered by eGIS~\"），**没有华为 WAF**（无 Server: CW）"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 18,
+     "snippet": "BASE = \"https://abs1.td.gov.hk\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 45,
+     "snippet": "kw = {\"impersonate\": \"chrome\", \"timeout\": 25, \"verify\": False,"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 53,
+     "snippet": "domain=c.get(\"domain\") or \"abs1.td.gov.hk\","
+    }
+   ]
+  },
+  {
+   "path": "合并记录_20261113.md",
+   "score": 9,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "逆向",
+     "line": 8,
+     "snippet": "| `hKdriver-1` | 142 | 1651 MB | WAF 逆向/探测分支：`waf_*.py`、`_ja3*`、`_uach`、`cdp_run.py`、`hunt.py` |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "反检测",
+     "line": 27,
+     "snippet": "| `token_pool.py` | **hKdriver-2**（11-11 23:16） | 比 hKdriver 的 16:34 版新；带 `engine=patchright` 反检测引擎与 `default_ua()` 动态 UA 对齐（实测 headless 412→200，0.9s） |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 92,
+     "snippet": "抢号期间应保持关闭；`token_pool.py` 铸票前必须确认它是 0，否则会铸出 WARP 出口的废票。"
+    }
+   ]
+  },
+  {
+   "path": "16_30十IP作战编排.md",
+   "score": 8,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "作战",
+     "line": 1,
+     "snippet": "# 16:30 十 IP 作战编排（2026-11-11）"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 14,
+     "snippet": "| **IP-09** | `verify` 验证机 | **不抢号**，按轮跑 `verify_flow.run_once()` 的 S1~S7 自检，每轮落一份报告 | 留一台专门回答「脚本现在还行不行」；哪一步退化了当场发现，而不是等开闸时才发现 |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 58,
+     "snippet": "python fleet.py --link \"http://v2.api.juliangip.com/company/dynamic/getips?auto_white=1&num=10&pt=1&result_type=text&split=1&trade_no=...&sign=...\" `"
+    }
+   ]
+  },
+  {
+   "path": "ext_server.py",
+   "score": 8,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 162,
+     "snippet": "except Exception:                                   # 账本挂了也不能影响抢号"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "逆向",
+     "line": 474,
+     "snippet": "# 会话快照：cookie + 表单字段 + 页面 HTML，供 replay.py 离线逆向"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 584,
+     "snippet": "# 每条记录自带 td.gov.hk 的 cookie（含 HttpOnly），replay.py 直接拿来重放"
+    }
+   ]
+  },
+  {
+   "path": "mint_align.py",
+   "score": 8,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 51,
+     "snippet": "ENTRY = \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪装",
+     "line": 66,
+     "snippet": "# 采集 navigator / 环境事实。不修改任何值 —— 记录的是真相，不是伪装。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 353,
+     "snippet": "\"impersonate\": \"\","
+    }
+   ]
+  },
+  {
+   "path": "probe_proxy.py",
+   "score": 8,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 2,
+     "snippet": "\"\"\"probe_proxy.py —— 代理可用性体检（决定「代理池抢号」方案成不成立）"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 33,
+     "snippet": "ENTRY = \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 160,
+     "snippet": "print(\"可用于抢号的代理：\")"
+    }
+   ]
+  },
+  {
+   "path": "test_captcha_pack.py",
+   "score": 8,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "pii",
+     "pattern": "cn_id_or_dl",
+     "line": 45,
+     "snippet": "rec = Recorder(run_dir, \"w1\", redact=[\"440000…1234\"])"
+    }
+   ]
+  },
+  {
+   "path": "waf_flow_abs4.py",
+   "score": 8,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 86,
+     "snippet": "base = \"https://abs4.td.gov.hk\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 106,
+     "snippet": "print(f\"stealth 注入: {json.dumps(st, ensure_ascii=False)}\")"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 108,
+     "snippet": "print(\"stealth 注入失败:\", type(e).__name__, str(e)[:120])"
+    }
+   ]
+  },
+  {
+   "path": "waf_token.py",
+   "score": 8,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 6,
+     "snippet": "纯 vm 伪造环境会掉进它的死循环（实测 OOM 4GB），不是几个小时能补完的活；"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 29,
+     "snippet": "URL = \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 58,
+     "snippet": "kw = {\"impersonate\": \"chrome\", \"timeout\": 20, \"allow_redirects\": False, \"verify\": False,"
+    }
+   ]
+  },
+  {
+   "path": "_selftest_align.py",
+   "score": 8,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 80,
+     "snippet": "\"impersonate\": \"\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 94,
+     "snippet": "s = AlignedSession(ticket, impersonate=\"chrome136\")"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 124,
+     "snippet": "s.get(host + \"/doc2\", headers={\"Referer\": \"https://abs1.td.gov.hk/x\"})"
+    }
+   ]
+  },
+  {
+   "path": "明天_runbook.md",
+   "score": 8,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 1,
+     "snippet": "# 明天（2026-11-12）抢号 Runbook"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "住宅代理",
+     "line": 4,
+     "snippet": "> 原因：IPWO 香港住宅代理在大陆来源 IP 直接 403（`代理_来源IP限制_结论.md`），明天只用本机家宽。"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 13,
+     "snippet": "| **16:00** | 站点体检 | `curl -s -o NUL -w \"%{http_code}\" https://abs3.td.gov.hk/?lang=sc`（412/超时都算正常；只有 502/维护页才停手） |"
+    }
+   ]
+  },
+  {
+   "path": "明天_本地IP_单实例_runbook.md",
+   "score": 8,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "住宅代理",
+     "line": 4,
+     "snippet": "> 原因见 `代理_来源IP限制_结论.md`：IPWO 香港住宅代理在大陆来源 IP 上直接 403"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 51,
+     "snippet": "| **16:00** | 站点体检（412/超时正常，只有 502/维护页才停手） | `curl -s -o NUL -w \"%{http_code}\" https://abs3.td.gov.hk/?lang=sc` |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "封号",
+     "line": 137,
+     "snippet": "| 页面空白、`412`、日志 `waf_challenge` | WAF 挑战，不是封号 | 别刷；等 6 秒重试；一直不过就去窗口手动过 |"
+    }
+   ]
+  },
+  {
+   "path": "运行记录_20261111_本地IP全流程.md",
+   "score": 8,
+   "n": 4,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 14,
+     "snippet": "| 入口 | `https://www.gov.hk/sc/apps/tddiabs.htm#inst=w1` |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 20,
+     "snippet": "| 23:15:02.6 | init/unknown | 扩展注入 gov.hk 入口，读配置（潘郁明 / w1） | `231502_629_w1_stage-init.png` |"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 72,
+     "snippet": "url   : abs1.td.gov.hk/.../AdminServlet_tchinese?cmd=cmdGetOfficeQuotaDIAction"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 84,
+     "snippet": "| 步骤四 递交 + 确认邮件 | 同上 | 扩展 `doConfirm`；`mail_watch.py` 抓 `tdabs@td.gov.hk` 确认信 |"
+    }
+   ]
+  },
+  {
+   "path": "验证码自动过_改动说明.md",
+   "score": 8,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 27,
+     "snippet": "| `background.js` | `TARGET_RE` 加 `mtcaptcha.com/.net` | MTCaptcha 自己的 iframe 也能被注入 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "打码",
+     "line": 126,
+     "snippet": "3. 需要打码平台时，接的是 MTCaptcha 的 `sitekey + pageurl` 换 token 的标准接口 —— 位子已经留好（`solveMt()` 里 `on image challenge` 那个分支），要接哪家告诉我，我把 API 调用补进去。"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "自动过",
+     "line": 128,
+     "snippet": "滑块这条（华为行为验证）现在是真的会自动过；点选类要我继续做，就把那张挑战的截图和 DOM 留一份，我按实际形态写。"
+    }
+   ]
+  },
+  {
+   "path": "waf_patchright.py",
+   "score": 7,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "反检测",
+     "line": 2,
+     "snippet": "\"\"\"waf_patchright.py —— 用 patchright（反检测 playwright）跑 abs3，看能不能过 412"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 15,
+     "snippet": "URL = \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 45,
+     "snippet": "elif \"td.gov.hk\" in u and \"queue-it\" not in u:"
+    }
+   ]
+  },
+  {
+   "path": "waf_replay.py",
+   "score": 7,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 8,
+     "snippet": "URL = \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 27,
+     "snippet": "kw = {\"impersonate\": imp, \"timeout\": 25, \"allow_redirects\": False,"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 34,
+     "snippet": "s.cookies.set(c[\"name\"], c[\"value\"], domain=c[\"domain\"] or \"abs3.td.gov.hk\", path=c.get(\"path\") or \"/\")"
+    }
+   ]
+  },
+  {
+   "path": "waf_solve.js",
+   "score": 7,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 7,
+     "snippet": "*   在 vm 沙箱里伪造 DOM/网络环境执行它："
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 14,
+     "snippet": "*   node waf_solve.js --page chall.html --js chall.js --url https://abs3.td.gov.hk/?lang=sc"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 25,
+     "snippet": "const URLARG = arg('url', 'https://abs3.td.gov.hk/?lang=sc');"
+    }
+   ]
+  },
+  {
+   "path": "probe\\probe_gateway.py",
+   "score": 7,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 4,
+     "snippet": "\"Origin\": \"https://abs3.td.gov.hk\", \"Referer\": \"https://abs3.td.gov.hk/\"}"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 5,
+     "snippet": "url = \"https://abs2.td.gov.hk/tdab2/tdabs_di_external/AdminServlet_schinese?cmd=cmdGetOfficeQuotaDIAction\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 9,
+     "snippet": "s = cr.Session(impersonate=\"chrome124\", timeout=40)"
+    }
+   ]
+  },
+  {
+   "path": "check.py",
+   "score": 6,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 24,
+     "snippet": "ENTRY = \"https://www.gov.hk/sc/apps/tddiabs.htm\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 164,
+     "snippet": "if \"abs4.td.gov.hk\" in url:          # 排队中，放行前什么都别做"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 196,
+     "snippet": "if \"abs3.td.gov.hk\" in url and page.query_selector('input[name=\"conditionsCheck\"]'):"
+    }
+   ]
+  },
+  {
+   "path": "patch_ch8_f.py",
+   "score": 6,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "自动过",
+     "line": 10,
+     "snippet": "\"走不到那一步，所以平时看不到。处理原则是「宽检测 + 保守兜底」：能自动过的自动过，\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "反检测",
+     "line": 80,
+     "snippet": "marker = \"    # ---------------- 反检测\""
+    }
+   ]
+  },
+  {
+   "path": "pool_goto.py",
+   "score": 6,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 42,
+     "snippet": "ABS3 = \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 44,
+     "snippet": "QUEUE = (\"https://abs4.td.gov.hk/?c=tdabsditest&e=\" + EVENT +"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 47,
+     "snippet": "\"&t=http%3A%2F%2Fabs3.td.gov.hk%2FSelectCountry\""
+    }
+   ]
+  },
+  {
+   "path": "pool_multi.py",
+   "score": 6,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 15,
+     "snippet": "成功判据：URL 变成 abs4.td.gov.hk（排队页）。成功后的 context 会一直留着，"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 29,
+     "snippet": "START = \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 70,
+     "snippet": "if \"abs4.td.gov.hk\" in u:"
+    }
+   ]
+  },
+  {
+   "path": "prefill_check.py",
+   "score": 6,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 2,
+     "snippet": "\"\"\"prefill_check.py —— 抢号前的资料体检 + 速填卡"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "黑名单",
+     "line": 11,
+     "snippet": "· 电邮：格式 + 一次性邮箱黑名单（官方不收临时邮箱）"
+    }
+   ]
+  },
+  {
+   "path": "probe_deep.py",
+   "score": 6,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 18,
+     "snippet": "ENTRY = \"https://www.gov.hk/sc/apps/tddiabs.htm\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 90,
+     "snippet": "if \"abs3.td.gov.hk\" in page.url and \"SelectCountry\" in page.url:"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 94,
+     "snippet": "if \"abs4.td.gov.hk\" in page.url:"
+    }
+   ]
+  },
+  {
+   "path": "probe_flow.py",
+   "score": 6,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 16,
+     "snippet": "ENTRY = \"https://www.gov.hk/sc/apps/tddiabs.htm\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 56,
+     "snippet": "page.on(\"request\", lambda r: reqs.append((time.strftime(\"%H:%M:%S\"), r.method, r.url)) if \"td.gov.hk\" in r.url and \"static\" not in r.url else None)"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 57,
+     "snippet": "page.on(\"response\", lambda r: print(f\"  <- {r.status} {r.url[:130]}\") if \"td.gov.hk\" in r.url and \"static\" not in r.url else None)"
+    }
+   ]
+  },
+  {
+   "path": "proxy_watch.py",
+   "score": 6,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 6,
+     "snippet": "能测的、也是真正影响抢号的是这两件事——"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 58,
+     "snippet": "r = cr.get(PROBE, proxies=px, timeout=timeout, verify=False, impersonate=\"chrome\")"
+    }
+   ]
+  },
+  {
+   "path": "race.py",
+   "score": 6,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 2,
+     "snippet": "\"\"\"race.py —— 17:00 抢号总控（一键就位，边跑边记账）"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "住宅代理",
+     "line": 13,
+     "snippet": "· 不在浏览器里套代理（住宅代理 0.8–1.5s 延迟会拖慢排队轮询）"
+    }
+   ]
+  },
+  {
+   "path": "session_export.json",
+   "score": 6,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 3,
+     "snippet": "\"domain\": \"abs3.td.gov.hk\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 10,
+     "snippet": "\"domain\": \"abs3.td.gov.hk\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 17,
+     "snippet": "\"domain\": \"abs2.td.gov.hk\","
+    }
+   ]
+  },
+  {
+   "path": "waf_flow_request.py",
+   "score": 6,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 13,
+     "snippet": "BASE = \"https://abs4.td.gov.hk\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 37,
+     "snippet": "r = pg.goto(\"https://abs3.td.gov.hk/?lang=sc\", wait_until=\"domcontentloaded\", timeout=90000)"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 51,
+     "snippet": "\"Origin\": \"https://abs3.td.gov.hk\", \"Referer\": \"https://abs3.td.gov.hk/\"}"
+    }
+   ]
+  },
+  {
+   "path": "waf_patchright_flow.py",
+   "score": 6,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 15,
+     "snippet": "URL = \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 23,
+     "snippet": "const url = `https://abs4.td.gov.hk/spa-api/queue/${c}/${e}/enqueue`;"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 43,
+     "snippet": "const url = `https://abs4.td.gov.hk/spa-api/queue/${c}/${e}/${qid}/status`;"
+    }
+   ]
+  },
+  {
+   "path": "_probe_profiles.py",
+   "score": 6,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 4,
+     "snippet": "import curl_cffi.requests.impersonate as im"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 12,
+     "snippet": "s = cr.Session(impersonate=n)"
+    }
+   ]
+  },
+  {
+   "path": "probe_dingtalk_keyword.py",
+   "score": 5,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 11,
+     "snippet": "WEBHOOK = (\"https://oapi.dingtalk.com/robot/send?access_token=\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 16,
+     "snippet": "\"抢号\", \"运输署\", \"车牌\", \"牌照\", \"提醒\", \"通知\", \"监控\","
+    }
+   ]
+  },
+  {
+   "path": "waf_window_watch.py",
+   "score": 5,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "黑名单",
+     "line": 16,
+     "snippet": "· 默认 120s 一次，单出口最多 3 次就换（避免把 IP 打进黑名单）"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 23,
+     "snippet": "URL = \"https://abs3.td.gov.hk/?lang=sc\""
+    }
+   ]
+  },
+  {
+   "path": "_401probe.py",
+   "score": 5,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 22,
+     "snippet": "URL = \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 25,
+     "snippet": "kw = {\"impersonate\": \"chrome136\", \"timeout\": 30, \"verify\": False,"
+    }
+   ]
+  },
+  {
+   "path": "无浏览器全流程_实测_20261111.md",
+   "score": 5,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 19,
+     "snippet": "| 6 | 点「继续」 | **GET 跳转**到 `abs1.td.gov.hk/.../AdminServlet?cmd=cmdIntoSelectAuthDI&func=apply&auth=withOutIas&country=mainland&lang=sc`（明文参数、无签名） | `runs/rev/co"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "逆向",
+     "line": 144,
+     "snippet": "| `逆向结论_sign与WAF_20261111.md` | sign 判定：纯 JS、无 WASM、且 API 不校验 |"
+    }
+   ]
+  },
+  {
+   "path": "日志与复盘_改动说明.md",
+   "score": 5,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 15,
+     "snippet": "\"msg\":\"进入阶段：queue\",\"url\":\"https://abs4.td.gov.hk/?c=...\"}"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 36,
+     "snippet": "1. **账本出问题不能影响抢号** —— 所有调用都包在 try/except 里，`from journal import J` 失败就静默降级。"
+    }
+   ]
+  },
+  {
+   "path": "captcha_rescue.py",
+   "score": 4,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 20,
+     "snippet": "python captcha_rescue.py --url \"https://abs1.td.gov.hk/...AdminServlet?cmd=...\" \\"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 92,
+     "snippet": "dom = (c.get(\"domain\") or \"\").lstrip(\".\") or \"abs1.td.gov.hk\""
+    }
+   ]
+  },
+  {
+   "path": "fetch_proxy.py",
+   "score": 4,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 30,
+     "snippet": "API = \"http://v2.api.juliangip.com/company/postpay/getips\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 33,
+     "snippet": "\"city\": \"深圳\",        # 只要深圳出口（abs*.td.gov.hk 对大陆移动家宽最友好）"
+    }
+   ]
+  },
+  {
+   "path": "replay.py",
+   "score": 4,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 186,
+     "snippet": "url = a.url or (\"https://abs2.td.gov.hk/tdab2/tdabs_di_external/\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 246,
+     "snippet": "url = a.url or \"https://abs2.td.gov.hk/tdab2/tdabs_di_external/AdminServlet_tchinese?cmd=cmdGetOfficeQuotaDIAction\""
+    }
+   ]
+  },
+  {
+   "path": "waf.py",
+   "score": 4,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 68,
+     "snippet": "if \"abs4.td.gov.hk\" not in url and len(body.strip()) < EMPTY_BODY_HINT:"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 85,
+     "snippet": "\"   1) 在 Chrome 窗口里手动打开 https://www.gov.hk/sc/apps/tddiabs.htm\\n\""
+    }
+   ]
+  },
+  {
+   "path": "waf_enter.py",
+   "score": 4,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 16,
+     "snippet": "URL = \"https://abs3.td.gov.hk/?lang=sc\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 50,
+     "snippet": "elif \"abs\" in u or \"td.gov.hk\" in u:"
+    }
+   ]
+  },
+  {
+   "path": "probe\\21_step2_181905.json",
+   "score": 4,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 2,
+     "snippet": "\"url\": \"https://abs4.td.gov.hk/?c=tdabsditest&e=tdabsd261106lcq&ver=v3-lua-3.7.0&kupver=nginx-1029002&cver=146&man=PRD_TDABS3_DI_SC&cid=zh-CN&t=http%3A%2F%2Fabs"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 92,
+     "snippet": "\"ctx\": \"https://abs4.td.gov.hk/?c=tdabsditest&e=tdabsd261106lcq&ver=v3-lua-3.7.0&kupver=nginx-1029002&cver=146&man=PRD_TDABS3_DI_SC&cid=zh-CN&t=http%3A%2F%2Fabs"
+    }
+   ]
+  },
+  {
+   "path": "probe\\queue_entered.json",
+   "score": 4,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 2,
+     "snippet": "\"url\": \"https://abs3.td.gov.hk/SelectCountry?lang=sc&actionType=apply&authMethod=withOutIas\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 3,
+     "snippet": "\"text\": \"预约免试签发香港正式驾驶执照/临时驾驶执照柜台服务 第1步 认证 第2步 输入资料 第3步 选择牌照事务处、预约日期和时间 第4步 递交预约资料 网上示范 常见问题 联络及支援 请致电1823或发送电邮至 tellme@1823.gov.hk 第1步 认证 必须输入注有* 的项目 驾驶执照的签发国家或"
+    }
+   ]
+  },
+  {
+   "path": "audit_fingerprint.py",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "反检测",
+     "line": 90,
+     "snippet": "// 8) 函数是否被改（反检测脚本的破绽）"
+    }
+   ]
+  },
+  {
+   "path": "fingerprint_check.py",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "反检测",
+     "line": 49,
+     "snippet": "// 函数 toString 是否被改过（反检测脚本的常见破绽）"
+    }
+   ]
+  },
+  {
+   "path": "patch_ch8_i.py",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 8,
+     "snippet": "anchor = ('''    body(doc, \"实现细节：发送在后台线程里做，网络慢或钉钉挂了都不会卡住抢号流程；\""
+    }
+   ]
+  },
+  {
+   "path": "proxy_chain.py",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "住宅代理",
+     "line": 5,
+     "snippet": "你买的那批住宅代理（us.ipwo.net:7878）会**拒绝来源 IP**，原话是"
+    }
+   ]
+  },
+  {
+   "path": "代理存活实测_222.216.120.212.md",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 34,
+     "snippet": "## 对抢号的实际影响"
+    }
+   ]
+  },
+  {
+   "path": "明日改进方案_20261111.md",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 1,
+     "snippet": "# 明日改进方案 · 2026-11-11 抢号"
+    }
+   ]
+  },
+  {
+   "path": "纯脚本_不调浏览器_方案与可行性_20261112.md",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "黑名单",
+     "line": 109,
+     "snippet": "- ❌ 纯 HTTP 硬撞 412（只会把出口打进黑名单，2~3 次即死）"
+    }
+   ]
+  },
+  {
+   "path": "extension\\captcha_solver.js",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "打码",
+     "line": 626,
+     "snippet": "tries.push(\"出现图片挑战，需打码平台\");"
+    }
+   ]
+  },
+  {
+   "path": "captcha.py",
+   "score": 2,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 32,
+     "snippet": "if (sel('iframe[src*=\"challenges.cloudflare.com\"], .cf-turnstile'))"
+    }
+   ]
+  },
+  {
+   "path": "launch_sys.ps1",
+   "score": 2,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 16,
+     "snippet": "[string]$Url = \"https://www.gov.hk/sc/apps/tddiabs.htm\","
+    }
+   ]
+  },
+  {
+   "path": "probe_dom.py",
+   "score": 2,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 17,
+     "snippet": "ENTRY = \"https://www.gov.hk/sc/apps/tddiabs.htm\""
+    }
+   ]
+  },
+  {
+   "path": "probe_fields.py",
+   "score": 2,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 18,
+     "snippet": "ENTRY = \"https://www.gov.hk/sc/apps/tddiabs.htm\""
+    }
+   ]
+  },
+  {
+   "path": "probe_queue.py",
+   "score": 2,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 17,
+     "snippet": "ENTRY = \"https://www.gov.hk/sc/apps/tddiabs.htm\""
+    }
+   ]
+  },
+  {
+   "path": "probe_select.py",
+   "score": 2,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 25,
+     "snippet": "SELECT = (\"https://abs3.td.gov.hk/SelectCountry?lang=sc&actionType=apply\""
+    }
+   ]
+  },
+  {
+   "path": "quick_probe.py",
+   "score": 2,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 32,
+     "snippet": "r = pg.goto(\"https://www.gov.hk/sc/apps/tddiabs.htm\","
+    }
+   ]
+  },
+  {
+   "path": "resume.py",
+   "score": 2,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 104,
+     "snippet": "if \"abs4.td.gov.hk\" in url:          # 排队中：什么都别做，只打心跳"
+    }
+   ]
+  },
+  {
+   "path": "sign_forensics.py",
+   "score": 2,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 21,
+     "snippet": "python sign_forensics.py --minutes 40 --goto \"https://abs3.td.gov.hk/?lang=sc\""
+    }
+   ]
+  },
+  {
+   "path": "waf_browser_check.py",
+   "score": 2,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 9,
+     "snippet": "URL = \"https://abs3.td.gov.hk/?lang=sc\""
+    }
+   ]
+  },
+  {
+   "path": "waf_flow_probe.py",
+   "score": 2,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 53,
+     "snippet": "base = \"https://abs4.td.gov.hk\""
+    }
+   ]
+  },
+  {
+   "path": "waf_trace_page.py",
+   "score": 2,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 55,
+     "snippet": "url = f\"https://abs3.td.gov.hk/?c={C}&e={E}&lang=sc\""
+    }
+   ]
+  },
+  {
+   "path": "_ip_concurrency.py",
+   "score": 2,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 13,
+     "snippet": "TARGET = \"https://abs3.td.gov.hk/?lang=sc\""
+    }
+   ]
+  },
+  {
+   "path": "_ip_stability.py",
+   "score": 2,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 19,
+     "snippet": "TARGET = \"https://abs3.td.gov.hk/?lang=sc\""
+    }
+   ]
+  },
+  {
+   "path": "_mem6.py",
+   "score": 2,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 59,
+     "snippet": "sp.s.cookies.set(f\"c{k}\", \"x\" * 120, domain=\"abs3.td.gov.hk\", path=\"/\")"
+    }
+   ]
+  },
+  {
+   "path": "_wait_home.ps1",
+   "score": 2,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 13,
+     "snippet": "$code = curl.exe -s -o NUL -w \"%{http_code}\" --max-time 6 --noproxy \"*\" \"https://abs3.td.gov.hk/?lang=sc\" 2>$null"
+    }
+   ]
+  },
+  {
+   "path": "probe\\20_selectauth_181856.json",
+   "score": 2,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 2,
+     "snippet": "\"url\": \"https://abs3.td.gov.hk/SelectAuth\","
+    }
+   ]
+  },
+  {
+   "path": "probe\\30_country_182108.json",
+   "score": 2,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 2,
+     "snippet": "\"url\": \"https://abs4.td.gov.hk/?c=tdabsditest&e=tdabsd261106lcq&ver=v3-lua-3.7.0&kupver=nginx-1029002&cver=146&man=PRD_TDABS3_DI_SC&cid=zh-CN&t=http%3A%2F%2Fabs"
+    }
+   ]
+  },
+  {
+   "path": "probe\\30_country_182146.json",
+   "score": 2,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 2,
+     "snippet": "\"url\": \"https://abs4.td.gov.hk/?c=tdabsditest&e=tdabsd261106lcq&ver=v3-lua-3.7.0&kupver=nginx-1029002&cver=146&man=PRD_TDABS3_DI_SC&cid=zh-CN&t=http%3A%2F%2Fabs"
+    }
+   ]
+  },
+  {
+   "path": "probe\\31_step2_182113.json",
+   "score": 2,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 2,
+     "snippet": "\"url\": \"https://abs4.td.gov.hk/?c=tdabsditest&e=tdabsd261106lcq&ver=v3-lua-3.7.0&kupver=nginx-1029002&cver=146&man=PRD_TDABS3_DI_SC&cid=zh-CN&t=http%3A%2F%2Fabs"
+    }
+   ]
+  },
+  {
+   "path": "probe\\31_step2_182150.json",
+   "score": 2,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 2,
+     "snippet": "\"url\": \"https://abs4.td.gov.hk/?c=tdabsditest&e=tdabsd261106lcq&ver=v3-lua-3.7.0&kupver=nginx-1029002&cver=146&man=PRD_TDABS3_DI_SC&cid=zh-CN&t=http%3A%2F%2Fabs"
+    }
+   ]
+  }
+ ]
+}

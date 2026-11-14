@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "Booking Assistant (no-CDP)",
+  "version": "2.0.0",
+  "description": "预约表单填写与验证码交接助手。页面内脚本驱动，不经过调试协议，不做签名推断。",
+  "minimum_chrome_version": "110",
+  "permissions": [
+    "storage",
+    "scripting",
+    "tabs",
+    "cookies",
+    "webRequest",
+    "webNavigation"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1/*",
+    "*://abs1.example.test/*",
+    "*://abs2.example.test/*",
+    "*://abs3.example.test/*",
+    "*://abs4.example.test/*",
+    "*://portal.example.test/*",
+    "*://*.queue.example.test/*",
+    "*://*.captcha.example.test/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://abs1.example.test/*",
+        "*://abs2.example.test/*",
+        "*://abs3.example.test/*",
+        "*://abs4.example.test/*",
+        "*://portal.example.test/*",
+        "*://*.queue.example.test/*",
+        "*://*.captcha.example.test/*",
+        "http://127.0.0.1/*"
+      ],
+      "js": [
+        "captcha_guard.js",
+        "content.js"
+      ],
+      "all_frames": true,
+      "match_about_blank": true,
+      "run_at": "document_start"
+    }
+  ]
+}
