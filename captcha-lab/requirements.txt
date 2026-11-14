@@ -1,0 +1,9 @@
+opencv-python>=4.8
+numpy>=1.24
+httpx[http2]>=0.27
+# 可选：点选类需要
+# ultralytics>=8.2
+# open-clip-torch>=2.24
+# pillow>=10.0
+# 可选：行为层落地
+# playwright>=1.44
