@@ -291,6 +291,14 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
           break;
         }
 
+        case "solveSlider": {
+          // 画布位图 → 本地服务算位移与轨迹（只算数，不拖动）
+          const d = msg.data || {};
+          if (!d.inst && inst) d.inst = inst;
+          sendResponse(await postJSON("/solve_slider", d));
+          break;
+        }
+
         case "probe": {
           // 轻量探测入口是否已恢复。
           // 注意：abs3 是 React SPA，初始 HTML 里**没有** conditionsCheck（那是 JS 渲染后才有的），

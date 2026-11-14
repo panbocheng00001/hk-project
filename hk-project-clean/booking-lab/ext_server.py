@@ -534,6 +534,37 @@ setTimeout(()=>{
                 print("           [spec] 保存失败:", type(exc).__name__, str(exc)[:100], flush=True)
                 return self._json({"ok": False, "error": str(exc)[:120]}, 500)
 
+        if u.path == "/solve_slider":
+            # 扩展把画布位图 + 几何推过来；这里只出「位移 + 轨迹」，不碰页面。
+            # 拖动由扩展侧 content.js 用真实指针序列执行，失败由它自己交人。
+            try:
+                from captcha_auto import solve_image
+                data_url = data.get("dataUrl") or ""
+                if not data_url:
+                    return self._json({"ok": False, "error": "missing dataUrl"}, 400)
+                geo = data.get("geometry") or {}
+                r = solve_image(
+                    data_url,
+                    track_w=float(geo.get("track_w") or data.get("trackW") or 400.0),
+                    handle_w=float(geo.get("handle_w") or data.get("handleW") or 34.0),
+                    bmp_w=float(geo.get("bmp_w") or data.get("bmpW") or 0) or None,
+                    profile=str(data.get("profile") or "stealth"),
+                )
+                print(f"{datetime.now():%H:%M:%S} [solve_slider] ok={r.get('ok')} "
+                      f"dx={r.get('dx')} slider_dx={r.get('slider_dx')} "
+                      f"pts={r.get('points')} risk={r.get('risk')}", flush=True)
+                try:
+                    _jr("server", "solve_slider", ok=r.get("ok"), dx=r.get("dx"),
+                        slider_dx=r.get("slider_dx"), points=r.get("points"))
+                except Exception:
+                    pass
+                return self._json(r)
+            except Exception as exc:
+                print("           [solve_slider] 失败:", type(exc).__name__,
+                      str(exc)[:120], flush=True)
+                return self._json({"ok": False,
+                                   "error": f"{type(exc).__name__}: {exc}"[:200]}, 500)
+
         if u.path == "/captcha":
             # 只存档，不求解。
             #

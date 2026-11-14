@@ -252,10 +252,12 @@ def selftest() -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
-    try:
-        sys.stdout.reconfigure(errors="replace")
-    except Exception:
-        pass
+    # 控制台默认编码不一定是 UTF-8（Windows 常见 cp1252/gbk），不显式指定会把中文打成 "?"
+    for _stream in (sys.stdout, sys.stderr):
+        try:
+            _stream.reconfigure(encoding="utf-8", errors="replace")
+        except Exception:
+            pass
     ap = argparse.ArgumentParser(description="验证码人工交接耗时报表（只读 journal）")
     ap.add_argument("--days", type=int, default=7, help="最近 N 天（含今天），默认 7")
     ap.add_argument("--dir", default=str(JDIR), help="journal 目录，默认 runs/journal")

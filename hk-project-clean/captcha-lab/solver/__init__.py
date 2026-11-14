@@ -23,7 +23,7 @@ __all__ = [
     "PROFILES", "TrackProfile", "Point",
     # 站点
     "SITE_PROFILES", "SiteProfile", "get_site", "build_payload",
-    # 几何重合滑块（华为 WAF 形态）
+    # 几何重合滑块（画布实心/空心配对）
     "solve_canvas", "to_slider_dx", "OverlapResult",
     "__version__",
 ]

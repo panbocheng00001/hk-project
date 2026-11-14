@@ -1,0 +1,29 @@
+# 运行产物与缓存（本地生成，不入库）
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+node_modules/
+
+# 本次检查产出的报告
+lint.json
+lint-*.txt
+
+# 本机配置与凭据（模板是 config.example.json）
+config.json
+config.json.*
+mail.json
+*.token
+*.log
+otp.txt
+webhook.txt
+proxies*.txt
+
+# 编辑器
+.idea/
+.vscode/
+*.iml

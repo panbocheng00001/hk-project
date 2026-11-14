@@ -27,6 +27,7 @@ from captcha_flow import (  # noqa: F401  (对外转出，供旧代码 import)
 )
 from captcha_flow.detect import detect as _detect
 from captcha_flow.session import Guard as _Guard
+from captcha_auto import auto_enabled
 
 # 旧代码里用 `kind in captcha.NEED_HUMAN` 判断是否必须人工。
 # 现在由 CaptchaKind.needs_human 决定，这里保留同名常量做兼容（值保持一致）。
@@ -205,6 +206,32 @@ def guard(page, who: str, shot=None, say=None, timeout: int = 180,
     g = _Guard(adapter, policy, log=_log, on_event=_event, notify=_notify_who)
 
     info = _detect(adapter)
+
+    # ---- 可选加速器：滑块自动求解 + 自动拖动（CAPTCHA_AUTO=0 可关闭）----
+    # 只有 Playwright page（有 .mouse）才走；FakePage 会自动跳过，离线测试不受影响。
+    if info.present and info.kind.needs_human and auto_enabled():
+        try:
+            import captcha_auto
+            r = captcha_auto.solve_page(page, who=who, log=_log)
+            if r.get("ok"):
+                _log(f"[captcha_auto] 已通过（{r.get('note')}）dx={r.get('dx')} "
+                     f"slider_dx={r.get('slider_dx')} tries={r.get('tries')}")
+                try:
+                    _journal_write("auto_solved", who=who, kind=info.kind.value,
+                                   dx=r.get("dx"), slider_dx=r.get("slider_dx"),
+                                   tries=r.get("tries"), note=r.get("note"))
+                except Exception:
+                    pass
+                if shot is not None:
+                    try:
+                        shot(page, "captcha_auto", "自动求解通过")
+                    except Exception:
+                        pass
+                return "solved"
+            _log(f"[captcha_auto] 未通过，回落到人工交接：{r.get('note')}")
+        except Exception as e:
+            _log(f"[captcha_auto] 异常，回落到人工交接：{type(e).__name__}: {e}")
+
     if shot is not None and info.present:
         try:
             shot(page, "captcha", f"验证码出现：{info.summary}")

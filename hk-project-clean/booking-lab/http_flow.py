@@ -277,7 +277,7 @@ class Sniper:
     def explain_exc(e: Exception) -> str:
         """把 curl 错误号翻成人话。
 
-        2026-11-11 的教训：当天 16:30 后全链路报「https 不支持 / 被拒绝」，
+        2026-11-11 的教训：当天 16:30 后全链路报「https 不支持 / 连接中断」，
         实际是两种完全不同的失败被混成一个症状：
           · curl (35) WRONG_VERSION_NUMBER → 对方在 443 上回的不是 TLS
             （最常是代理不支持 CONNECT，或 http:// 地址被当 https 用）

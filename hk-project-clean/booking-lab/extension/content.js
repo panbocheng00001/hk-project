@@ -756,6 +756,56 @@
   // ---------------------------------------------------------------- 验证码
   // 分派给 captcha_guard.js：它只做三件事——分类、等隐形 token、勾选框点一次。
   // 需要内容判断的形态（滑块/点选/图形码）它会返回 needHuman，这里立刻喊人。
+  // 滑块形态的自动路径：本地服务算位移（只算数），这里用真实指针序列拖过去。
+  // 任何一步失败都返回 null，由 doWafCaptcha 走人工交接。
+  async function autoSlider() {
+    const canvases = [...document.querySelectorAll("canvas")]
+      .filter((el) => el.getBoundingClientRect().height > 20)
+      .sort((a, b) => b.width * b.height - a.width * a.height);
+    const c = canvases[0];
+    const handle = document.querySelector(
+      '#handle, [id*="handle" i], [class*="handle" i], [class*="slider-btn" i], [role="slider"]');
+    if (!c || !handle) return null;
+
+    const hr = handle.getBoundingClientRect();
+    const cr = c.getBoundingClientRect();
+    const track = handle.parentElement;
+    const payload = {
+      dataUrl: c.toDataURL("image/png"),
+      type: "slider",
+      geometry: {
+        bmp_w: c.width, bmp_h: c.height,
+        css_w: cr.width, css_h: cr.height,
+        track_w: track ? track.getBoundingClientRect().width : cr.width,
+        handle_w: hr.width,
+        dpr: window.devicePixelRatio
+      }
+    };
+
+    let res = null;
+    try { res = await send({ type: "solveSlider", data: payload }); }
+    catch (e) { res = null; }
+    if (!res || !res.ok) {
+      log("滑块求解失败：" + ((res && res.error) || "无结果"), "waf_captcha");
+      return null;
+    }
+    const dx = Number(res.slider_dx || 0);
+    if (!(dx > 0)) return null;
+    log("滑块求解：dx=" + res.dx + " slider_dx=" + dx.toFixed(2)
+        + " 点数=" + (res.points || 0) + " risk=" + res.risk, "waf_captcha");
+
+    try { await dragBy(handle, dx); }
+    catch (e) { log("拖动异常：" + (e && e.message ? e.message : e), "waf_captcha"); return null; }
+
+    await sleep2(1400);
+    const after = window.__CAPGUARD ? window.__CAPGUARD.scan() : { type: "unknown" };
+    if (after.type === "none") return { ok: true, slider_dx: dx };
+    const tok = document.querySelector('input[name*="token" i], #captchaToken');
+    if (tok && (tok.value || "").length > 8) return { ok: true, slider_dx: dx };
+    log("滑块拖动后仍未通过（" + after.type + "）", "waf_captcha");
+    return null;
+  }
+
   async function doWafCaptcha() {
     if (Date.now() < (state.captchaCooldown || 0)) return;
 
@@ -801,6 +851,22 @@
       state.captchaReported = false;
       state.captchaCooldown = 0;
       return;
+    }
+
+    // 滑块：先试自动（本地服务算位移 + 真实指针序列拖动），失败才交人
+    if (r.type === "slider" || s.type === "slider") {
+      const auto = await autoSlider();
+      if (auto && auto.ok) {
+        send({ type: "status", data: {
+          stage: "captcha_solved",
+          msg: "✅ 滑块已自动完成（slider_dx=" + Number(auto.slider_dx).toFixed(2) + "）",
+          url: location.href.slice(0, 140), type: "slider"
+        } });
+        state.captchaTries = 0;
+        state.captchaReported = false;
+        state.captchaCooldown = 0;
+        return;
+      }
     }
 
     // 交人：抬窗口 + 通知 + 冷却。不重试、不换参数再猜。

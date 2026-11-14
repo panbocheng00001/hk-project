@@ -1,8 +1,8 @@
-"""华为 WAF 几何重合滑块：端到端评测（对拍 hKdriver 的 captcha_mock）
+"""几何重合滑块：端到端评测（对拍 booking-lab/captcha_mock 的判据）
 
 用法：
     # 1) 起复刻服务
-    cd E:/googleProduct/hk-project/hKdriver/captcha_mock && node server.js
+    cd booking-lab/captcha_mock && node server.js          # 127.0.0.1:8777
     # 2) 跑评测
     python bench_waf.py --n 30
 
@@ -31,7 +31,9 @@ def run(base: str, n: int, start: int, track_w: float, handle_w: float,
     import httpx
 
     rows: List[Dict[str, Any]] = []
-    with httpx.Client(timeout=15.0, base_url=base) as c:
+    # trust_env=False：本机系统代理会连 127.0.0.1 的回环请求一起接管，
+    # 结果是 /challenge 返回 503 空响应，看着像算法崩了，其实请求没到 Node。
+    with httpx.Client(timeout=15.0, base_url=base, trust_env=False) as c:
         for i in range(n):
             seed = start + i
             ch = c.get("/challenge", params={"seed": seed, "dpr": 1}).json()

@@ -217,7 +217,7 @@ def cmd_batch(args: argparse.Namespace) -> int:
 
 
 def cmd_waf(args: argparse.Namespace) -> int:
-    """几何重合滑块（华为 WAF 形态）：画布图 -> dx / slider_dx / 轨迹。"""
+    """几何重合滑块（画布实心/空心配对）：画布图 -> dx / slider_dx / 轨迹。"""
     from .overlap import analyze as analyze_canvas, draw_debug, solve_canvas
 
     out = solve_canvas(args.image, bmp_w=args.bmp_w,
@@ -326,7 +326,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--json", action="store_true")
     p.set_defaults(func=cmd_batch)
 
-    p = sub.add_parser("waf", help="几何重合滑块（华为 WAF 形态）：画布图 -> slider_dx + 轨迹")
+    p = sub.add_parser("waf", help="几何重合滑块（画布实心/空心配对）：画布图 -> slider_dx + 轨迹")
     p.add_argument("--image", required=True, help="画布图（png 路径 / base64 / data-url）")
     p.add_argument("--bmp-w", type=float, help="画布位图宽度，默认取图像宽度")
     p.add_argument("--track-w", type=float, default=400.0, help="滑轨宽度（CSS px）")

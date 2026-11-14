@@ -1,6 +1,6 @@
-"""几何重合滑块（华为 WAF 形态）：判据、换算、与 JS 版对拍。
+"""几何重合滑块（画布实心/空心配对）：判据、换算、与 JS 版对拍。
 
-黄金样本 `tests/data/waf_canvas.png` 由 hKdriver/captcha_mock 的 seed=1000 生成，
+黄金样本 `tests/data/waf_canvas.png` 由 booking-lab/captcha_mock 的 seed=1000 生成，
 Node 版 analyze.js 与 Python 版的 dx 均为 230.5。
 """
 from __future__ import annotations

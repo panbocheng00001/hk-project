@@ -1,4 +1,4 @@
-﻿# captcha-lab
+# captcha-lab
 
 **滑块验证码识别工具包** — 图片进，拖动距离 / 拟人轨迹 / 站点载荷出。
 
@@ -21,7 +21,7 @@ drag trajectories, per-vendor payload adapters, HTTP service and browser driver.
 | 能力 | 模块 | 状态 |
 |---|---|---|
 | 缺口定位（多策略融合 + 保守精修 + top-k 重试） | `solver/gap.py` | ✅ 一次命中 96.7% |
-| 几何重合滑块（实心图形对齐空心轮廓，华为 WAF 形态） | `solver/overlap.py` | ✅ 30/30，与 JS 判据 0.00px 偏差 |
+| 几何重合滑块（实心图形对齐空心轮廓） | `solver/overlap.py` | ✅ 30/30，与 JS 判据 0.00px 偏差 |
 | 统一求解引擎（图片 → 距离 → 轨迹 → 载荷） | `solver/engine.py` | ✅ |
 | 拟人轨迹（最小加加速度 + 手颤 + 停顿 + 过冲回拉） | `solver/track.py` | ✅ 4 套档案，风险分 0.00 |
 | 站点适配（极验 / 腾讯 / 易盾 / 阿里 / 顶象 / 通用） | `solver/profiles.py` | ✅ 数据驱动 |
@@ -29,7 +29,7 @@ drag trajectories, per-vendor payload adapters, HTTP service and browser driver.
 | HTTP 服务（鉴权、限流、并发保护、Prometheus 指标） | `solver/serve.py` | ✅ |
 | CLI（单张 / 批量评测 / 轨迹 / 起服务） | `solver/cli.py` | ✅ |
 | 合成数据与 YOLO 训练脚手架 | `solver/synth.py`、`solver/train_yolo.py` | ✅ |
-| 评测与对抗研究（可选） | `defense/` | ✅ 见第 9 节 |
+| 鲁棒性评测（可选） | `defense/` | ✅ 见第 9 节 |
 
 ---
 
@@ -172,7 +172,7 @@ print(analyze(pts)["risk"])          # 0.000
 | `mouse` | 45–72 | 0.6–1.4s | 桌面站点，通用默认 |
 | `touch` | 28–46 | 0.5–1.2s | 移动端 H5，y 漂移更大 |
 | `fast` | 16–28 | 0.2–0.8s | 快手用户，仍保留手颤 |
-| `stealth` | 46–70 | 0.7–1.5s | 对抗行为风控，噪声与停顿最足 |
+| `stealth` | 46–70 | 0.7–1.5s | 行为特征最丰富，噪声与停顿最足 |
 
 `audit_risk=True` 时用仓库自带的规则风控自检，不达标自动重采样（最多 8 次）。
 这把"轨迹像不像人"变成了可回归的指标，而不是靠感觉。
@@ -186,7 +186,7 @@ gen:fast     catch=  0.0%     # 新版生成器
 gen:stealth  catch=  0.0%
 ```
 
-结论很直接：**规则型风控只能拦低成本脚本**。真要对抗日志坚定的自动化，
+结论很直接：**规则型风控只能拦低成本脚本**。若要覆盖更坚定的自动化工具，
 防守方需要叠加设备指纹、事件间隔分布、页面环境一致性等维度，单看轨迹不够。
 这个仓库的 `defense/` 就是用来量化这条边界的。
 
@@ -225,7 +225,7 @@ my_site = SiteProfile(
 
 ---
 
-## 8. 几何重合滑块（华为 WAF 形态）
+## 8. 几何重合滑块（画布实心/空心配对）
 
 题型：深色网格画布上散落若干几何图形，其中一对是「同形同色的实心 + 空心轮廓」。
 拖动滑块使实心图形与空心轮廓完全重合。它没有"缺口"，要算的是**两个图形中心的水平差**。
@@ -252,11 +252,11 @@ slider_dx = to_slider_dx(dx=230.5, bmp_w=400, track_w=400, handle_w=34)   # 210.
 判据与前端脚本逐条对齐（三档亮度/饱和度阈值 → 4 邻域连通域 → 填充密度 0.45 分实心/空心
 → 空心填充后比对 8×8 占用剖面 → 尺寸/高度/色相差加权评分 → 色相精修）。
 
-与 `hKdriver/captcha_mock` 对拍（Node 版 `analyze.js` 同一套判据）：
+与 `booking-lab/captcha_mock` 对拍（Node 版 `analyze.js` 同一套判据）：
 
 ```bash
-cd E:/googleProduct/hk-project/hKdriver/captcha_mock && node server.js
-python bench_waf.py --n 30
+cd ../booking-lab/captcha_mock && node server.js       # 127.0.0.1:8777
+cd ../../captcha-lab && python bench_waf.py --n 30
 ```
 
 ```
@@ -406,7 +406,7 @@ python bench_detector.py        # 轨迹风控对照
 - [ ] 点选 / 文字点选题型的统一接口（`solver/points.py` 已有基线）
 - [ ] 轨迹档案的真人样本拟合（用录制的真人轨迹回归参数）
 - [ ] Redis 版任务队列与分布式限流
-- [ ] 浏览器指纹与环境一致性检查（配合 `defense/` 做对抗评测）
+- [ ] 浏览器指纹与环境一致性检查（配合 `defense/` 做鲁棒性评测）
 
 ---
 
@@ -417,7 +417,7 @@ captcha-lab/
 ├─ solver/
 │  ├─ engine.py        # 求解引擎（入口）
 │  ├─ gap.py           # 缺口定位
-│  ├─ overlap.py       # 几何重合滑块（华为 WAF 形态）
+│  ├─ overlap.py       # 几何重合滑块（画布实心/空心配对）
 │  ├─ track.py         # 轨迹生成
 │  ├─ profiles.py      # 站点档案
 │  ├─ client.py        # 对接层（回调 / JSON / 浏览器）

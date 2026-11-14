@@ -90,12 +90,28 @@ async function analyze() {
   console.log('analyze', r);
   return r;
 }
-document.getElementById('handle').addEventListener('pointerup', async () => {
+// 真实可拖：pointerdown/move 更新 left，pointerup 交判分。
+// 只加交互，不改判据与接口（/challenge /analyze /grade 原样）。
+const handle = document.getElementById('handle');
+let dragging = false, dragStartX = 0, dragStartLeft = 0;
+handle.addEventListener('pointerdown', (e) => {
+  dragging = true; dragStartX = e.clientX; dragStartLeft = parseFloat(handle.style.left) || 0;
+  try { handle.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
+});
+handle.addEventListener('pointermove', (e) => {
+  if (!dragging) return;
+  const max = 400 - 34;
+  const left = Math.max(0, Math.min(max, dragStartLeft + (e.clientX - dragStartX)));
+  handle.style.left = left + 'px';
+});
+handle.addEventListener('pointerup', async () => {
+  dragging = false;
   const left = parseFloat(document.getElementById('handle').style.left) || 0;
   const r = await fetch('/grade', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ sliderDx: left, bmpW: 400, trackW: 400, handleW: 34, seed: cur && cur.seed })
   }).then((x) => x.json());
+  window.__grade = { ...r, sliderDx: left };
   document.body.style.outline = r.pass ? '2px solid #3c3' : '2px solid #c33';
   console.log('grade', r);
 });

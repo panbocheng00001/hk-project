@@ -70,7 +70,7 @@ PROFILES: Dict[str, TrackProfile] = {
         overshoot=(0.0, 2.0), y_jitter=1.0, tremor=0.45, pause_prob=0.08,
         dt_sigma=0.55, min_duration=220.0,
     ),
-    # 对抗风控用的"最像人"档案：噪声更足、停顿更多、全精度浮点坐标
+    # 行为风控自检用的"最像人"档案：噪声更足、停顿更多、全精度浮点坐标
     "stealth": TrackProfile(
         name="stealth", points=(46, 70), duration_base=700.0, duration_per_px=3.0,
         overshoot=(3.0, 7.0), y_jitter=1.6, tremor=0.95, pause_prob=0.35,
@@ -263,7 +263,7 @@ def human_track(distance: float,
     """
     [兼容保留] 早期版本用的"数学拟人"轨迹：ease-out + 过冲 + 正弦抖动。
 
-    它能骗过大多数只查"匀速/等间隔"的低成本风控，但速度曲线过于光滑，
+    它只查"匀速/等间隔"的粗糙度规则，所以在低成本规则下也能通过，但速度曲线过于光滑，
     会被 `defense.trajectory` 的粗糙度规则命中。新代码请用 `generate_track`。
     """
     rng = random.Random(seed)

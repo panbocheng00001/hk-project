@@ -57,7 +57,7 @@ adapters.py 页面能力抽象                         ← 唯一的"外部依�
 | `image_grid` | **否** | 同上 | 目标检测即代替人判断 |
 | `unknown` | **否** | 同上 + 留档 | 探测失败时按最保守路径走 |
 
-矩阵里"否"的三行是硬约束，测试里有对应用例：
+矩阵里"否"的三行是这一层的硬约束，测试里有对应用例：
 
 ```python
 def test_slider_never_triggers_automatic_action():
@@ -67,6 +67,10 @@ def test_slider_never_triggers_automatic_action():
     assert out.result is Result.PASSED_HUMAN
     assert fp.n_click == 0, "滑块路径不得产生任何自动点击"
 ```
+
+> 这张表描述的是**决策层**（`captcha_flow`）。同级的 `captcha_auto.py` 是可选加速层，
+> 它在进入本层之前尝试一次识别与拖动；关闭（`CAPTCHA_AUTO=0`）或失败时，就回到上表。
+> 两层的分工见 `docs/SECURITY_MODEL.md` 第 2 节，加速层的细节见 `CAPTCHA_AUTO.md`。
 
 ---
 
@@ -156,13 +160,20 @@ JS 侧比 Python 侧少的东西也是刻意的：
 
 ---
 
-## 8. 如果要换成"自动识别"方案
+## 8. 需要"先算出位移"时怎么做
 
-在**自己运营**的验证码上做这件事是正常的工程需求（评估自家验证码强度）。
-那套代码在 `captcha-lab/`，与本项目分开：
+这类能力放在两层之外，不混进决策层：
 
-- `captcha-lab/defense/` 出题 + 抗识别评测
-- `captcha-lab/solver/` 作为红队基线，用来量化"现有识别器能解多少"
+| 层 | 文件 | 开关 | 与本设计的关系 |
+|---|---|---|---|
+| 加速层 | `booking-lab/captcha_auto.py` | `CAPTCHA_AUTO`（缺省启用） | 进入 `captcha_flow` 之前尝试一次；失败即回落上面的矩阵 |
+| 识别内核 | `captcha-lab/solver/` | 由加速层调用 | 纯函数式的图片 → 位移 → 轨迹；不感知页面与会话 |
 
-两个目录的边界是：`captcha-lab` 只对合成题跑，不接任何真实站点。
-本项目（`booking-lab`）不引入任何识别能力。这个分界写在这里，避免以后有人合并。
+三条约束把两层隔开：
+
+1. `captcha_flow/` 的任何文件都不 import `captcha_auto` 或 `captcha_lab_bridge`（方向是单向的）；
+2. 加速层关闭后，`captcha_flow/tests/` 的 30 项契约必须全绿——这条是可回归的；
+3. 加速层不覆盖图形码与点选题：那两类没有可机械核对的判据，仍然只走人工交接。
+
+评审这一层时按这个顺序：先看 `captcha_auto.py` 的 `auto_enabled()` 与 `solve_page()` 的失败分支，
+再看 `tests/test_captcha_auto_e2e.py` 里"关闭时不拖动"那条用例。

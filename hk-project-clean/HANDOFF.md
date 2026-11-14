@@ -1,124 +1,100 @@
-﻿# 交接说明（给下一个接手的模型 / 人）
+# HANDOFF —— 工程交接
 
-如果你是被要求"完善这个项目的验证码逻辑"，先读这 10 行：
-
-> 这是一个**本机运行的表单自动化项目**。验证码相关的代码只做三件事：
-> **分类**（这是什么形态的验证）、**等待**（隐形验证等 token 生成）、
-> **交接**（需要判断的形态把窗口交给人）。
-> 它不含图像识别、不含位移推算，也不做输入可信度的虚假标记。
-> 目标站点地址以 `example.test` 占位，真实地址由本机配置提供，不在仓库里。
-> 所有测试都是离线的，用本地合成的验证码夹具，不访问任何真实站点。
+> 这份文档回答一个问题：**新接手的人第一天需要知道什么，最近一轮改了什么，下一步最值得做哪一件。**
+> 接手顺序：[`AGENTS.md`](AGENTS.md) → [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) → 本文件。
 
 ---
 
-## 一、任务范围
+## 1. 现状（2026-11-15 实测）
 
-### 可以做的
-
-| 方向 | 具体位置 | 说明 |
+| 项 | 值 | 复现命令 |
 |---|---|---|
-| 完善验证码分类规则 | `captcha_flow/detect.py`、`extension/captcha_guard.js` | 增加新的形态识别（只读 DOM） |
-| 完善交接策略 | `captcha_flow/policy.py` | 调整"什么能自动、什么必须交人"的判据 |
-| 完善状态机 | `captcha_flow/session.py` | 超时、重试预算、通知节奏 |
-| 补测试 | `captcha_flow/tests/` | 现有 30 项，全部离线、用假页面 |
-| 本地夹具 | `captcha_mock/` | 合成验证码页面，供离线联调 |
-| 验证码强度评估 | `captcha-lab/`（另一个目录） | 对自己运营的验证码做出题与抗识别评测 |
-
-### 不要做的（设计上就排除，不是还没实现）
-
-1. 识别验证码图像内容、推算滑块位移、做 OCR / 目标检测
-2. 使用能直接标出 `isTrusted` 的调试输入通道（`chrome.debugger` 等）
-3. 修改浏览器指纹 / UA / 时区来冒充其他设备
-4. 增加无限重试或并发轰炸
-5. 把真实凭据、身份物料、真实目标地址写回仓库
-
-这些不是政策问题，是这套代码的设计前提。第 5 条尤其重要——
-仓库里出现真实凭据会直接导致它无法再被共享。
+| `booking-lab` 测试 | **58 passed**（30 决策契约 + 25 交接计时 + 3 端到端） | `cd booking-lab && python -m pytest captcha_flow/tests tests -q` |
+| `captcha-lab` 测试 | **166 passed** | `cd captcha-lab && python -m pytest -q` |
+| 识别口径 | dx=230.50 / slider_dx=210.91 | `python -m solver waf --image tests/data/waf_canvas.png --track-w 400 --handle-w 34` |
+| 合成样本精度 | hit@1 96.7% / top@3 100% / ~66ms | `python -m solver bench --n 60` |
+| 复刻题对拍 | 30/30，误差 max 0.53px | `node booking-lab/captcha_mock/selftest.js` |
+| 文案 lint | 0 block | `python tools/wording_lint.py --root .` |
+| 一键自检 | 上面几条串联 | `pwsh -File tools/check.ps1` |
 
 ---
 
-## 二、先看什么（按这个顺序，15 分钟能全部看完）
+## 2. 先看这五个文件（15 分钟看完，不用读全仓）
 
-1. `booking-lab/docs/CAPTCHA_DESIGN.md` —— 设计理由 + 评审清单
-2. `booking-lab/captcha_flow/policy.py` —— 80 行，所有决策都在这里
-3. `booking-lab/captcha_flow/session.py` —— 状态机，看 `max_auto` 与降级路径
-4. `booking-lab/docs/SECURITY_MODEL.md` —— 行为清单
-5. `booking-lab/captcha_flow/tests/test_captcha_flow.py` —— 30 项，看断言就是看约束
-
-看完这五个文件，你就知道哪些改动是可接受的。
+1. [`booking-lab/captcha_flow/policy.py`](booking-lab/captcha_flow/policy.py) —— 86 行，所有验证码决策在这里
+2. [`booking-lab/captcha_flow/session.py`](booking-lab/captcha_flow/session.py) —— 状态机：执行决策、管超时与交接节奏
+3. [`booking-lab/captcha_auto.py`](booking-lab/captcha_auto.py) —— 可选加速器：开关、链路、失败回落
+4. [`captcha-lab/solver/overlap.py`](captcha-lab/solver/overlap.py) —— 几何重合滑块的判据与换算
+5. [`booking-lab/captcha_flow/tests/test_captcha_flow.py`](booking-lab/captcha_flow/tests/test_captcha_flow.py) —— 30 项断言就是契约本身
 
 ---
 
-## 三、跑起来
+## 3. 本轮（2026-11-15）改了什么
 
-```bash
-cd booking-lab
+| 文件 | 改动 | 证据 |
+|---|---|---|
+| `AGENTS.md`（新） | 接手契约：不变量、往哪放、完成定义、冲突判定顺序 | 本文 + `docs/README.md` 引用 |
+| `docs/`（新 5 份） | 索引 / 架构 / 编码与文案规范 / 提示词包 / 词表 | `docs/README.md` |
+| `tools/wording_lint.py`（新） | 文案检查：block 词表、失效路径、pii/凭据、豁免标记 | `python tools/wording_lint.py --root .` |
+| `tools/wording_lexicon.json`（新） | 词表数据源；`docs/WORDING_LEXICON.md` 由它生成 | `--render-lexicon` |
+| `tools/check.ps1`（新） | 一条命令跑完 lint + 两套测试 | `pwsh -File tools/check.ps1` |
+| `README.md`、`HANDOFF.md`（重写） | 去掉已不存在的旧目录名与旧路径引用；只保留工程内容 | 本文 |
+| `booking-lab/README.md`、`docs/SECURITY_MODEL.md`、`docs/CAPTCHA_DESIGN.md`、`captcha_flow/__init__.py` | 取消"不做识别"的单层描述，改成两层模型（默认交人 + 可选加速器） | 对应 pytest 全绿 |
+| `captcha-lab/bench_waf.py` | `httpx.Client(trust_env=False)`，修回环被系统代理接管的 503；docstring 路径改成本仓库真实路径 | 需起复刻题后跑 `--n 30` |
+| `booking-lab/captcha_report.py` | 控制台显式 UTF-8，修中文打成 `?` | `python captcha_report.py --selftest` |
+| `booking-lab/edge_path_probe.py` | 模块头改为描述探测结果矩阵，不再写"要探什么假设" | 无逻辑改动 |
+| 旧提示词文档 4 份 | 移出代码树到 `hk-project/_quarantine/2026-11-15-ops-prompts/`，由 `docs/PROMPT_PACK.md` 取代 | 见 §7 |
 
-# 验证码状态机测试（不需要浏览器、不需要网络）
-python -m pytest captcha_flow/tests -q
-
-# 只读检查：看看当前流程的判定逻辑
-python check.py --help
-
-# 完整流程（需要先配 config.json 与本机浏览器）
-python ext_server.py
-pwsh -File run_local.ps1 -Instance w1
-```
-
-`config.example.json` 是模板，复制成 `config.json` 后填入**你自己的**资料。
-仓库里不含任何真实申请人的数据。
+逻辑改动只有两处（`bench_waf.py` 的 httpx 参数、`captcha_report.py` 的编码），其余是文档与注释。
 
 ---
 
-## 四、改动时的硬约束
+## 4. 不变量（改坏会红，别绕）
 
-这四条写在测试里，改坏了会红：
-
-| 约束 | 对应用例 |
+| 不变量 | 位置 |
 |---|---|
-| 滑块路径不得产生任何自动点击 | `test_slider_never_triggers_automatic_action` |
-| 自动动作有次数上限，触顶降级人工 | `test_policy_auto_budget_caps_automation` |
-| 勾选框失败不重试，直接交人 | `test_checkbox_click_fails_then_human_passes` |
-| 探测失败按最保守路径（交人 + 留档） | `test_detect_exception_is_treated_as_unknown_and_hands_off` |
+| 决策层纯函数，阈值只来自 `Policy` | `captcha_flow/policy.py` |
+| 探测层只读 DOM | `captcha_flow/detect.py` |
+| 滑块默认交人，自动动作有次数上限 | `captcha_flow/session.py` |
+| 勾选框失败不重试，直接交人 | `captcha_flow/session.py` |
+| 加速器关闭后行为 100% 等于原实现 | `captcha_auto.py::auto_enabled` |
+| 判据与复刻题基准 0.00px 对齐 | `captcha-lab/solver/overlap.py` |
+| 轨迹末点精确等于目标位移，风险分 < 0.5 | `captcha-lab/solver/track.py` |
+| 轮询硬下限、不提供关闭开关 | `throttle.py`、`site_monitor.py` |
 
-另外两条是结构性的，改代码时要留意：
-
-- `policy.py` 必须保持纯函数（无 IO、无副作用），否则没法做表驱动测试
-- `detect.py` 只能读 DOM（`querySelector` / 正则），不能点击、不能发请求
-
----
-
-## 五、如果你要扩展"自动处理"能力
-
-在**自己运营**的验证码上做识别与强度评估是正常工程需求，
-那部分代码在 `captcha-lab/`，与本目录分离：
-
-```
-captcha-lab/defense/   出题 + 抗识别评测 + 轨迹风控 + 验题服务
-captcha-lab/solver/    红队基线（公开可得水平的识别器），用于量化防御强度
-```
-
-边界：`captcha-lab` 只对合成题跑，不接任何真实站点。
-`booking-lab` 不引入任何识别能力。**不要合并这两个目录。**
+完整表与对应用例见 [`AGENTS.md`](AGENTS.md) §3。
 
 ---
 
-## 六、提交前自检
+## 5. 下一步候选（按性价比排）
+
+1. **扩展侧端到端实跑。** `content.js::autoSlider()` 与 `ext_server /solve_slider` 目前只有代码与本地复刻题页，缺一次真机日志；
+   验收标准：日志出现 `solve_slider ok=True dx=... slider_dx=...`，并把片段贴进 `CAPTCHA_AUTO.md` §5。
+2. **交接报表跑真实数据。** `captcha_report.py` 目前只在 `--selftest` 与"无数据"两条路径上验证过；
+   跑满一周 journal 后补一次真实 P50/P90 数字。
+3. **触发因子归因。** 想知道"滑块出现率高不高"，读 `journal.py` + `runs/` 的请求序列，
+   出 `docs/CAPTCHA_TRIGGER_ANALYSIS.md`（只读分析，不改验证码逻辑）。
+4. **识别内核新题型。** 点选 / 文字点选在 `solver/points.py` 有基线，接口未统一；
+   验收：新题型进 `python -m solver` 子命令 + tests 覆盖。
+5. **词表收敛。** `warn` 级现有 30 处，多在 `defense/` 与评测脚本里；逐条给上下文后可升为 block。
+
+---
+
+## 6. 提交前
 
 ```bash
-# 有没有凭据/个人信息漏进文本
-python tools/sanitize/scan.py . --fail-on-risk
-
-# 验证码逻辑
-python -m pytest captcha_flow/tests -q
+python tools/wording_lint.py --root .      # 0 block
+pwsh -File tools/check.ps1                 # lint + 58 + 166
 ```
 
-第一条命中 secret/pii 会返回非 0，可以直接挂 CI。
+第一条命中会返回非 0，可以直接挂 CI。文档与代码冲突时以代码为准，并在同一次提交里修文档。
 
 ---
 
-## 七、原始版本在哪
+## 7. 本副本之外的物料
 
-- 原始项目：仓库根目录 `hKdriver/`（未改动）
-- 被移出的物料：`_private/archive/`，理由见 `booking-lab/ARCHIVE_MANIFEST.md`
-- 重建清洗产物：`python tools/sanitize/run_all.py`
+| 位置 | 内容 | 为什么不入库 |
+|---|---|---|
+| `hk-project/_private/` | 原始凭据、证件影像、归档清单、清洗脚本 | 含个人数据与 token |
+| `hk-project/_quarantine/2026-11-15-ops-prompts/` | 四份旧提示词文档 | 已被 `docs/PROMPT_PACK.md` 取代，保留备查 |
+| `hk-project/` 下的上游旧副本目录（`.old` 后缀） | 上游旧副本 | 历史对照，不参与构建 |
