@@ -58,7 +58,8 @@ def _utf8_stdout() -> None:
 
 def _session(args: argparse.Namespace, run_dir: Path) -> PageSession:
     config = SessionConfig(headless=not getattr(args, "headed", False),
-                           settle_ms=getattr(args, "settle_ms", 1500))
+                           settle_ms=getattr(args, "settle_ms", 1500),
+                           channel=getattr(args, "channel", "") or "")
     profile = Path(args.profile) if getattr(args, "profile", None) else None
     return PageSession(run_dir=run_dir, config=config, profile_dir=profile)
 
@@ -285,6 +286,8 @@ def build_parser() -> argparse.ArgumentParser:
         p.add_argument("--profile", default=None, help="持久化浏览器配置目录（保留 Cookie）")
         p.add_argument("--settle-ms", dest="settle_ms", type=int, default=1500,
                        help="网络静默后再等多少毫秒")
+        p.add_argument("--channel", default="", choices=["", "msedge", "chrome"],
+                       help="用系统自带浏览器（msedge / chrome），空则用 Playwright 内置 Chromium")
 
     ops = sub.add_parser("open", help="打开一个页面并抓一份摘要")
     ops.add_argument("--url", required=True)

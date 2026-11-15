@@ -34,6 +34,7 @@
 from __future__ import annotations
 
 import json
+import sys
 import time
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -166,6 +167,7 @@ class PageSession:
     requests: List[Dict[str, Any]] = field(default_factory=list)
     console: List[Dict[str, str]] = field(default_factory=list)
     last_url: str = ""
+    closed_by: str = ""
 
     # ---------------------------------------------------------------- 生命周期
     def start(self) -> "PageSession":
@@ -206,9 +208,21 @@ class PageSession:
             self.page = self._context.pages[0] if self._context.pages else self._context.new_page()
             self.page.on("response", self._on_response)
             self.page.on("console", self._on_console)
+            # 页面/浏览器关闭时留一条痕迹：只看到 TargetClosedError 无法判断是谁关的
+            self.page.on("close", self._on_page_close)
+            self._context.on("close", self._on_context_close)
+            self.closed_by = ""
         except Exception as exc:  # pragma: no cover - 环境相关
             raise BrowserUnavailable(f"浏览器启动失败：{type(exc).__name__}: {exc}") from exc
         return self
+
+    def _on_page_close(self, _page: Any) -> None:
+        self.closed_by = self.closed_by or "页面关闭事件"
+        print("[pagekit] 事件：页面被关闭", file=sys.stderr, flush=True)
+
+    def _on_context_close(self, *_args: Any) -> None:
+        self.closed_by = self.closed_by or "浏览器上下文关闭事件"
+        print("[pagekit] 事件：浏览器上下文被关闭", file=sys.stderr, flush=True)
 
     def close(self) -> None:
         for closer in (self._context, self._browser):
