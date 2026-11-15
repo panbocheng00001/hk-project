@@ -21,6 +21,8 @@
 ------
 · 只读优先：``capture`` 不点击、不填表；``click`` 是唯一会产生页面状态变化的入口
 · 原始快照只落 ``runs/pagekit/``（gitignore 已含 runs/），不外发
+· 全量网络记录落 ``runs/pagekit/<stamp>/net.jsonl``：请求头+体、响应头+体，
+  schema 对齐 runs/net/net.jsonl，replay.py / 纯脚本复刻可直接吃
 · 每次抓取都记录抓取时间与最终 URL，跨页对照时不用猜
 · 等待策略固定：``domcontentloaded`` → 等网络静默（有上限）→ 再等 ``settle_ms``
 
@@ -166,6 +168,8 @@ class PageSession:
     page: Any = None
     requests: List[Dict[str, Any]] = field(default_factory=list)
     console: List[Dict[str, str]] = field(default_factory=list)
+    # 单条响应体最多记这么长（net.jsonl）；再大只截断，不影响快照主流程
+    NET_BODY_MAX: int = 40000
     last_url: str = ""
     closed_by: str = ""
 
@@ -246,6 +250,17 @@ class PageSession:
 
     # ---------------------------------------------------------------- 事件
     def _on_response(self, response: Any) -> None:
+        """全量网络记录：method/url/status/kind（快照用）+ 四件套（net.jsonl 用）。
+
+        net.jsonl 记录 schema 对齐 runs/net/net.jsonl（netrec.js 产出）：
+            kind: "browser"   固定标记，与 netrec 的 form/xhr 区分
+            method / url / status
+            req_headers       请求头全量（复刻纯脚本时逐字重放用）
+            resp_headers      响应头全量（Set-Cookie 链在这里：放行票、WAF cookie）
+            post_data         请求体（JSON / 表单 / 原文）
+            resp_body         响应体（截断，文本类才记；二进制只记长度）
+        失败不抛异常：记录器坏了不能拖垮抓取主流程。
+        """
         try:
             self.requests.append({
                 "method": response.request.method,
@@ -254,6 +269,50 @@ class PageSession:
                 "kind": response.request.resource_type,
             })
             del self.requests[:-160]
+        except Exception:
+            pass
+        self._record_net(response)
+
+    def _record_net(self, response: Any) -> None:
+        """把一条响应压成 net.jsonl 记录。只记文本类响应体，截断保护。"""
+        try:
+            req = response.request
+            rec: Dict[str, Any] = {
+                "kind": "browser",
+                "t": datetime.now().strftime("%H:%M:%S.%f")[:-3],
+                "method": req.method,
+                "url": response.url,
+                "status": response.status,
+                "resource": response.request.resource_type,
+            }
+            try:
+                rec["req_headers"] = req.all_headers()
+            except Exception:
+                rec["req_headers"] = {}
+            try:
+                rec["resp_headers"] = response.all_headers()
+            except Exception:
+                rec["resp_headers"] = {}
+            try:
+                post = req.post_data
+                rec["post_data"] = post if isinstance(post, str) else ("" if post is None else str(post))
+            except Exception:
+                rec["post_data"] = ""
+            # 响应体：只记文本类（html/json/xml/text/js/css）；二进制只记长度
+            ctype = str(rec["resp_headers"].get("content-type") or "")
+            if any(x in ctype for x in ("html", "json", "xml", "text", "javascript")):
+                try:
+                    body = response.text()
+                    if len(body) > self.NET_BODY_MAX:
+                        body = body[:self.NET_BODY_MAX] + "…"
+                    rec["resp_body"] = body
+                except Exception:
+                    rec["resp_body"] = ""
+            else:
+                rec["resp_body_len"] = -1
+            d = self.run_dir / "net.jsonl"
+            with d.open("a", encoding="utf-8") as fh:
+                fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
         except Exception:
             pass
 

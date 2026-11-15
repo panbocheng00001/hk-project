@@ -102,9 +102,9 @@ LOG_DIR.mkdir(exist_ok=True)
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36")
 
-ABS3 = "https://abs3.example.test"
-ABS4 = "https://abs4.example.test"
-ABS1 = "https://abs1.example.test"
+ABS3 = "https://abs3.td.gov.hk"
+ABS4 = "https://abs4.td.gov.hk"
+ABS1 = "https://abs1.td.gov.hk"
 
 ENTRY_SEED = ABS3 + "/?lang=sc"
 QUEUE_ENTRY = (ABS3 + "/SelectCountry?"
@@ -112,9 +112,9 @@ QUEUE_ENTRY = (ABS3 + "/SelectCountry?"
 STEP1_ENTRY = (ABS1 + "/tdab2/tdabs_di_external/AdminServlet"
                "?cmd=cmdIntoSelectAuthDI&func=apply&auth=withOutIas"
                "&country=mainland&lang=sc")
-QUOTA_CMD = ("https://abs2.example.test/tdab2/tdabs_di_external/AdminServlet_schinese"
+QUOTA_CMD = ("https://abs1.td.gov.hk/tdab2/tdabs_di_external/AdminServlet_schinese"
              "?cmd=cmdGetOfficeQuotaDIAction")
-STATUS_CMD = ("https://abs1.example.test/tdab2/tdabs_di_external/AdminServlet_tchinese"
+STATUS_CMD = ("https://abs1.td.gov.hk/tdab2/tdabs_di_external/AdminServlet_tchinese"
               "?cmd=cmdGetOfficeBookingStatusAction&serviceTypeCode=DI"
               "&storedAppointmentOperation=A"
               "&storedAppointmentExpiryDate={expiry}&enablePick=N")
@@ -135,7 +135,9 @@ CAPTCHA_SIGNS = [
 ]
 CAPTCHA_REJECT = [r"驗證碼(錯誤|不正確|已過期)", r"验证码(错误|不正确|已过期)",
                   r"captcha\s*(invalid|failed|expired|required)",
-                  r"reCAPTCHA|MTCaptcha\s*(failed|required)"]
+                  # 只匹配「reCAPTCHA/MTCaptcha + 拒绝词」的完整句式；排队页里
+                  # reCaptchaSource/reCaptchaHost 这类配置键不算命中
+                  r"(?:reCAPTCHA|MTCaptcha)\s*(?:\w+\s+){0,3}(?:failed|required)"]
 
 QS_INQUEUE = 2
 QS_SERVED = 3
@@ -351,12 +353,34 @@ class Sniper:
     def classify(self, r) -> int:
         text = (r.text or "")[:8000]
         if r.status_code == 412 or any(m in text for m in WAF_MARKERS):
+            self._handoff_waf(r)
             return 41
         if any(m.lower() in text.lower() for m in RESTRICTED_MARKERS):
+            self._handoff_waf(r, restricted=True)
             return 40
         if r.status_code in (502, 503, 504):
             return 30
         return 0
+
+    def _handoff_waf(self, r, restricted: bool = False) -> None:
+        """WAF 挑战/出口被限：落交接包（含挑战页 HTML），等窗口或人工处理。"""
+        # 节流：同一分钟只落一次，轮询场景不刷屏
+        now = time.time()
+        last = getattr(self, "_last_waf_handoff", 0)
+        if now - last < 60:
+            return
+        self._last_waf_handoff = now
+        try:
+            from handoff import save as handoff_save
+            kind = "restricted-exit" if restricted else "waf-412-challenge"
+            handoff_save(kind, self, html=(r.text or "")[:200000],
+                         todo=("出口被限流，换出口或等窗口；"
+                               if restricted else
+                               "WAF 412 挑战窗口，等窗口开（edge_window_watch）或浏览器接力；"),
+                         extra={"status": getattr(r, "status_code", 0),
+                                "url": getattr(r, "url", "")[:200]})
+        except Exception:
+            pass
 
     @staticmethod
     def _decode(content: bytes) -> str:
@@ -389,14 +413,19 @@ class Sniper:
         return ""
 
     def _captcha_alarm(self, kind: str, body: str, tag: str) -> None:
-        """撞到验证码：落证据 + 告警 + 通知，然后**停手**（不重试，越试越死）。"""
+        """撞到验证码：落证据 + 交接登记 + 通知，然后**停手**（不重试，越试越死）。"""
         p = LOG_DIR / f"captcha-{tag}-{time.strftime('%H%M%S')}.html"
         p.write_text(body or "", encoding="utf-8")
         self.log(f"!! 撞到验证码：{kind}（证据 {p.name}）", "!!")
-        self.log("   纯 HTTP 产不出 captchaToken；按下面顺序动手：", "!!")
-        self.log("   ① 同会话交给浏览器：runs/rev/grab_page.py 导出 cookie → 人验证交互", "!!")
-        self.log("   ② 或接识别服务：MTCaptcha 用 sitekey+pageurl 换 token", "!!")
-        self.log("   ③ 第 1 步的 token 实测非强制，可先空着提交试一次", "!!")
+        # 统一交接：证据包 + 会话票 + 续跑指令落到 runs/handoff/
+        try:
+            from handoff import save as handoff_save
+            handoff_save(f"captcha-{tag}", self, html=body or "",
+                         todo=f"处理 {kind} 验证码（拖滑块/点选/OTP），完后续跑",
+                         extra={"captcha_kind": kind, "evidence": p.name})
+        except Exception:
+            pass
+        self.log("   纯 HTTP 产不出 captchaToken；交接包已落 runs/handoff/，按 TODO.md 动手", "!!")
         try:
             import notifier
             notifier.captcha_need_human(kind)
@@ -406,7 +435,7 @@ class Sniper:
             (LOG_DIR / "ALERT.md").write_text(
                 f"# 验证码告警 {time.strftime('%Y-%m-%d %H:%M:%S')}\n\n"
                 f"- 类型：`{kind}`\n- 证据：`{p.name}`\n"
-                f"- 处置：浏览器接手 / 识别服务 / 空 token 先试\n",
+                f"- 处置：见 runs/handoff/ 最新目录的 TODO.md\n",
                 encoding="utf-8")
         except Exception:
             pass
@@ -540,15 +569,45 @@ class Sniper:
         return 0
 
     # ------------------------------------------------------------ ④ 排队监控
+    # 放行机制（2026-11-15 实测）：
+    #   · 轮询必须带浏览器同款 POST body（isClientRedayToRedirect 等），
+    #     否则服务端永远回 QueueState=2 不放行
+    #   · 首个 status 响应的 X-Queueit-Queueitem-V2 头要缓存并在后续请求回传
+    #   · 放行 = 响应里出现 redirectUrl（含 queueittoken）；GET 它时服务端用
+    #     Set-Cookie 下发 QueueITAccepted-... 票（Domain=td.gov.hk），那张票
+    #     才是进业务站的凭证
+    STATUS_BODY = {
+        "targetUrl": "",
+        "customUrlParams": "",
+        "layoutVersion": 181243834755,
+        "layoutName": "PRD_ABS_DI_WORKINGDAY",
+        "isClientRedayToRedirect": True,
+        "isBeforeOrIdle": False,
+    }
+    QUEUE_ITEM_HEADER = "X-Queueit-Queueitem-V2"
+
     def status(self, n: int = 0) -> tuple[int, Status]:
         url = (f"{ABS4}/spa-api/queue/{self.ctx.customer}/{self.ctx.event}/"
-               f"{self.ctx.queue_id}/status")
-        r = self._post(url, json={}, headers={
-            "Accept": "application/json", "Referer": ABS3 + "/"})
+               f"{self.ctx.queue_id}/status"
+               f"?cid=en-US&l={self.STATUS_BODY['layoutName']}"
+               f"&targetUrl={self._https_target()}&sdkVersion=")
+        headers = {"Accept": "application/json", "Referer": ABS3 + "/",
+                   "Content-Type": "application/json", "Origin": ABS4}
+        cached = getattr(self, "_qi_header", {}).get(self.ctx.queue_id)
+        if cached:
+            headers[self.QUEUE_ITEM_HEADER] = cached
+        body = dict(self.STATUS_BODY)
+        body["targetUrl"] = self._https_target()
+        r = self._post(url, json=body, headers=headers)
         st = Status(n=n, raw_len=len(r.content))
         code = self.classify(r)
         if code:
             return code, st
+        qi = r.headers.get(self.QUEUE_ITEM_HEADER)
+        if qi:
+            if not hasattr(self, "_qi_header"):
+                self._qi_header = {}
+            self._qi_header[self.ctx.queue_id] = qi
         try:
             j = r.json()
         except Exception:
@@ -565,6 +624,27 @@ class Sniper:
         st.expected_utc = t.get("expectedServiceTimeUTC")
         st.window_start_utc = t.get("windowStartTimeUTC")
         return 0, st
+
+    def _https_target(self) -> str:
+        """排队目标一律回 https 形态：abs3 的 80 端口不通，http:// 目标连不上。"""
+        t = self.ctx.target or QUEUE_ENTRY
+        return "https://" + t[len("http://"):] if t.startswith("http://") else t
+
+    def claim_release_ticket(self, redirect_url: str) -> int:
+        """GET 放行链接：服务端经 Set-Cookie 下发 QueueITAccepted 票。
+
+        返回 0 = 票已入 jar；后续对 abs3 的普通 GET 不再被弹回排队。
+        """
+        r = self._get(self._https_target_url(redirect_url), allow_redirects=False)
+        names = {c.name for c in getattr(self.s.cookies, "jar", [])}
+        ok = any(n.startswith("QueueITAccepted") for n in names)
+        self.log(f"④ 放行票 GET → {r.status_code} "
+                 f"ticket={'有' if ok else '无'}", "4")
+        return 0 if ok else 20
+
+    @staticmethod
+    def _https_target_url(url: str) -> str:
+        return "https://" + url[len("http://"):] if url.startswith("http://") else url
 
     def watch(self, minutes: float = 10.0, interval: float = 3.0,
               max_errors: int = 3) -> tuple[int, Status]:
@@ -589,11 +669,15 @@ class Sniper:
                      f"inQ={st.users_in_queue} eta={st.expected_utc}", ".")
             self.log.json({"phase": "status", **asdict(st)})
             if st.released:
-                # 放行那一刻必须改道到 redirectUrl：Queue-it 的放行票（QueueITAccepted）
-                # 是在 GET 这个 URL 时由 Set-Cookie 下发的，回敲排队入口只会重新排一次。
+                # 放行那一刻必须 GET redirectUrl 拿 QueueITAccepted 票：
+                # 票经 Set-Cookie 下发（Domain=td.gov.hk），拿到后业务入口
+                # 不再弹回排队。回敲排队入口本身只会重新排一次。
                 if st.redirect_url:
-                    self.ctx.target = st.redirect_url
-                self.log(f"④ 已放行：redirectUrl={st.redirect_url} page={st.page_class}", "√")
+                    self.ctx.target = self._https_target_url(st.redirect_url)
+                    self.claim_release_ticket(st.redirect_url)
+                    # 票入袋后，真正要进的是 target 本身（去 token 后的业务页）
+                    self.ctx.target = self._https_target()
+                self.log(f"④ 已放行：redirectUrl 有 token，票已入 jar", "√")
                 self.log(f"   ⑤ 将进 {self.ctx.target[:100]}", "5")
                 return 0, st
             time.sleep(interval + random.uniform(0, interval * 0.4))
@@ -601,14 +685,18 @@ class Sniper:
 
     # ------------------------------------------------------------ ⑤ 进入业务
     def enter(self) -> int:
-        target = self.ctx.target or QUEUE_ENTRY
-        if target.startswith("http://"):
-            target = "https://" + target[len("http://"):]
-        r = self._get(target, allow_redirects=True)
-        code = self.classify(r)
-        if code:
-            self.log(f"⑤ 进入业务被挡 {r.status_code} → {code}", "!")
-            return code
+        target = self._https_target()
+        # 放行后第一次 GET 可能落在 708 字节的 WAF 种 cookie 页；
+        # cookie 落袋后原 URL 重试一次即可拿到真实业务页。
+        for attempt in range(2):
+            r = self._get(target, allow_redirects=True)
+            code = self.classify(r)
+            if code:
+                self.log(f"⑤ 进入业务被挡 {r.status_code} → {code}", "!")
+                return code
+            if len(r.content) > 2000 or attempt == 1:
+                break
+            time.sleep(1.0)
         p = LOG_DIR / f"enter-{time.strftime('%H%M%S')}.html"
         p.write_text(r.text or "", encoding="utf-8", errors="ignore")
         qi = [n for n in ("QueueITAccepted-SDFrts345E-V3_", "urltoken")
@@ -668,6 +756,13 @@ class Sniper:
                     return self.step1(app=app, captcha_token=captcha_token)
                 return 44, html
             self.log("⑥ step1 页面里没有 frmAppointment（结构可能变了）", "!")
+            try:
+                from handoff import save as handoff_save
+                handoff_save("unknown-page-step1", self, html=html,
+                             todo="step1 页面结构变了，人工看 page.html 确认新形态后更新解析",
+                             extra={"marker_missing": "frmAppointment"})
+            except Exception:
+                pass
             return 20, html
 
         fields: dict[str, str] = {}
@@ -755,6 +850,10 @@ class Sniper:
         code = self.classify(r)
         if code:
             return {"error": code}
+        if r.status_code in (301, 302, 303, 307):
+            # 会话没放行/票丢失：Location 指回入口页。直接报 42，调用方自行判断
+            self.log(f"⑦ 名额概览被弹回 {r.headers.get('Location','')[:80]}", "!")
+            return {"error": 42}
         body = self._decode(r.content)
         p = LOG_DIR / f"booking-{time.strftime('%H%M%S')}.html"
         p.write_text(body, encoding="utf-8")

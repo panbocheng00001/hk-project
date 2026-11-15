@@ -1,34 +1,34 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-flow_verify.py —— 单 IP 全链路逐步骤自检（专门留一台机器验脚本，不名额监测）
+flow_verify.py â€”â€” å• IP å…¨é“¾è·¯é€æ­¥éª¤è‡ªæ£€ï¼ˆä¸“é—¨ç•™ä¸€å°æœºå™¨éªŒè„šæœ¬ï¼Œä¸åé¢ç›‘æµ‹ï¼‰
 ===========================================================================
-把整条链路拆成 7 个可单独断言的点，每一步都给 PASS / FAIL / SKIP + 耗时 + 证据：
+æŠŠæ•´æ¡é“¾è·¯æ‹†æˆ 7 ä¸ªå¯å•ç‹¬æ–­è¨€çš„ç‚¹ï¼Œæ¯ä¸€æ­¥éƒ½ç»™ PASS / FAIL / SKIP + è€—æ—¶ + è¯æ®ï¼š
 
-  S1 WAF 落地      abs3/?lang=sc                       断言 200 且下发 HWWAFSESID
-  S2 排队发现      abs3/SelectCountry                  断言 302 且 Location 含 c/e/t
-  S3 取号          abs4/spa-api/queue/…/enqueue        断言 200 且返回 queueId
-  S4 排队状态      abs4/spa-api/queue/…/{id}/status    断言 200 且含 QueueState/forecastStatus
-  S5 进业务        {t}                                 需放行 / 需会话，否则 SKIP
-  S6 判号          AdminServlet_<lang>?cmd=cmdGetOfficeQuotaDIAction
-                                                       断言 200 且能判出「有名额/无名额」+ TrackId
-  S7 名额概览      cmdGetOfficeBookingStatusAction     断言 200 且解析出办事处与时段行
+  S1 WAF è½åœ°      abs3/?lang=sc                       æ–­è¨€ 200 ä¸”ä¸‹å‘ HWWAFSESID
+  S2 æŽ’é˜Ÿå‘çŽ°      abs3/SelectCountry                  æ–­è¨€ 302 ä¸” Location å« c/e/t
+  S3 å–å·          abs4/spa-api/queue/â€¦/enqueue        æ–­è¨€ 200 ä¸”è¿”å›ž queueId
+  S4 æŽ’é˜ŸçŠ¶æ€      abs4/spa-api/queue/â€¦/{id}/status    æ–­è¨€ 200 ä¸”å« QueueState/forecastStatus
+  S5 è¿›ä¸šåŠ¡        {t}                                 éœ€æ”¾è¡Œ / éœ€ä¼šè¯ï¼Œå¦åˆ™ SKIP
+  S6 åˆ¤å·          AdminServlet_<lang>?cmd=cmdGetOfficeQuotaDIAction
+                                                       æ–­è¨€ 200 ä¸”èƒ½åˆ¤å‡ºã€Œæœ‰åé¢/æ— åé¢ã€+ TrackId
+  S7 åé¢æ¦‚è§ˆ      cmdGetOfficeBookingStatusAction     æ–­è¨€ 200 ä¸”è§£æžå‡ºåŠžäº‹å¤„ä¸Žæ—¶æ®µè¡Œ
 
-用法
+ç”¨æ³•
 ----
-    # 只验 ①~④（不需要会话，随时可跑）
+    # åªéªŒ â‘ ~â‘£ï¼ˆä¸éœ€è¦ä¼šè¯ï¼Œéšæ—¶å¯è·‘ï¼‰
     python flow_verify.py
 
-    # 带上浏览器导出的 cookie，连 ⑤~⑦ 一起验
+    # å¸¦ä¸Šæµè§ˆå™¨å¯¼å‡ºçš„ cookieï¼Œè¿ž â‘¤~â‘¦ ä¸€èµ·éªŒ
     python flow_verify.py --cookies runs/rev/browser_cookies.json
 
-    # 走代理验（跟正式名额监测同一条链路）
+    # èµ°ä»£ç†éªŒï¼ˆè·Ÿæ­£å¼åé¢ç›‘æµ‹åŒä¸€æ¡é“¾è·¯ï¼‰
     python flow_verify.py --cookies runs/rev/browser_cookies.json --proxy http://ip:port
 
-    # 连续验（每 60 秒一轮，最多 30 轮；任何一步退化立刻报）
+    # è¿žç»­éªŒï¼ˆæ¯ 60 ç§’ä¸€è½®ï¼Œæœ€å¤š 30 è½®ï¼›ä»»ä½•ä¸€æ­¥é€€åŒ–ç«‹åˆ»æŠ¥ï¼‰
     python flow_verify.py --cookies ... --loop 60 --rounds 30
 
-退出码：0 全通 / 42 链路通但未放行（S5~S7 SKIP） / 其他 = 第一个失败步骤的码
+é€€å‡ºç ï¼š0 å…¨é€š / 42 é“¾è·¯é€šä½†æœªæ”¾è¡Œï¼ˆS5~S7 SKIPï¼‰ / å…¶ä»– = ç¬¬ä¸€ä¸ªå¤±è´¥æ­¥éª¤çš„ç 
 """
 
 from __future__ import annotations
@@ -49,7 +49,7 @@ OUT.mkdir(parents=True, exist_ok=True)
 
 def step(name: str, code: int, detail: str, sec: float) -> dict:
     status = "PASS" if code == 0 else ("SKIP" if code == -1 else "FAIL")
-    icon = {"PASS": "√", "FAIL": "×", "SKIP": "-"}[status]
+    icon = {"PASS": "âˆš", "FAIL": "Ã—", "SKIP": "-"}[status]
     print(f"  {icon} {name:14} {sec:5.2f}s  {detail}", flush=True)
     return {"step": name, "status": status, "sec": round(sec, 2),
             "code": code, "detail": detail}
@@ -64,7 +64,7 @@ def run_once(proxy: str, cookies: str, app: dict | None) -> tuple[int, list[dict
     # ---------------- S1
     t0 = time.time()
     try:
-        r = sp._get("https://abs3.example.test/?lang=sc", allow_redirects=True)
+        r = sp._get("https://abs3.td.gov.hk/?lang=sc", allow_redirects=True)
         ck = list(sp.s.cookies.keys())
         c = sp.classify(r)
         ok = (r.status_code == 200 and "HWWAFSESID" in ck)
@@ -80,14 +80,14 @@ def run_once(proxy: str, cookies: str, app: dict | None) -> tuple[int, list[dict
     # ---------------- S2
     t0 = time.time()
     try:
-        r = sp._get("https://abs3.example.test/SelectCountry?"
+        r = sp._get("https://abs3.td.gov.hk/SelectCountry?"
                     "lang=sc&actionType=apply&authMethod=withOutIas",
                     allow_redirects=False)
         loc = r.headers.get("Location", "")
         c = sp.classify(r)
         if r.status_code == 200:
-            rows.append(step("S2 排队发现", 0, "200（已在放行态，跳过排队）", time.time() - t0))
-            sp.ctx.target = "https://abs3.example.test/SelectCountry?" \
+            rows.append(step("S2 æŽ’é˜Ÿå‘çŽ°", 0, "200ï¼ˆå·²åœ¨æ”¾è¡Œæ€ï¼Œè·³è¿‡æŽ’é˜Ÿï¼‰", time.time() - t0))
+            sp.ctx.target = "https://abs3.td.gov.hk/SelectCountry?" \
                             "lang=sc&actionType=apply&authMethod=withOutIas"
             released = True
         elif r.status_code in (301, 302, 303):
@@ -97,16 +97,16 @@ def run_once(proxy: str, cookies: str, app: dict | None) -> tuple[int, list[dict
             sp.ctx.event = (q.get("e") or [""])[0]
             sp.ctx.target = (q.get("t") or [""])[0]
             ok = bool(sp.ctx.customer and sp.ctx.event)
-            rows.append(step("S2 排队发现", 0 if ok else 20,
+            rows.append(step("S2 æŽ’é˜Ÿå‘çŽ°", 0 if ok else 20,
                              f"302 c={sp.ctx.customer} e={sp.ctx.event}", time.time() - t0))
             released = False
             if not ok:
                 return 20, rows
         else:
-            rows.append(step("S2 排队发现", c or 20, f"{r.status_code}", time.time() - t0))
+            rows.append(step("S2 æŽ’é˜Ÿå‘çŽ°", c or 20, f"{r.status_code}", time.time() - t0))
             return c or 20, rows
     except Exception as e:
-        rows.append(step("S2 排队发现", 20, f"{type(e).__name__}", time.time() - t0))
+        rows.append(step("S2 æŽ’é˜Ÿå‘çŽ°", 20, f"{type(e).__name__}", time.time() - t0))
         return 20, rows
 
     # ---------------- S3
@@ -114,45 +114,63 @@ def run_once(proxy: str, cookies: str, app: dict | None) -> tuple[int, list[dict
         t0 = time.time()
         try:
             c = sp.enqueue()
-            rows.append(step("S3 取号", c,
+            rows.append(step("S3 å–å·", c,
                              f"queueId={sp.ctx.queue_id or '-'}", time.time() - t0))
             if c:
                 return c, rows
         except Exception as e:
-            rows.append(step("S3 取号", 20, f"{type(e).__name__}", time.time() - t0))
+            rows.append(step("S3 å–å·", 20, f"{type(e).__name__}", time.time() - t0))
             return 20, rows
 
         # ---------------- S4
         t0 = time.time()
         try:
-            c, st = sp.status(1)
-            ok = (c == 0 and st.queue_state is not None)
+            # 轮询最多 90 秒等放行（带 body+头缓存后，实测 5~6 次即放行）
+            deadline = time.time() + 90
+            poll = 0
+            c, st = 0, None
+            while time.time() < deadline:
+                poll += 1
+                c, st = sp.status(poll)
+                if c:
+                    break
+                if st.released:
+                    break
+                time.sleep(2)
+            ok = (c == 0 and (st.queue_state is not None or st.released))
             rows.append(step("S4 排队状态", 0 if ok else (c or 20),
-                             f"state={st.queue_state} forecast={st.forecast} "
-                             f"eta={st.expected_utc}", time.time() - t0))
+                             f"poll={poll} state={st.queue_state} forecast={st.forecast} "
+                             f"released={st.released}", time.time() - t0))
             if st.released:
                 released = True
+                if st.redirect_url:
+                    sp.claim_release_ticket(st.redirect_url)
+                    sp.ctx.target = sp._https_target()
             if not ok:
                 return c or 20, rows
         except Exception as e:
-            rows.append(step("S4 排队状态", 20, f"{type(e).__name__}", time.time() - t0))
+            rows.append(step("S4 æŽ’é˜ŸçŠ¶æ€", 20, f"{type(e).__name__}", time.time() - t0))
             return 20, rows
 
     # ---------------- S5
     t0 = time.time()
     if not released:
-        rows.append(step("S5 进业务", -1, "未放行，跳过（等 17:00 洗牌后再验）", time.time() - t0))
+        rows.append(step("S5 è¿›ä¸šåŠ¡", -1, "æœªæ”¾è¡Œï¼Œè·³è¿‡ï¼ˆç­‰ 17:00 æ´—ç‰ŒåŽå†éªŒï¼‰", time.time() - t0))
     else:
         try:
             c = sp.enter()
-            rows.append(step("S5 进业务", c, "业务页已落盘", time.time() - t0))
+            rows.append(step("S5 è¿›ä¸šåŠ¡", c, "ä¸šåŠ¡é¡µå·²è½ç›˜", time.time() - t0))
         except Exception as e:
-            rows.append(step("S5 进业务", 20, f"{type(e).__name__}", time.time() - t0))
+            rows.append(step("S5 è¿›ä¸šåŠ¡", 20, f"{type(e).__name__}", time.time() - t0))
+
+    # ---------------- S4b æ”¾è¡Œç¥¨
+    if released and hasattr(sp, "_qi_header") and sp.ctx.queue_id in sp._qi_header:
+        pass  # ç¥¨åœ¨ watch/enter é“¾è·¯é‡Œå·²ç”± claim_release_ticket è½è¢‹
 
     # ---------------- S6
     t0 = time.time()
     if not cookies and not released:
-        rows.append(step("S6 判号", -1, "没有会话 cookie，跳过", time.time() - t0))
+        rows.append(step("S6 åˆ¤å·", -1, "æ²¡æœ‰ä¼šè¯ cookieï¼Œè·³è¿‡", time.time() - t0))
     else:
         try:
             c, body = sp.step1(app=app)
@@ -161,27 +179,27 @@ def run_once(proxy: str, cookies: str, app: dict | None) -> tuple[int, list[dict
             m = re.search(r"TrackId:\s*([0-9\-a-f]+)", body or "")
             if m:
                 track = m.group(1)
-            rows.append(step("S6 判号", 0 if c in (0, 10) else c,
-                             f"{'有名额' if c == 0 else ('无名额' if c == 10 else '异常')} "
+            rows.append(step("S6 åˆ¤å·", 0 if c in (0, 10) else c,
+                             f"{'æœ‰åé¢' if c == 0 else ('æ— åé¢' if c == 10 else 'å¼‚å¸¸')} "
                              f"TrackId={track or '-'}", time.time() - t0))
         except Exception as e:
-            rows.append(step("S6 判号", 20, f"{type(e).__name__}", time.time() - t0))
+            rows.append(step("S6 åˆ¤å·", 20, f"{type(e).__name__}", time.time() - t0))
 
     # ---------------- S7
     t0 = time.time()
     if not cookies and not released:
-        rows.append(step("S7 名额概览", -1, "没有会话 cookie，跳过", time.time() - t0))
+        rows.append(step("S7 åé¢æ¦‚è§ˆ", -1, "æ²¡æœ‰ä¼šè¯ cookieï¼Œè·³è¿‡", time.time() - t0))
     else:
         try:
             st = sp.booking_status()
             err = st.get("error")
             ok = (not err) and (st.get("rows") or 0) > 0 and len(st.get("offices") or []) > 0
-            rows.append(step("S7 名额概览", 0 if ok else (err or 20),
+            rows.append(step("S7 åé¢æ¦‚è§ˆ", 0 if ok else (err or 20),
                              f"offices={len(st.get('offices') or [])} "
                              f"rows={st.get('rows')} free={len(st.get('free') or [])} "
-                             f"更新于 {st.get('updated') or '-'}", time.time() - t0))
+                             f"æ›´æ–°äºŽ {st.get('updated') or '-'}", time.time() - t0))
         except Exception as e:
-            rows.append(step("S7 名额概览", 20, f"{type(e).__name__}", time.time() - t0))
+            rows.append(step("S7 åé¢æ¦‚è§ˆ", 20, f"{type(e).__name__}", time.time() - t0))
 
     fails = [r for r in rows if r["status"] == "FAIL"]
     if fails:
@@ -200,7 +218,7 @@ def main() -> int:
     ap.add_argument("--proxy", default="")
     ap.add_argument("--cookies", default="")
     ap.add_argument("--worker-id", default="w1")
-    ap.add_argument("--loop", type=float, default=0, help="每轮间隔秒（0=只跑一次）")
+    ap.add_argument("--loop", type=float, default=0, help="æ¯è½®é—´éš”ç§’ï¼ˆ0=åªè·‘ä¸€æ¬¡ï¼‰")
     ap.add_argument("--rounds", type=int, default=1)
     ap.add_argument("--json", action="store_true")
     a = ap.parse_args()
@@ -214,12 +232,12 @@ def main() -> int:
     all_rows = []
     code = 0
     for i in range(1, max(1, a.rounds) + 1):
-        print(f"\n===== 第 {i}/{a.rounds} 轮  {time.strftime('%H:%M:%S')} "
-              f"proxy={a.proxy or '直连'} cookie={'有' if a.cookies else '无'} =====")
+        print(f"\n===== ç¬¬ {i}/{a.rounds} è½®  {time.strftime('%H:%M:%S')} "
+              f"proxy={a.proxy or 'ç›´è¿ž'} cookie={'æœ‰' if a.cookies else 'æ— '} =====")
         code, rows = run_once(a.proxy, a.cookies, app)
         all_rows.append({"round": i, "at": time.strftime("%H:%M:%S"),
                          "exit": code, "rows": rows})
-        print(f"  → 本轮结论：exit={code}")
+        print(f"  â†’ æœ¬è½®ç»“è®ºï¼šexit={code}")
         if code not in (0, 42):
             break
         if i < a.rounds:

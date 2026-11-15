@@ -1,0 +1,14 @@
+{
+  "note": "全流程复跑脚本（含网络全量记录）：首页 -> 勾条款 -> 预约 -> 认证页选「不使用认证App」-> 继续 -> 排队等待放行 -> 选国家页选「中国内地」-> 继续 -> 抓旧站表单页。每次 walk 自动落 net.jsonl（请求头+体、响应头+体四件套）。",
+  "steps": [
+    { "check": "css=input[name=conditionsCheck]" },
+    { "click": "css=button:has-text('预约')", "snapshot": "02-auth" },
+    { "check": "css=input[name='_r_8_'] >> nth=1" },
+    { "click": "css=button:has-text('继续')", "snapshot": "03-queue" },
+    { "wait_for": "css=input[name=_r_3_]" },
+    { "check": "css=input[name='_r_3_'] >> nth=0", "snapshot": "04-country" },
+    { "click": "css=button:has-text('继续')", "snapshot": "05-form" },
+    { "wait": 1500 },
+    { "snapshot": "05b-form-settled" }
+  ]
+}

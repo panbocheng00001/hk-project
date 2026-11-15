@@ -179,12 +179,38 @@ def cmd_walk(args: argparse.Namespace) -> int:
         for position, step in enumerate(steps, start=1):
             phase = str(step.get("snapshot") or "")
             action = "click" if "click" in step else "goto" if "goto" in step \
-                else "fill" if "fill" in step else "snapshot" if phase else ""
+                else "fill" if "fill" in step else "check" if "check" in step \
+                else "wait_for" if "wait_for" in step else "snapshot" if phase else ""
 
             if "wait" in step:
                 session.page.wait_for_timeout(int(step["wait"]))
                 continue
-            if action == "click":
+            if "wait_for" in step:
+                selector = str(step["wait_for"])
+                if not selector.startswith(("css=", "css:")):
+                    selector = "css=" + selector
+                print(f"步骤 {position}：等元素 {selector}")
+                try:
+                    session.page.wait_for_selector(
+                        selector[4:], state="visible", timeout=180000)
+                    session.settle()
+                except Exception as exc:
+                    print(f"  等元素超时：{type(exc).__name__}（排队未放行或页面已变）",
+                          file=sys.stderr)
+            if action == "check":
+                target = str(step["check"])
+                print(f"步骤 {position}：勾选 {target}")
+                locator = (session.page.locator(target[4:])
+                           if target.startswith(("css=", "css:"))
+                           else session.page.locator(target))
+                try:
+                    locator.first.check(timeout=session.config.timeout_ms)
+                    session.settle()
+                except Exception as exc:
+                    print(f"  勾选失败：{type(exc).__name__}：{exc}", file=sys.stderr)
+            elif action == "wait_for":
+                print(f"步骤 {position}：抓取当前页 {phase or 'wait_for'}")
+            elif action == "click":
                 target = str(step["click"])
                 print(f"步骤 {position}：点击 {target}")
                 session.click(target)
