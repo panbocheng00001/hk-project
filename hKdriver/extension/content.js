@@ -1,4 +1,4 @@
-// content.js —— 页面内状态机（全程不经过 CDP）
+﻿// content.js —— 页面内状态机（全程不经过 CDP）
 // 思路：每 1.2 秒判断一次「现在在哪一步」，执行该步动作，然后等页面自己跳。
 // 所有导航都由页面自身的点击/跳转完成，扩展不调用任何调试协议。
 
@@ -270,7 +270,7 @@
     // 判据一：出现「拖动滑块」类文案（中/英）。
     // 判据二（2026-11-16 17:19 补）：挑战页 lang=en，innerText 里未必有上面那些词，
     //   但页面一定有且只有一个大 canvas —— 业务页没有 canvas，所以按 canvas 兜底最稳。
-    if (/调整滑块|拖动滑块|拖曳滑块|滑动滑块|adjust\s+the\s+slider|drag\s*the\s*slider|slide\s*to\s*verify|two\s+shapes/i.test(text())) {
+    if (/调整滑块|拖动滑块|拖曳滑块|滑动滑块|adjust\s+the\s+slider|drag\s*the\s*slider|slide\s*to\s*verify|two\s+shapes|solid\s+shape\s+lands|shapes\s+overlap|move\s+the\s+slider/i.test(text())) {
       return "waf_captcha";
     }
     try {
@@ -1332,3 +1332,4 @@
     document.title = "[EXT-OK] " + document.title;
   }
 })();
+

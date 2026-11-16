@@ -255,17 +255,24 @@
     if (Math.abs(p.x - hx) > 26 || Math.abs(p.y - TRACK.y) > 26) return;
     dragging = true;
     dragStartX = p.x; dragStartHx = hx;
-    c.setPointerCapture(e.pointerId);
+    // 合成 PointerEvent（求解器的 synthetic 路径）没有真实 pointerId，
+    // setPointerCapture 会抛错；不能让这个异常打断拖动，所以包一层。
+    try { c.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
   });
 
-  c.addEventListener("pointermove", (e) => {
+  // move/up 挂在 window 上（捕获阶段）：这样合成事件和可信事件都能走到，
+  // 也不依赖 pointer capture 是否成功（真实 WAF 也是这么吃的）。
+  function onMove(e) {
     if (!dragging) return;
     const p = pos(e);
     hx = clamp(dragStartHx + (p.x - dragStartX), TRACK.x0 + HANDLE_D / 2, TRACK.x1 - HANDLE_D / 2);
     draw();
-  });
-
-  c.addEventListener("pointerup", () => { dragging = false; });
+  }
+  function onUp() { dragging = false; }
+  window.addEventListener("pointermove", onMove, true);
+  window.addEventListener("pointerup", onUp, true);
+  window.addEventListener("mousemove", (e) => { if (dragging) onMove(e); }, true);
+  window.addEventListener("mouseup", onUp, true);
 
   c.addEventListener("click", (e) => {
     const p = pos(e);
@@ -296,6 +303,17 @@
     newTask(null);
   });
 
+  // 事件计数：用来区分「solver 根本没发事件」和「发了但没命中手柄」
+  const evCount = {};
+  const cnt = (k) => { evCount[k] = (evCount[k] || 0) + 1; };
+  window.addEventListener("pointerdown", () => cnt("window.pointerdown"), true);
+  window.addEventListener("mousedown", () => cnt("window.mousedown"), true);
+  window.addEventListener("pointermove", () => cnt("window.pointermove"), true);
+  window.addEventListener("mousemove", () => cnt("window.mousemove"), true);
+  window.addEventListener("touchstart", () => cnt("window.touchstart"), true);
+  c.addEventListener("pointerdown", (e) => { cnt("canvas.pointerdown"); evCount.lastPD = { x: e.clientX, y: e.clientY, hx: hx, ty: TRACK.y }; }, true);
+  c.addEventListener("mousedown", () => cnt("canvas.mousedown"), true);
+
   // 启动
   newTask(null);
   window.__MOCK__ = {
@@ -303,9 +321,12 @@
     get hx() { return hx; },
     get attempts() { return attempts; },
     get passed() { return passed; },
+    get events() { return evCount; },
+    get dragging() { return dragging; },
   };
 })();
 </script>
 </body>
 </html>
+
 

@@ -1,4 +1,4 @@
-// captcha_solver.js —— 验证码自动识别与求解（主文档 + 任意 iframe 都跑一份）
+﻿// captcha_solver.js —— 验证码自动识别与求解（主文档 + 任意 iframe 都跑一份）
 // ============================================================================
 // 为什么单独成文件：
 //   原来 content.js 只有主文档会解滑块（doWafCaptcha），iframe 分支只上报一句
@@ -524,7 +524,8 @@
       data = ctx.getImageData(0, 0, c.width, c.height).data;
     } catch (e) { return null; }
     const w = c.width, h = c.height;
-    const y0 = Math.floor(h * 0.70);
+    const y0 = Math.floor(h * 0.76);
+    const y1 = Math.floor(h * 0.86);   // 只扫滑轨那一条：下方蓝色 Submit 不能被当手柄
     const isBlue = (x, y) => {
       const i = (y * w + x) * 4;
       const r = data[i], g = data[i + 1], b = data[i + 2];
@@ -532,14 +533,14 @@
       return b > 120 && b - r > 60 && b - g > 40;
     };
     let maxX = -1;
-    for (let y = y0; y < h; y++) {
+    for (let y = y0; y < y1; y++) {
       for (let x = 0; x < w; x++) {
         if (isBlue(x, y) && x > maxX) maxX = x;
       }
     }
     if (maxX < 0) return null;
     let sumY = 0, n = 0;
-    for (let y = y0; y < h; y++) {
+    for (let y = y0; y < y1; y++) {
       for (let x = Math.max(0, maxX - 12); x <= maxX; x++) {
         if (isBlue(x, y)) { sumY += y; n++; }
       }
@@ -768,8 +769,8 @@
       const preferTrusted = (i >= 1) && localStorage.getItem("tdabs_trusted_input") !== "0";
       let how = "synthetic";
       if (pt.canvasOnly) {
-        if (await dragTrustedTouch(pt, sliderDx)) how = "touch";
-        else if (await dragTrusted(pt, sliderDx)) how = "debugger";
+        if (await dragTrusted(pt, sliderDx)) how = "debugger";        // 桌面场景先 mouse（21:2x 实测 touch 返回 ok 但零位移）
+        else if (await dragTrustedTouch(pt, sliderDx)) how = "touch";
         else await dragSynthetic(pt, sliderDx, c);
       } else if (preferTrusted) {
         const okT = await dragTrusted(pt, sliderDx);
@@ -937,3 +938,4 @@
     _track: track
   };
 })();
+

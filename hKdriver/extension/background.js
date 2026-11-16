@@ -1,4 +1,4 @@
-// background.js —— 扩展与本地服务（127.0.0.1:8765）之间的唯一通道。
+﻿// background.js —— 扩展与本地服务（127.0.0.1:8765）之间的唯一通道。
 // 为什么放在 background 而不是 content：
 //   content script 的 fetch 受页面 CORS 限制；background 有 host_permissions，不受限。
 
@@ -249,6 +249,81 @@ function dbgAttach(tabId) {
 }
 
 try {
+// ---------------------------------------------------------------- 网络录制
+// 2026-11-16 21:5x 补：webRequest 只能拿到 URL/状态码/表单，拿不到 JSON body 与响应体，
+// 而 WAF 的验证码提交（POST /T7AyTrxoWxGd?sBCIo0XL=<140字符>）body 全是原始字节。
+// 这里用 debugger 的 Network 域补全：请求 postData + 响应 body + 完整 header。
+let NET_TAB = -1;
+const NET_BUF = [];
+const NET_REQMAP = new Map();
+let NET_FLUSHING = false;
+const NET_KEEP = /T7AyTrxoWxGd|RGOj2pQjqEKb|HWWAF|SelectCountry|SelectAuth|tddiabs|\/queue\//i;
+
+async function netFlush() {
+  if (!NET_BUF.length || NET_FLUSHING) return;
+  NET_FLUSHING = true;
+  const batch = NET_BUF.splice(0, NET_BUF.length);
+  try { await postJSON("/netlog", { events: batch }); } catch (e) { /* 离线不影响主流程 */ }
+  NET_FLUSHING = false;
+}
+
+async function netStart(tabId) {
+  if (NET_TAB === tabId) return;
+  try {
+    await dbgAttach(tabId);
+    DBG_TAB = tabId;
+    await dbgCmd(tabId, "Network.enable", {
+      maxTotalBufferSize: 20971520, maxResourceBufferSize: 5242880,
+    });
+    NET_TAB = tabId;
+    postJSON("/status", { stage: "netrec", msg: "Network 录制已开启 tab=" + tabId }).catch(() => {});
+  } catch (e) {
+    postJSON("/status", { stage: "netrec", msg: "Network 录制开启失败：" + String(e && e.message || e).slice(0, 120) }).catch(() => {});
+  }
+}
+
+try {
+  chrome.debugger.onEvent.addListener((src, method, params) => {
+    if (!NET_TAB || !src || src.tabId !== NET_TAB) return;
+    try {
+      if (method === "Network.requestWillBeSent") {
+        const r = params.request || {};
+        NET_REQMAP.set(params.requestId, r.url || "");
+        NET_BUF.push({
+          t: Date.now(), ph: "req2", m: r.method, rtype: params.type,
+          url: (r.url || "").slice(0, 500),
+          postData: r.postData ? String(r.postData).slice(0, 8000) : null,
+          hdrs: r.headers || {},
+        });
+        if (NET_BUF.length >= 8) netFlush();
+      } else if (method === "Network.responseReceived") {
+        const r = params.response || {};
+        NET_BUF.push({
+          t: Date.now(), ph: "resp2", s: r.status, rtype: params.type,
+          url: (r.url || "").slice(0, 500), mime: r.mimeType,
+          hdrs: r.headers || {}, reqId: params.requestId,
+        });
+        if (NET_BUF.length >= 8) netFlush();
+      } else if (method === "Network.loadingFinished") {
+        const u = NET_REQMAP.get(params.requestId) || "";
+        if (!NET_KEEP.test(u)) { NET_REQMAP.delete(params.requestId); return; }
+        dbgCmd(NET_TAB, "Network.getResponseBody", { requestId: params.requestId })
+          .then((b) => {
+            const body = b && (b.body || "");
+            NET_BUF.push({
+              t: Date.now(), ph: "body2", url: u.slice(0, 500),
+              base64: !!(b && b.base64Encoded),
+              len: body.length,
+              body: body ? String(body).slice(0, 20000) : "",
+            });
+            netFlush();
+          })
+          .catch(() => {});
+      }
+    } catch (e) { /* ignore */ }
+  });
+} catch (e) { /* ignore */ }
+
   chrome.debugger.onDetach.addListener((src) => {
     if (src && src.tabId === DBG_TAB) DBG_TAB = -1;
   });
@@ -327,6 +402,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
           const d = msg.data || {};
           await postJSON("/status", d);
           const tabId = sender && sender.tab ? sender.tab.id : -1;
+          // 首次收到 status 就把 debugger 的 Network 录制打开（幂等），把 body 落盘
+          if (tabId >= 0) netStart(tabId).catch(() => {});
           const changed = LAST_STAGE.get(tabId) !== d.stage;
           LAST_STAGE.set(tabId, d.stage);
           // 带 step 的 status 不再单独截图：同一次动作还会发一条 {type:"step"}，
