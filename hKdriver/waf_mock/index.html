@@ -1,0 +1,311 @@
+﻿<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>WAF shape-slider mock</title>
+<style>
+  html,body{margin:0;background:#eef1f5;font:14px/1.4 system-ui,sans-serif;color:#333}
+  .wrap{padding:24px;display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+  /* 复刻真实的 420×428 画布 */
+  #c{width:420px;height:428px;display:block;border-radius:12px;
+     background:#121a26;background-size:420px 428px;cursor:pointer;touch-action:none}
+  #swap{margin:0;background:#e9edf5;color:#345;border:1px solid #c8d2e0;border-radius:6px;
+        padding:6px 14px;cursor:pointer;font-size:12px}
+  #log{font:12px/1.5 ui-monospace,monospace;color:#556;white-space:pre-wrap;max-width:520px}
+  .ok{color:#1a7f37;font-weight:600}
+  .bad{color:#b42318;font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <canvas id="c" width="420" height="428"></canvas>
+  <!-- 复刻真实 DOM：这个按钮文案是「Try another verification」，它是换一题，不是提交 -->
+  <button id="swap" class="type-submit">Try another verification</button>
+  <div id="log"></div>
+</div>
+<script>
+(() => {
+  "use strict";
+  const W = 420, H = 428;
+  // ---- 实测几何（与线上一致）----
+  const TRACK = { y: 348, x0: 24, x1: 394 };
+  const HANDLE_D = 22;
+  const H0 = TRACK.x0 + 4;              // 手柄初始圆心 x ≈ 28
+  const RATIO = 0.317;                  // 手柄位移 → 图形位移
+  const SUBMIT = { cx: 210, cy: 402, w: 140, h: 36 };
+  const TOL = 6;                        // 重合判定容差（px）
+  const PROMPTS = [
+    "Move the slider so the solid shape lands on the hollow one.",
+    "Adjust the slider until the two shapes line up.",
+    "Drag the slider until the solid and hollow shapes overlap.",
+  ];
+  const COLORS = [
+    ["#f3e2a4", "#d66cbe"], ["#7ee0c2", "#c58cf0"], ["#f0b072", "#6ec6ff"],
+    ["#9be07a", "#f07aa8"], ["#ffd166", "#8bb8ff"], ["#c4a2ff", "#ffb38a"],
+  ];
+  const FAMS = ["quad", "tri", "penta", "hexa", "star"];
+
+  const c = document.getElementById("c");
+  const ctx = c.getContext("2d");
+  const logEl = document.getElementById("log");
+  const DIR = (new URLSearchParams(location.search).get("dir") === "neg") ? -1 : 1;
+
+  let task = null;      // {fam, solidX0, hollowX, solidC, hollowC, prompt, hx}
+  let hx = H0;          // 手柄圆心 x
+  let dragging = false;
+  let dragStartX = 0, dragStartHx = 0;
+  let done = false;
+  let attempts = 0, passed = 0;
+
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+  // ---------------------------------------------------------------- 形状路径
+  function path(fam, cx, cy, r) {
+    ctx.beginPath();
+    if (fam === "quad") {
+      ctx.rect(cx - r * .78, cy - r * .78, r * 1.56, r * 1.56);
+    } else if (fam === "tri") {
+      for (let i = 0; i < 3; i++) {
+        const a = -Math.PI / 2 + i * 2 * Math.PI / 3;
+        const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
+        i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+      }
+      ctx.closePath();
+    } else if (fam === "penta" || fam === "hexa") {
+      const n = fam === "penta" ? 5 : 6;
+      for (let i = 0; i < n; i++) {
+        const a = -Math.PI / 2 + i * 2 * Math.PI / n;
+        const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
+        i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+      }
+      ctx.closePath();
+    } else {  // star
+      const n = 5;
+      for (let i = 0; i < n * 2; i++) {
+        const rr = i % 2 ? r * .45 : r;
+        const a = -Math.PI / 2 + i * Math.PI / n;
+        const x = cx + rr * Math.cos(a), y = cy + rr * Math.sin(a);
+        i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+      }
+      ctx.closePath();
+    }
+  }
+
+  // ---------------------------------------------------------------- 背景层（深色 + 网格 + 空心轮廓）
+  function buildBg() {
+    const b = document.createElement("canvas");
+    b.width = W; b.height = H;
+    const g = b.getContext("2d");
+    g.fillStyle = "#121a26";
+    g.fillRect(0, 0, W, H);
+    // 网格
+    g.strokeStyle = "rgba(120,150,190,.10)";
+    g.lineWidth = 1;
+    for (let x = 23; x < W; x += 32) { g.beginPath(); g.moveTo(x + .5, 0); g.lineTo(x + .5, 320); g.stroke(); }
+    for (let y = 26; y < 320; y += 32) { g.beginPath(); g.moveTo(0, y + .5); g.lineTo(W, y + .5); g.stroke(); }
+    // 装饰折线
+    g.strokeStyle = "rgba(200,120,60,.35)";
+    g.beginPath(); g.moveTo(300, 20); g.lineTo(360, 60); g.lineTo(410, 30); g.stroke();
+    // 空心轮廓（目标）
+    g.strokeStyle = task.hollowC;
+    g.lineWidth = 2.4;
+    g.save();
+    g.translate(0, 0);
+    const old = ctx;                       // 复用 path() 需要 ctx，简单起见直接画
+    g.beginPath();
+    const fam = task.fam, cx = task.hollowX, cy = 160, r = 20;
+    if (fam === "quad") g.rect(cx - r * .78, cy - r * .78, r * 1.56, r * 1.56);
+    else if (fam === "tri" || fam === "penta" || fam === "hexa") {
+      const n = fam === "tri" ? 3 : fam === "penta" ? 5 : 6;
+      for (let i = 0; i < n; i++) {
+        const a = -Math.PI / 2 + i * 2 * Math.PI / n;
+        const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
+        i ? g.lineTo(x, y) : g.moveTo(x, y);
+      }
+      g.closePath();
+    } else {
+      const n = 5;
+      for (let i = 0; i < n * 2; i++) {
+        const rr = i % 2 ? r * .45 : r;
+        const a = -Math.PI / 2 + i * Math.PI / n;
+        const x = cx + rr * Math.cos(a), y = cy + rr * Math.sin(a);
+        i ? g.lineTo(x, y) : g.moveTo(x, y);
+      }
+      g.closePath();
+    }
+    g.stroke();
+    g.restore();
+    return b.toDataURL("image/png");
+  }
+
+  // ---------------------------------------------------------------- 前景层
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    // 文案
+    ctx.fillStyle = "rgba(255,255,255,.92)";
+    ctx.font = "13px system-ui,sans-serif";
+    ctx.textAlign = "left";
+    ctx.fillText(task.prompt, 14, 20);
+
+    // 实心形状（位置随手柄移动）
+    const solidX = task.solidX0 + (hx - H0) * RATIO * DIR;
+    task.solidX = solidX;
+    ctx.save();
+    ctx.fillStyle = task.solidC;
+    ctx.strokeStyle = task.solidC;
+    ctx.lineWidth = 2.4;
+    path(task.fam, solidX, 160, 20);
+    ctx.fill();
+    ctx.restore();
+
+    // 滑轨
+    ctx.strokeStyle = "rgba(203,213,225,.95)";
+    ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.moveTo(TRACK.x0, TRACK.y); ctx.lineTo(TRACK.x1, TRACK.y); ctx.stroke();
+    // 已拖部分
+    ctx.strokeStyle = "#2e5fd8";
+    ctx.beginPath(); ctx.moveTo(TRACK.x0, TRACK.y); ctx.lineTo(hx, TRACK.y); ctx.stroke();
+    // 手柄
+    ctx.beginPath();
+    ctx.arc(hx, TRACK.y, HANDLE_D / 2, 0, Math.PI * 2);
+    ctx.fillStyle = "#2e5fd8"; ctx.fill();
+    ctx.lineWidth = 3; ctx.strokeStyle = "#ffffff"; ctx.stroke();
+
+    // Submit
+    const x0 = SUBMIT.cx - SUBMIT.w / 2, y0 = SUBMIT.cy - SUBMIT.h / 2;
+    roundRect(x0, y0, SUBMIT.w, SUBMIT.h, 18);
+    ctx.fillStyle = "#2f6bd8"; ctx.fill();
+    ctx.fillStyle = "#fff";
+    ctx.font = "600 15px system-ui,sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("Submit", SUBMIT.cx, SUBMIT.cy + 5);
+
+    if (done) {
+      ctx.fillStyle = "rgba(26,127,55,.92)";
+      ctx.font = "700 22px system-ui,sans-serif";
+      ctx.fillText(passed ? "PASS" : "FAIL", W / 2, 250);
+    }
+  }
+
+  function roundRect(x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  // ---------------------------------------------------------------- 出题
+  function newTask(reason) {
+    const fam = FAMS[(Math.random() * FAMS.length) | 0];
+    const [solidC, hollowC] = COLORS[(Math.random() * COLORS.length) | 0];
+    // 实心在左、空心在右（可通过 dir=neg 反转，测方向自学习）
+    let solidX0, hollowX;
+    if (DIR > 0) {
+      solidX0 = rnd(150, 210);
+      hollowX = solidX0 + rnd(60, 110);
+    } else {
+      solidX0 = rnd(230, 300);
+      hollowX = solidX0 - rnd(60, 110);
+    }
+    task = {
+      fam, solidC, hollowC,
+      solidX0, hollowX,
+      prompt: PROMPTS[(Math.random() * PROMPTS.length) | 0],
+      dir: DIR, ratio: RATIO,
+    };
+    hx = H0;
+    done = false;
+    c.style.backgroundImage = `url(${buildBg()})`;
+    draw();
+    report(reason);
+  }
+
+  function report(reason) {
+    const dx = task.hollowX - task.solidX0;      // 还需要让实心移动多少（与 solver 同口径）
+    const body = {
+      task: {
+        fam: task.fam, prompt: task.prompt,
+        solid_x0: +task.solidX0.toFixed(1),
+        hollow_x: +task.hollowX.toFixed(1),
+        expect_dx: +dx.toFixed(1),
+        ratio: RATIO, dir: DIR,
+        handle0: H0, track_y: TRACK.y,
+      },
+      result: reason ? { ok: reason.ok, dx: reason.dx, note: reason.note } : null,
+    };
+    fetch("/api/report", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    }).catch(() => {});
+  }
+
+  // ---------------------------------------------------------------- 交互
+  const pos = (e) => {
+    const r = c.getBoundingClientRect();
+    return { x: (e.clientX - r.left) * (W / r.width), y: (e.clientY - r.top) * (H / r.height) };
+  };
+
+  c.addEventListener("pointerdown", (e) => {
+    const p = pos(e);
+    // 只允许抓手柄
+    if (Math.abs(p.x - hx) > 26 || Math.abs(p.y - TRACK.y) > 26) return;
+    dragging = true;
+    dragStartX = p.x; dragStartHx = hx;
+    c.setPointerCapture(e.pointerId);
+  });
+
+  c.addEventListener("pointermove", (e) => {
+    if (!dragging) return;
+    const p = pos(e);
+    hx = clamp(dragStartHx + (p.x - dragStartX), TRACK.x0 + HANDLE_D / 2, TRACK.x1 - HANDLE_D / 2);
+    draw();
+  });
+
+  c.addEventListener("pointerup", () => { dragging = false; });
+
+  c.addEventListener("click", (e) => {
+    const p = pos(e);
+    // Submit 命中
+    if (Math.abs(p.x - SUBMIT.cx) <= SUBMIT.w / 2 && Math.abs(p.y - SUBMIT.cy) <= SUBMIT.h / 2) {
+      submit();
+    }
+  });
+
+  function submit() {
+    const dx = task.hollowX - task.solidX;
+    const ok = Math.abs(dx) <= TOL;
+    done = true;
+    if (ok) { passed++; attempts++; }
+    else { attempts++; }
+    draw();
+    logEl.innerHTML = ok
+      ? `<span class="ok">PASS</span>  残余 dx=${dx.toFixed(1)}px  (attempt #${attempts})`
+      : `<span class="bad">FAIL</span>  残余 dx=${dx.toFixed(1)}px  (attempt #${attempts}) —— 换新题`;
+    report({ ok, dx: +dx.toFixed(1), note: ok ? "passed" : "miss" });
+    if (!ok) setTimeout(() => newTask(null), 900);
+  }
+
+  // 真实结构里的「换一题」：点它只会换题，绝不会通过
+  document.getElementById("swap").addEventListener("click", () => {
+    logEl.innerHTML = `<span class="bad">#swap 被点了</span> —— 这是换一题，不是提交（求解器不该点它）`;
+    report({ ok: false, dx: null, note: "swap-clicked" });
+    newTask(null);
+  });
+
+  // 启动
+  newTask(null);
+  window.__MOCK__ = {
+    get task() { return task; },
+    get hx() { return hx; },
+    get attempts() { return attempts; },
+    get passed() { return passed; },
+  };
+})();
+</script>
+</body>
+</html>
+

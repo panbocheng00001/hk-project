@@ -1,0 +1,11 @@
+﻿{
+  "name": "captcha-mock",
+  "version": "1.0.0",
+  "private": true,
+  "description": "WAF slider captcha replica service for script regression (no deps)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "selftest": "node selftest.js"
+  }
+}
