@@ -4,6 +4,7 @@ from __future__ import annotations
 import json, sys, time
 from pathlib import Path
 from curl_cffi import requests as creq
+from tls_profile import tls_kwargs
 
 URL = "https://abs3.example.test/?lang=sc"
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -24,7 +25,7 @@ FULL = {
 
 
 def run(tag, cookies, headers, proxy, imp="chrome"):
-    kw = {"impersonate": imp, "timeout": 25, "allow_redirects": False,
+    kw = {**tls_kwargs(imp), "timeout": 25, "allow_redirects": False,
           "verify": False, "headers": headers}
     if proxy:
         kw["proxies"] = {"http": proxy, "https": proxy}

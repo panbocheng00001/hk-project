@@ -44,6 +44,7 @@ def tls_profile(explicit: str = "") -> str:
 _tls = tls_profile()
 import argparse, json, sys, time
 from pathlib import Path
+from tls_profile import tls_kwargs
 
 try:
     from curl_cffi import requests as creq
@@ -78,7 +79,7 @@ def classify(r=None, err: str = "") -> str:
 def probe(url: str, proxy: str = "", timeout: float = 15.0, ua: str = UA) -> dict:
     if creq is None:
         return {"url": url, "proxy": proxy, "verdict": "OTHER", "err": "缺 curl_cffi"}
-    kw = {**({"impersonate": _tls} if _tls else {}), "timeout": timeout, "allow_redirects": False,
+    kw = {**tls_kwargs(_tls), "timeout": timeout, "allow_redirects": False,
           "verify": False,
           "headers": {"User-Agent": ua, "Accept": "*/*"}}
     if proxy:

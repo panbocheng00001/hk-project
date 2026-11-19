@@ -64,6 +64,7 @@ import sys
 import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
+from tls_profile import tls_kwargs
 
 BASE = Path(__file__).resolve().parent
 if str(BASE) not in sys.path:
@@ -129,7 +130,7 @@ def triage(url: str = TARGET, proxy: str = "", timeout: float = 12.0,
 
     # 注意：curl_cffi 0.13 的模块级 get() 不接受 trust_env / proxies 之外的
     # Session 参数，统一走 Session 构造，避免 TypeError。
-    kw: Dict[str, Any] = {"impersonate": tls_pref, "timeout": timeout,
+    kw: Dict[str, Any] = {**tls_kwargs(tls_pref), "timeout": timeout,
                           "verify": False, "allow_redirects": False,
                           "headers": dict(HDR_ALIGN)}
     if proxy:

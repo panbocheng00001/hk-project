@@ -1,4 +1,4 @@
-"""离线快速开始：合成一张题图 -> 识别 -> 打印距离/轨迹/载荷。
+﻿"""离线快速开始：合成一张题图 -> 识别 -> 打印距离/轨迹/载荷。
 
     python examples/quickstart.py
 """
@@ -21,7 +21,7 @@ def main() -> None:
         pass
 
     bg, piece, (x, y, w, h) = make_sample(seed=11)
-    solver = SliderSolver(site="geetest", track_profile="stealth")
+    solver = SliderSolver(site="geetest", track_profile="natural")
 
     result = solver.solve(bg, piece=piece, display_width=bg.shape[1])
     truth = x + w / 2

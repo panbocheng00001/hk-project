@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """run_guard.py —— 明天的主脚本：2 浏览器 × 3 context，守 event，排队，拿票，转业务
 
 用户给 IP 后的完整流程：
@@ -44,7 +44,7 @@ EXES = [
     str(HERE / "cft" / "chrome-131" / "chrome-win64" / "chrome.exe"),  # 131 → JA4 B
 ]
 
-STEALTH = r"""
+ENV_INIT = r"""
 (() => {
   const defG = (o, k, v) => { try { Object.defineProperty(o, k, {get: () => v, configurable: true}); } catch (e) {} };
   try {
@@ -130,7 +130,7 @@ def make_ctx(browser, proxy: str, idx: int, ua: str, run: Run):
         pg.wait_for_timeout(800)
     pg.wait_for_timeout(1200)
     try:
-        stl = pg.evaluate(STEALTH)
+        stl = pg.evaluate(ENV_INIT)
     except Exception:
         stl = None
     ck = {c["name"]: len(c["value"]) for c in ctx.cookies()}

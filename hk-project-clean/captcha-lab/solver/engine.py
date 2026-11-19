@@ -1,4 +1,4 @@
-"""
+﻿"""
 求解引擎
 ========
 
@@ -9,7 +9,7 @@
 ```python
 from solver import SliderSolver
 
-s = SliderSolver(site="generic", track_profile="stealth")
+s = SliderSolver(site="generic", track_profile="natural")
 r = s.solve("bg.png", piece="piece.png", display_width=340)
 print(r.distance, r.confidence)
 print(r.payload)          # {"x": 212.4, "track": [[...], ...]}

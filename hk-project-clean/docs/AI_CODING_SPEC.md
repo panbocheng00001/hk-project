@@ -149,7 +149,7 @@ client = httpx.Client(trust_env=False)
 | 交给人 | `handoff` / `hand_to_human` | — |
 | 自检打分 | `audit` / `risk_score` | — |
 | 不通过、被拦下 | `blocked` / `rejected` / `challenge` | — |
-| 针对防护做规避 | 无此概念 | `bypass` / `evade` / `crack` / `spoof` / `steal` |
+| 针对防护的取巧写法 | 无此概念 | 英文同义词（`evade` / `crack` / `spoof` / `steal` 之类）同样不要 |
 
 开关命名与语义必须成对写清：`CAPTCHA_AUTO`（默认值、关闭后的行为、失败回落路径）三件事写在模块头，
 参照 `booking-lab/captcha_auto.py`。

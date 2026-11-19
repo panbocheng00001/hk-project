@@ -91,6 +91,7 @@ from typing import Any
 from urllib.parse import urlparse, parse_qs
 
 from throttle import Throttle, ThrottleTripped
+from tls_profile import tls_kwargs
 
 BASE = Path(__file__).resolve().parent
 RUNS = BASE / "runs"
@@ -102,9 +103,9 @@ LOG_DIR.mkdir(exist_ok=True)
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36")
 
-ABS3 = "https://abs3.td.gov.hk"
-ABS4 = "https://abs4.td.gov.hk"
-ABS1 = "https://abs1.td.gov.hk"
+ABS3 = "https://abs3.example.test"
+ABS4 = "https://abs4.example.test"
+ABS1 = "https://abs1.example.test"
 
 ENTRY_SEED = ABS3 + "/?lang=sc"
 QUEUE_ENTRY = (ABS3 + "/SelectCountry?"
@@ -112,9 +113,9 @@ QUEUE_ENTRY = (ABS3 + "/SelectCountry?"
 STEP1_ENTRY = (ABS1 + "/tdab2/tdabs_di_external/AdminServlet"
                "?cmd=cmdIntoSelectAuthDI&func=apply&auth=withOutIas"
                "&country=mainland&lang=sc")
-QUOTA_CMD = ("https://abs1.td.gov.hk/tdab2/tdabs_di_external/AdminServlet_schinese"
+QUOTA_CMD = ("https://abs1.example.test/tdab2/tdabs_di_external/AdminServlet_schinese"
              "?cmd=cmdGetOfficeQuotaDIAction")
-STATUS_CMD = ("https://abs1.td.gov.hk/tdab2/tdabs_di_external/AdminServlet_tchinese"
+STATUS_CMD = ("https://abs1.example.test/tdab2/tdabs_di_external/AdminServlet_tchinese"
               "?cmd=cmdGetOfficeBookingStatusAction&serviceTypeCode=DI"
               "&storedAppointmentOperation=A"
               "&storedAppointmentExpiryDate={expiry}&enablePick=N")
@@ -253,8 +254,7 @@ class Sniper:
             return
 
         kwargs: dict[str, Any] = dict(verify=VERIFY_TLS)
-        if self.tls_name:
-            kwargs["impersonate"] = self.tls_name
+        kwargs.update(tls_kwargs(self.tls_name))
         # 代理：直连时**不要传** proxies 键（curl_cffi 0.13 传 {} 会让 libcurl 读野指针，
         # 报 `Failed to connect to 0.0.0.5 port 1080`）；传代理时 dict 由 self 强引用。
         self._proxies: dict[str, str] | None = (
@@ -574,7 +574,7 @@ class Sniper:
     #     否则服务端永远回 QueueState=2 不放行
     #   · 首个 status 响应的 X-Queueit-Queueitem-V2 头要缓存并在后续请求回传
     #   · 放行 = 响应里出现 redirectUrl（含 queueittoken）；GET 它时服务端用
-    #     Set-Cookie 下发 QueueITAccepted-... 票（Domain=td.gov.hk），那张票
+    #     Set-Cookie 下发 QueueITAccepted-... 票（Domain=td.example.test），那张票
     #     才是进业务站的凭证
     STATUS_BODY = {
         "targetUrl": "",
@@ -670,7 +670,7 @@ class Sniper:
             self.log.json({"phase": "status", **asdict(st)})
             if st.released:
                 # 放行那一刻必须 GET redirectUrl 拿 QueueITAccepted 票：
-                # 票经 Set-Cookie 下发（Domain=td.gov.hk），拿到后业务入口
+                # 票经 Set-Cookie 下发（Domain=td.example.test），拿到后业务入口
                 # 不再弹回排队。回敲排队入口本身只会重新排一次。
                 if st.redirect_url:
                     self.ctx.target = self._https_target_url(st.redirect_url)

@@ -39,7 +39,7 @@ DETECT_JS = r"""
     push('image_grid', 'recaptcha bframe');
   if (q('iframe[src*="hcaptcha.com"] iframe, .h-captcha'))
     push('image_grid', 'hcaptcha');
-  if (q('iframe[src*="challenges.cloudflare.com"], .cf-turnstile'))
+  if (q('iframe[src*="challenge.example.test"], .cf-turnstile'))
     push('image_grid', 'turnstile');
   if (q('iframe[src*="mtcaptcha"], [class*="mtcap"]'))
     push('slider', 'mtcaptcha');

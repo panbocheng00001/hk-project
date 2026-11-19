@@ -1,6 +1,6 @@
 # 滑块自动求解 / 自动拖动（CAPTCHA_AUTO）
 
-> 这份文档回答一个问题：**现在验证码怎么自动过，怎么关，失败时怎么退。**
+> 这份文档回答一个问题：**现在验证码怎么自动处理，怎么关，失败时怎么退。**
 > 实测口径：本地复刻题服务（`captcha_mock`，400×330 / 轨道 400 / 手柄 34 / 容差 3px）。
 
 ## 1. 现在有两条入口，都会自动
@@ -85,7 +85,7 @@ pwsh -File .\launch_ext.ps1      # 或 run_local.ps1 -DryRun
 |---|---|
 | `captcha_auto.py` | 新增：`solve_image()`（纯图像解法）、`solve_page()`（识别+拖动+复核）、`PROBE_JS`、`GRADE_JS` |
 | `captcha.py` | `guard()` 检测到需人工的形态时先调 `captcha_auto`，成功直接返回 `solved`；失败/异常回落 |
-| `captcha_lab_bridge.py` | 默认轨迹档案 `env_consistency` → `stealth`（前者在内核里不存在，会 KeyError） |
+| `captcha_lab_bridge.py` | 默认轨迹档案 `natural`（此前写的是 `env_consistency`，内核里没有该档案，会 KeyError） |
 | `captcha_mock/server.js` | 页面加真实 pointer 拖动（`pointerdown/move` 更新 `left`），判分结果写 `window.__grade`；接口与判据未改 |
 | `ext_server.py` | 新增 `POST /solve_slider`：位图 + 几何 → `{ok, dx, slider_dx, track, points, risk}` |
 | `extension/background.js` | 新增 `case "solveSlider"` → 转发到 `/solve_slider` |

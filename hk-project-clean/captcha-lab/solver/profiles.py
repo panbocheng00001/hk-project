@@ -100,6 +100,24 @@ SITE_PROFILES: Dict[str, SiteProfile] = {
         tolerance_px=5.0,
         fields={"distance": "x", "track": "track"},
     ),
+
+    # 几何重合滑块：画布上没有独立拼图块，要答的是「实心中心 → 空心中心」的水平差。
+    # 该题的滑块是增量带阻尼，不是轨道宽度映射：手柄位移 × 0.317 ≈ 图形位移，
+    # 故换算走 constants["travel_ratio"]，不要用 overlap.to_slider_dx。
+    # Submit 画在 canvas 内（位图比例 0.5 / 0.945），DOM 里没有对应节点。
+    # 手柄扫描带取滑轨所在行：y ∈ [0.76, 0.86) × 位图高。
+    "waf_quidditch": SiteProfile(
+        name="waf_quidditch", answer_mode="center", track_format="xyt",
+        tolerance_px=6.0,
+        fields={"distance": "x", "track": "track"},
+        constants={
+            "travel_ratio": 0.317,
+            "travel_ratio_range": (0.299, 0.351),
+            "submit_in_canvas": True,
+            "submit_xy": (0.5, 0.945),
+            "handle_scan_y": (0.76, 0.86),
+        },
+    ),
 }
 
 

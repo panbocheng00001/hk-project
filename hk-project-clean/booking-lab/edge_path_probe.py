@@ -44,6 +44,7 @@ def tls_profile(explicit: str = "") -> str:
 _tls = tls_profile()
 import argparse, sys, time
 from curl_cffi import requests as creq
+from tls_profile import tls_kwargs
 
 HOST3, HOST4 = "https://abs3.example.test", "https://abs4.example.test"
 C, E = "tdabsditest", "tdabsd261111kla"
@@ -80,7 +81,7 @@ def main():
     for i, (name, method, url, hdr) in enumerate(VARIANTS):
         if idx is not None and i not in idx:
             continue
-        kw = {**({"impersonate": _tls} if _tls else {}), "timeout": 20, "verify": False,
+        kw = {**tls_kwargs(_tls), "timeout": 20, "verify": False,
               "allow_redirects": False,
               "headers": {"User-Agent": UA, "Accept": "*/*", **hdr}}
         if a.proxy:

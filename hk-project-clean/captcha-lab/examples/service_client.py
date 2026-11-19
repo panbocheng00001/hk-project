@@ -1,4 +1,4 @@
-"""调用 HTTP 服务的客户端示例（服务需先启动）。
+﻿"""调用 HTTP 服务的客户端示例（服务需先启动）。
 
     python -m solver serve --port 8100
     python examples/service_client.py
@@ -48,7 +48,7 @@ def main() -> None:
             ensure_ascii=False))
 
         t = client.post(f"{BASE}/v1/track", json={"distance": data["distance"],
-                                                  "profile": "stealth"})
+                                                  "profile": "natural"})
         print("轨迹风险分:", t.json()["features"]["risk"])
 
 

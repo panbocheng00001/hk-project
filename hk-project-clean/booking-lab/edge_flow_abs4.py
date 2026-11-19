@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """edge_flow_abs4.py —— 在 abs4 自己的页面里过挑战，再同源 fetch Queue-it API
 
 为什么：abs3 页面里 fetch abs4 会被 CORS 拦（Failed to fetch）。
@@ -16,7 +16,7 @@ UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
 
 # 补掉 headless 的四个静态漏点（实测：patchright 默认 userAgentData=null、
 # chrome.runtime 缺失、screen 与窗口全相等、deviceMemory=null）
-STEALTH = r"""
+ENV_INIT = r"""
 (() => {
   const defG = (o, k, v) => { try { Object.defineProperty(o, k, {get: () => v, configurable: true}); } catch (e) {} };
   // 1) chrome.runtime（window.chrome 是 writable data property，直接挂）
@@ -81,7 +81,7 @@ def main():
             user_agent=UA, locale="zh-HK", timezone_id="Asia/Hong_Kong",
             viewport={"width": 1366, "height": 768}, ignore_https_errors=True,
         )
-        ctx.add_init_script(STEALTH)
+        ctx.add_init_script(ENV_INIT)
         pg = ctx.new_page()
         base = "https://abs4.example.test"
         t0 = time.time()
@@ -102,7 +102,7 @@ def main():
         pg.wait_for_timeout(1500)
         # 挑战通过后再补环境参数（patchright 屏蔽了 add_init_script / CDP 注入，只能用 evaluate）
         try:
-            st = pg.evaluate(STEALTH)
+            st = pg.evaluate(ENV_INIT)
             print(f"env_consistency 注入: {json.dumps(st, ensure_ascii=False)}")
         except Exception as e:
             print("env_consistency 注入失败:", type(e).__name__, str(e)[:120])

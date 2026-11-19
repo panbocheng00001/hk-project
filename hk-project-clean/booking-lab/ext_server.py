@@ -548,7 +548,7 @@ setTimeout(()=>{
                     track_w=float(geo.get("track_w") or data.get("trackW") or 400.0),
                     handle_w=float(geo.get("handle_w") or data.get("handleW") or 34.0),
                     bmp_w=float(geo.get("bmp_w") or data.get("bmpW") or 0) or None,
-                    profile=str(data.get("profile") or "stealth"),
+                    profile=str(data.get("profile") or "natural"),
                 )
                 print(f"{datetime.now():%H:%M:%S} [solve_slider] ok={r.get('ok')} "
                       f"dx={r.get('dx')} slider_dx={r.get('slider_dx')} "

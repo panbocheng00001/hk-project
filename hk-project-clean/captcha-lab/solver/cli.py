@@ -3,7 +3,7 @@
 ==========
 
     python -m solver solve  --bg bg.png --piece piece.png --display-width 340
-    python -m solver track  --distance 212 --profile stealth
+    python -m solver track  --distance 212 --profile natural
     python -m solver bench  --n 200
     python -m solver profiles
     python -m solver serve  --host 0.0.0.0 --port 8100
@@ -276,7 +276,7 @@ def build_parser() -> argparse.ArgumentParser:
         prog="solver", description="captcha-lab：滑块验证码识别 / 轨迹 / 服务")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
-    common_track = dict(default="mouse", help="轨迹档案：mouse/touch/fast/stealth")
+    common_track = dict(default="mouse", help="轨迹档案：mouse/touch/fast/natural")
 
     p = sub.add_parser("solve", help="识别一张图并生成提交载荷")
     p.add_argument("--bg", required=True, help="背景图路径 / base64")
@@ -331,7 +331,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--bmp-w", type=float, help="画布位图宽度，默认取图像宽度")
     p.add_argument("--track-w", type=float, default=400.0, help="滑轨宽度（CSS px）")
     p.add_argument("--handle-w", type=float, default=34.0, help="手柄宽度（CSS px）")
-    p.add_argument("--track-profile", default="stealth")
+    p.add_argument("--track-profile", default="natural")
     p.add_argument("--seed", type=int)
     p.add_argument("--no-audit", action="store_true")
     p.add_argument("--debug-out")

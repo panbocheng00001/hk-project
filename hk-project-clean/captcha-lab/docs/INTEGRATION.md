@@ -1,4 +1,4 @@
-# 端到端集成：从"识别对"到"真的过"
+﻿# 端到端集成：从"识别对"到"真的过"
 
 > 一句话结论：**图片 → 坐标 → 拖动距离**这一段是确定的（96.7% 一次命中）；
 > **"能不能过"**取决于站点把答案包了几层：接口协议、加密参数、会话绑定、行为风控。
@@ -36,7 +36,7 @@
 3. 距离对，提交直接返回"验证失败/重试"？
    └─ 协议问题：字段名、签名参数、token 是否随题变化（先抓一次真机请求对比）
 4. 距离对、协议对，但总是"行为异常"或被要求重试？
-   └─ 风控问题：换 track_profile=stealth、检查采样间隔、确认鼠标事件是真实事件流
+   └─ 风控问题：换 track_profile=natural、检查采样间隔、确认鼠标事件是真实事件流
 ```
 
 判断口径错的一个快速办法：把 `distance` 和 `distance_left` 都试一次，
@@ -67,7 +67,7 @@ with sync_playwright() as p:
     page.goto(URL, wait_until="networkidle")
 
     driver = PlaywrightSlider(
-        SliderSolver(site="generic", track_profile="stealth"),
+        SliderSolver(site="generic", track_profile="natural"),
         settle_ms=600,
     )
     sel = BrowserSelectors(

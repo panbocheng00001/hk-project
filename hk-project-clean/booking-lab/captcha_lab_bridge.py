@@ -6,7 +6,7 @@
     1) solve_canvas()  画布位图 → {ok, dx, slider_dx, current_x, target_x, pairs, level}
                        —— 复用 solver.overlap（与 captcha_fixture/analyze.js 同一套判据）
     2) make_track()    slider_dx → [(x, y, t), ...] 拟人轨迹
-                       —— 复用 solver.track.generate_track（stealth 档 + 访问频率控制自检）
+                       —— 复用 solver.track.generate_track（natural 档 + 访问频率控制自检）
 
 导入策略（两级回退）：
     · 先按"已 pip 安装的 captcha-lab"直接 import solver / solver.track；
@@ -158,14 +158,14 @@ def solve_canvas(image: ImageLike,
 # A-2 轨迹生成：slider_dx → 拟人 (x, y, t)
 # --------------------------------------------------------------------------- #
 def make_track(slider_dx: float,
-               profile: str = "stealth",
+               profile: str = "natural",
                seed: Optional[int] = None,
                risk_threshold: float = 0.5) -> List[Point]:
     """生成一条拖到 ``slider_dx`` 的拟人轨迹（复用 solver.track.generate_track）。
 
     参数
         slider_dx      : 目标水平位移（滑轨像素），即 solve_canvas 的 slider_dx。
-        profile        : 轨迹档案，默认 ``stealth``（最像人：噪声足、停顿多、全精度浮点）。
+        profile        : 轨迹档案，默认 ``natural``（自然节奏：噪声足、停顿多、全精度浮点）。
         seed           : 随机种子；None 为每次不同。
         risk_threshold : 访问频率控制自检阈值，低于它才算合格（默认 0.5）。
 

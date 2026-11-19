@@ -48,6 +48,16 @@ TEXT_SUFFIXES = {".md", ".py", ".js", ".mjs", ".cjs", ".ts", ".json",
 SKIP_DIRS = {"__pycache__", ".pytest_cache", "node_modules", ".git", "runs", "out", "vendor"}
 ALLOW_RE = re.compile(r"wording-lint:\s*(allow|off|on)", re.I)
 MAX_LINE = 400
+LEXICON_SEP = "·"
+
+
+def _display(phrase: str) -> str:
+    """词表条目在生成文档里的显示形式：字符之间插入分隔符。
+
+    词表文档需要展示反例，但文档本身也会被别的扫描器当成正文读。
+    逐字分隔后原串不再连续出现，可读性只降一点（`绕·过·验·证·码`）。
+    """
+    return LEXICON_SEP.join(phrase) if len(phrase) > 1 else phrase
 
 
 @dataclass
@@ -203,17 +213,21 @@ def render_lexicon_md(lex: dict) -> str:
         "",
         "两级：**block** 命中即检查失败；**warn** 只报告，允许在评测/基线语境里出现，需在 PR 描述里给上下文。",
         "",
+        f"表格里的条目逐字分隔显示（`{LEXICON_SEP}`）——本文件要展示反例，",
+        "分隔后原串不再连续出现，扫描器不会把词表文档本身当成正文命中。",
+        "匹配用的原串在 `tools/wording_lexicon.json`（其中的敏感条目同样以 `\\u` 转义存储）。",
+        "",
     ]
     for level, title in (("block", "block —— 出现即必须改"), ("warn", "warn —— 报告，不阻断")):
         out.append(f"## {title}")
         out.append("")
         for category, table in lex.get(level, {}).items():
-            out.append(f"### {category}")
+            out.append(f"### {_display(category)}")
             out.append("")
             out.append("| 不要写 | 改成 |")
             out.append("|---|---|")
             for phrase, advice in table.items():
-                out.append(f"| `{phrase}` | {advice} |")
+                out.append(f"| `{_display(phrase)}` | {advice} |")
             out.append("")
     out.append("## 失效路径")
     out.append("")

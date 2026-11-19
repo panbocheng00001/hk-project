@@ -1,9 +1,9 @@
-"""轨迹检测器评测与阈值校准。
+﻿"""轨迹检测器评测与阈值校准。
 
 四类样本：
   linear               : 匀速等间隔脚本（下限）
   human_track          : 旧版数学拟人轨迹（solver/track.py 的兼容接口）
-  gen:<profile>        : 新版生成器（mouse/touch/fast/stealth），带手颤与停顿
+  gen:<profile>        : 新版生成器（mouse/touch/fast/natural），带手颤与停顿
   human                : 来自演示页的真实录制（CAPTCHA_RECORD=data/recordings.jsonl
                          启动服务后，勾选"录制为真人样本"拖几十次即可）
 

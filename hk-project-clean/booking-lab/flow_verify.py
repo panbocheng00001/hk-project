@@ -64,7 +64,7 @@ def run_once(proxy: str, cookies: str, app: dict | None) -> tuple[int, list[dict
     # ---------------- S1
     t0 = time.time()
     try:
-        r = sp._get("https://abs3.td.gov.hk/?lang=sc", allow_redirects=True)
+        r = sp._get("https://abs3.example.test/?lang=sc", allow_redirects=True)
         ck = list(sp.s.cookies.keys())
         c = sp.classify(r)
         ok = (r.status_code == 200 and "HWWAFSESID" in ck)
@@ -80,14 +80,14 @@ def run_once(proxy: str, cookies: str, app: dict | None) -> tuple[int, list[dict
     # ---------------- S2
     t0 = time.time()
     try:
-        r = sp._get("https://abs3.td.gov.hk/SelectCountry?"
+        r = sp._get("https://abs3.example.test/SelectCountry?"
                     "lang=sc&actionType=apply&authMethod=withOutIas",
                     allow_redirects=False)
         loc = r.headers.get("Location", "")
         c = sp.classify(r)
         if r.status_code == 200:
             rows.append(step("S2 æŽ’é˜Ÿå‘çŽ°", 0, "200ï¼ˆå·²åœ¨æ”¾è¡Œæ€ï¼Œè·³è¿‡æŽ’é˜Ÿï¼‰", time.time() - t0))
-            sp.ctx.target = "https://abs3.td.gov.hk/SelectCountry?" \
+            sp.ctx.target = "https://abs3.example.test/SelectCountry?" \
                             "lang=sc&actionType=apply&authMethod=withOutIas"
             released = True
         elif r.status_code in (301, 302, 303):

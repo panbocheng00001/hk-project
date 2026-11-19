@@ -105,7 +105,7 @@ def _bridge():
 
 def solve_image(data: str, track_w: float = 400.0, handle_w: float = 34.0,
                 bmp_w: Optional[float] = None,
-                profile: str = "stealth") -> Dict[str, Any]:
+                profile: str = "natural") -> Dict[str, Any]:
     """纯图像解法：位图 dataURL → dx / slider_dx / 轨迹。
 
     给 HTTP 服务（ext_server /solve_slider）复用；不碰浏览器，不做拖动。
@@ -179,7 +179,7 @@ def _graded(page, wait_ms: int = 2500) -> Dict[str, Any]:
 
 
 def solve_page(page, who: str = "", max_tries: int = 3,
-               profile: str = "stealth", log=print) -> Dict[str, Any]:
+               profile: str = "natural", log=print) -> Dict[str, Any]:
     """识别 + 拖动 + 复核，最多 max_tries 轮。
 
     返回

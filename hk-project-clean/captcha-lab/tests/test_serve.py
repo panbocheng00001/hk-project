@@ -1,4 +1,4 @@
-"""HTTP 服务：接口契约、鉴权、错误码。"""
+﻿"""HTTP 服务：接口契约、鉴权、错误码。"""
 from __future__ import annotations
 
 import pytest
@@ -27,7 +27,7 @@ def test_health(client):
 
 def test_profiles(client):
     data = client.get("/v1/profiles").json()
-    assert "generic" in data["sites"] and "stealth" in data["tracks"]
+    assert "generic" in data["sites"] and "natural" in data["tracks"]
 
 
 def test_solve(client, images):
@@ -52,7 +52,7 @@ def test_solve_bad_image(client):
 
 
 def test_track_endpoint(client):
-    r = client.post("/v1/track", json={"distance": 212, "profile": "stealth"})
+    r = client.post("/v1/track", json={"distance": 212, "profile": "natural"})
     assert r.status_code == 200
     body = r.json()
     assert body["payload"]["x"] == 212

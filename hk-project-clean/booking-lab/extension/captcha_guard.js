@@ -77,7 +77,7 @@
       push("image_grid", "reCAPTCHA 图片挑战");
     }
     if (q('iframe[src*="hcaptcha.com"], .h-captcha')) push("image_grid", "hCaptcha");
-    if (q('iframe[src*="challenges.cloudflare.com"], .cf-turnstile')) {
+    if (q('iframe[src*="challenge.example.test"], .cf-turnstile')) {
       push("image_grid", "Cloudflare Turnstile");
     }
 

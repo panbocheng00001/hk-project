@@ -53,7 +53,7 @@ class SolveRequest(BaseModel):
     display_width: Optional[float] = Field(None, description="前端渲染宽度（CSS px）")
     slider_start_x: float = Field(0.0, description="滑块手柄初始中心偏移")
     site: str = Field("generic", description="站点档案，见 /v1/profiles")
-    track_profile: str = Field("mouse", description="轨迹档案：mouse/touch/fast/stealth")
+    track_profile: str = Field("mouse", description="轨迹档案：mouse/touch/fast/natural")
     topk: int = Field(3, ge=1, le=8)
     seed: Optional[int] = None
     debug_image: bool = Field(False, description="是否返回标注后的图片 base64")

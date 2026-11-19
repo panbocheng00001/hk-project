@@ -70,9 +70,9 @@ PROFILES: Dict[str, TrackProfile] = {
         overshoot=(0.0, 2.0), y_jitter=1.0, tremor=0.45, pause_prob=0.08,
         dt_sigma=0.55, min_duration=220.0,
     ),
-    # 行为风控自检用的"最像人"档案：噪声更足、停顿更多、全精度浮点坐标
-    "stealth": TrackProfile(
-        name="stealth", points=(46, 70), duration_base=700.0, duration_per_px=3.0,
+    # 行为自检用的"自然节奏"档案：噪声更足、停顿更多、全精度浮点坐标
+    "natural": TrackProfile(
+        name="natural", points=(46, 70), duration_base=700.0, duration_per_px=3.0,
         overshoot=(3.0, 7.0), y_jitter=1.6, tremor=0.95, pause_prob=0.35,
         pause_ms=(25.0, 90.0), dt_sigma=0.55,
     ),
@@ -126,7 +126,7 @@ def generate_track(distance: float,
     生成一条可直接提交的拖动轨迹。
 
     distance      : 目标位移（CSS px）
-    profile       : 档案名（mouse/touch/fast/stealth）或自定义 TrackProfile
+    profile       : 档案名（mouse/touch/fast/natural）或自定义 TrackProfile
     duration_ms   : 指定总耗时；None 时按档案 + 距离自适应
     overshoot_px  : 覆盖档案的过冲量；0 表示不过冲
     jitter_px     : 覆盖档案的 y 轴抖动幅度

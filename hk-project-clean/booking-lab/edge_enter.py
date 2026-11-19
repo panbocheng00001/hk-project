@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """edge_enter.py —— 一次性走完 WAF 挑战：412 → 挑战JS → token(xP) → 自动 reload → 200
 
 实测线索（18:52，干净出口 183.131.59.59）：
@@ -16,7 +16,7 @@ CHROME = str((Path(__file__).resolve().parent / "cft" / "chrome-win64" / "chrome
 URL = "https://abs3.example.test/?lang=sc"
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36")
-STEALTH = """
+ENV_INIT = """
 Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
 Object.defineProperty(navigator, 'languages', {get: () => ['zh-HK','zh','en']});
 window.chrome = window.chrome || {runtime: {}};
@@ -38,7 +38,7 @@ def main():
         ctx = b.new_context(proxy={"server": proxy} if proxy else None,
                             user_agent=UA, locale="zh-HK", timezone_id="Asia/Hong_Kong",
                             viewport={"width": 1366, "height": 768}, ignore_https_errors=True)
-        ctx.add_init_script(STEALTH)
+        ctx.add_init_script(ENV_INIT)
         pg = ctx.new_page()
 
         def on_resp(r):

@@ -33,6 +33,7 @@ def tls_profile(explicit: str = "") -> str:
 _tls = tls_profile()
 import json, sys
 from curl_cffi import requests as creq
+from tls_profile import tls_kwargs
 
 try:
     from edge_cookies import is_hik0
@@ -48,7 +49,7 @@ UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
 
 
 def mk(proxy: str):
-    kw = {**({"impersonate": _tls} if _tls else {}), "timeout": 25, "verify": False,
+    kw = {**tls_kwargs(_tls), "timeout": 25, "verify": False,
           "headers": {"User-Agent": UA, "Accept": "*/*"}}
     if proxy:
         kw["proxies"] = {"http": proxy, "https": proxy}

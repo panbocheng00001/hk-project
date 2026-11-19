@@ -104,7 +104,8 @@ def apply_map(root: Path, restore: bool) -> int:
                 n += text.count(old)
                 text = text.replace(old, new)
         if text != orig:
-            p.write_text(text, encoding="utf-8", newline="\n")
+            with p.open("w", encoding="utf-8", newline="\n") as fh:
+                fh.write(text)
             touched += 1
             total += n
             print(f"  {p.relative_to(root)}  ({n})")

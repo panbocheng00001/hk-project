@@ -1,4 +1,4 @@
-# captcha-lab
+﻿# captcha-lab
 
 **滑块验证码识别工具包** — 图片进，拖动距离 / 拟人轨迹 / 站点载荷出。
 
@@ -44,7 +44,7 @@ python -m solver solve --bg bg.png --piece piece.png --display-width 340 --debug
 python -m solver solve --bg "https://cdn.example.com/bg.png" --display-width 340
 
 # 2) 只生成轨迹（给已有识别结果的链路用）
-python -m solver track --distance 212 --profile stealth --json
+python -m solver track --distance 212 --profile natural --json
 
 # 3) 合成样本端到端评测
 python -m solver bench --n 100
@@ -58,7 +58,7 @@ Python 三行：
 ```python
 from solver import SliderSolver
 
-solver = SliderSolver(site="generic", track_profile="stealth")
+solver = SliderSolver(site="generic", track_profile="natural")
 result = solver.solve("bg.png", piece="piece.png", display_width=340)
 
 print(result.distance, result.confidence)     # 212.4 0.93
@@ -157,7 +157,7 @@ $ python -m solver bench --n 60
 ```python
 from solver import generate_track, analyze
 
-pts = generate_track(212, profile="stealth", audit_risk=True)
+pts = generate_track(212, profile="natural", audit_risk=True)
 print(analyze(pts)["risk"])          # 0.000
 ```
 
@@ -172,7 +172,7 @@ print(analyze(pts)["risk"])          # 0.000
 | `mouse` | 45–72 | 0.6–1.4s | 桌面站点，通用默认 |
 | `touch` | 28–46 | 0.5–1.2s | 移动端 H5，y 漂移更大 |
 | `fast` | 16–28 | 0.2–0.8s | 快手用户，仍保留手颤 |
-| `stealth` | 46–70 | 0.7–1.5s | 行为特征最丰富，噪声与停顿最足 |
+| `natural` | 46–70 | 0.7–1.5s | 行为特征最丰富，噪声与停顿最足 |
 
 `audit_risk=True` 时用仓库自带的规则风控自检，不达标自动重采样（最多 8 次）。
 这把"轨迹像不像人"变成了可回归的指标，而不是靠感觉。
@@ -183,7 +183,7 @@ print(analyze(pts)["risk"])          # 0.000
 linear       catch=100.0%     # 匀速等间隔
 human_track  catch=100.0%     # 旧版数学拟人轨迹
 gen:fast     catch=  0.0%     # 新版生成器
-gen:stealth  catch=  0.0%
+gen:natural  catch=  0.0%
 ```
 
 结论很直接：**规则型风控只能拦低成本脚本**。若要覆盖更坚定的自动化工具，

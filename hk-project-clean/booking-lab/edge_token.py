@@ -49,12 +49,13 @@ def tls_profile(explicit: str = "") -> str:
 _tls = tls_profile()
 import argparse, json, time
 from pathlib import Path
+from tls_profile import tls_kwargs
 
 URL = "https://abs3.example.test/?lang=sc"
 CHROME = str(Path(__file__).resolve().parent / "cft" / "chrome-win64" / "chrome.exe")
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36")
-STEALTH = """
+ENV_INIT = """
 Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
 Object.defineProperty(navigator, 'languages', {get: () => ['zh-HK','zh','en']});
 Object.defineProperty(navigator, 'plugins', {get: () => [1,2,3,4,5]});
@@ -79,7 +80,7 @@ def verify_http(cookies: list[dict], url: str = URL, proxy: str = "") -> dict:
         from curl_cffi import requests as creq
     except ImportError:
         return {"err": "缺 curl_cffi"}
-    kw = {**({"impersonate": _tls} if _tls else {}), "timeout": 20, "allow_redirects": False, "verify": False,
+    kw = {**tls_kwargs(_tls), "timeout": 20, "allow_redirects": False, "verify": False,
           "headers": {"User-Agent": UA}}
     if proxy:
         kw["proxies"] = {"http": proxy, "https": proxy}
@@ -117,7 +118,7 @@ def mint(proxy: str, url: str, headless: bool, wait: float, out: Path, name: str
             viewport={"width": 1366, "height": 768}, color_scheme="light",
             ignore_https_errors=True,
         )
-        ctx.add_init_script(STEALTH)
+        ctx.add_init_script(ENV_INIT)
         page = ctx.new_page()
         t0 = time.time()
         try:
