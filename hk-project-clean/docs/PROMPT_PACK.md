@@ -81,7 +81,7 @@ E. 数字一律换成实测值并附命令（见 docs/PROMPT_PACK.md 第 7 节�
 4. 文档里的路径必须真实存在（改完用 Test-Path 逐条验一遍）。
 
 【验收】
-pwsh -File tools/check.ps1        -> lint 0 block、96 passed、166 passed
+pwsh -File tools/check.ps1        -> lint 0 block、115 passed、166 passed
 ```
 
 ---
@@ -168,7 +168,7 @@ D. captcha_flow/tests/test_handoff_timing.py 增补用例：耗时口径、提�
 
 【验收】
 1. cd booking-lab && python -m pytest captcha_flow\tests -q     -> 55 passed（30 契约 + 25 计时）
-2. cd booking-lab && python -m pytest captcha_flow\tests tests -q -> 96 passed
+2. cd booking-lab && python -m pytest captcha_flow\tests tests -q -> 115 passed
 3. cd booking-lab && python captcha_report.py --selftest        -> PASS
 4. cd booking-lab && python captcha_report.py --days 7          -> 有数据出表 / 无数据退出 0
 ```
@@ -214,7 +214,7 @@ C. docs/CAPTCHA_SOLVER_TOOL.md：工具定位（人触发、独立于决策链�
 4. 不新增第三方依赖；不写真实站点地址。
 
 【验收】
-1. cd booking-lab && python -m pytest captcha_flow\tests tests -q   -> 96 passed
+1. cd booking-lab && python -m pytest captcha_flow\tests tests -q   -> 115 passed
 2. cd booking-lab && python tools\captcha_selftest.py               -> PASS（含 30/30 与 <1px）
 3. cd booking-lab && python tools\captcha_solve.py solve --mock 1000 -> slider_dx≈210.9 + payload
 4. git diff --stat                                                  -> 只有约定内的文件
@@ -255,7 +255,7 @@ C. docs/CAPTCHA_SOLVER_TOOL.md：工具定位（人触发、独立于决策链�
 
 | 项 | 值 | 命令 |
 |---|---|---|
-| booking-lab 全量 | **96 passed** | `python -m pytest captcha_flow\tests tests -q` |
+| booking-lab 全量 | **115 passed** | `python -m pytest captcha_flow\tests tests -q` |
 | ├ 决策契约 | 30 passed | `python -m pytest captcha_flow\tests\test_captcha_flow.py -q` |
 | ├ 交接计时 | 25 passed | `python -m pytest captcha_flow\tests\test_handoff_timing.py -q` |
 | └ 端到端 | 3 passed | `python -m pytest tests -q` |

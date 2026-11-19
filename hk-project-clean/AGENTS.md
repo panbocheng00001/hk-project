@@ -75,7 +75,7 @@
 
 ```bash
 python tools/wording_lint.py --root .                        # 0 block
-pwsh -File tools/check.ps1                                   # lint + 96 + 166 全绿
+pwsh -File tools/check.ps1                                   # lint + 115 + 166 全绿
 # 没有 pwsh（Windows PowerShell 5.1 环境）时等价写法：
 #   powershell -ExecutionPolicy Bypass -File tools\check.ps1
 ```

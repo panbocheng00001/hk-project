@@ -56,6 +56,7 @@ booking-lab/
 ├─ captcha_mock/            复刻题服务（Node，零依赖，127.0.0.1:8777）
 ├─ fill_form.py             表单填写主流程（Playwright）
 ├─ http_flow.py             无浏览器流程：纯 HTTP 走完排队与名额查询
+├─ waf_profile.py           身份与头顺序唯一出口（UA / Sec-CH-UA / TLS 画像 / locale）
 ├─ session_pool.py          会话票据池（预热 / 续期 / 取用）
 ├─ edge_*.py                412 挑战的识别、退避、票据与放行窗口观测
 ├─ check.py                 名额查询（只读，不提交）
@@ -123,7 +124,7 @@ python http_flow.py --probe
 
 ```bash
 python -m pytest captcha_flow/tests -q          # 55 passed（30 决策契约 + 25 交接计时）
-python -m pytest captcha_flow/tests tests -q    # 71 passed（30 契约 + 25 计时 + 3 端到端 + 13 闸门）
+python -m pytest captcha_flow/tests tests -q    # 115 passed（30 契约 + 25 计时 + 3 端到端 + 14 闸门 + 8 报表 + 16 pagekit + 19 身份/节流）
 ```
 
 覆盖：分类映射、策略边界、自动预算上限、超时降级、

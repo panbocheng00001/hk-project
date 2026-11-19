@@ -37,7 +37,7 @@
 |---|---|---|---|
 | **验证码** | `captcha.py`、`captcha_auto.py`、`captcha_lab_bridge.py`、`captcha_report.py`、`captcha_flow/`、`extension/captcha_guard.js` | 分类、决策、交接、可选加速、耗时报表 | `captcha_flow/policy.py` 的四条原则是契约，测试守着 |
 | **流程** | `fill_form.py`、`resume.py`、`http_flow.py`、`check.py`、`flow_verify.py`、`preflight.py`、`prefill_check.py` | 走完预约步骤；只读查名额；开跑前自检 | 只读路径（`check.py`）不得写成提交动作 |
-| **网关与会话** | `session_pool.py`、`edge_*.py`（challenge / cookies / token / handshake / enter / probe / path_probe / flow_* / window_watch / replay / browser_check / trace_page） | 412 挑战的识别、退避、票据池、放行窗口观测 | 挑战失败必须退避，不能在循环里继续请求 |
+| **网关与会话** | `session_pool.py`、`waf_profile.py`、`edge_*.py`（challenge / cookies / token / handshake / enter / probe / path_probe / flow_* / window_watch / replay / browser_check / trace_page） | 412 挑战的识别、退避、票据池、放行窗口观测；纯 HTTP 的身份与头部顺序由 `waf_profile.py` 单一生成 | 挑战失败必须退避，不能在循环里继续请求；头部顺序不要手写第二份 |
 | **节流与守护** | `throttle.py`、`run_guard.py`、`site_monitor.py`、`human.py` | 全局速率熔断、多实例编排、站点状态监视、人工介入点 | 阈值只允许收紧，不允许放宽；min_poll_interval 无关闭开关 |
 | **记录** | `journal.py`、`runlog.py`、`recorder.py`、`replay.py`、`timeline.py`、`notifier.py` | 事件账本、逐步回放、关键节点通知 | 账本格式只增不改；写入失败必须降级为日志 |
 | **服务与脚本** | `ext_server.py`、`*.ps1`、`*.bat`、`get_cft.ps1`、`askpass.cmd` | 本地数据服务（127.0.0.1:8765）、启动脚本 | 只监听回环；不要加对外端口 |

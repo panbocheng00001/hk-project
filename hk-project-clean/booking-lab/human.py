@@ -161,14 +161,30 @@ LAUNCH_ARGS = [
 
 
 # ---------------------------------------------------------------- 鼠标 / 键盘
-def human_move(page, locator) -> bool:
-    """把鼠标挪到元素上：带弧度、带轻微过冲和抖动，而不是一条直线插值。"""
+def _aim(box: dict) -> tuple[float, float]:
+    """落点：元素中心 ±2~5px 的偏移，且一定还在元素内部。
+
+    真实点击不会命中几何中心，但也不会点到元素外面；小控件（<10px）不退偏移。
+    """
+    w, h = float(box["width"]), float(box["height"])
+    cx, cy = box["x"] + w / 2, box["y"] + h / 2
+    if w <= 10 or h <= 10:
+        return cx, cy
+    dx = random.uniform(2.0, min(5.0, w / 2 - 2)) * random.choice((-1, 1))
+    dy = random.uniform(2.0, min(5.0, h / 2 - 2)) * random.choice((-1, 1))
+    return cx + dx, cy + dy
+
+
+def human_move(page, locator):
+    """把鼠标挪到元素上：带弧度、带轻微过冲和抖动，而不是一条直线插值。
+
+    返回落点 (x, y)；拿不到元素框时返回 None。
+    """
     try:
         box = locator.bounding_box()
         if not box:
-            return False
-        tx = box["x"] + box["width"] * random.uniform(0.35, 0.65)
-        ty = box["y"] + box["height"] * random.uniform(0.35, 0.65)
+            return None
+        tx, ty = _aim(box)
         # 起点取一个"上一次落点附近"的猜测，避免每次都从 0,0 直线飞来
         sx = tx + random.uniform(-260, 260)
         sy = ty + random.uniform(-180, 180)
@@ -191,19 +207,36 @@ def human_move(page, locator) -> bool:
         if random.random() < 0.35:
             page.mouse.move(tx + random.uniform(-4, 4), ty + random.uniform(-4, 4))
             page.mouse.move(tx, ty)
-        return True
+        return tx, ty
     except Exception:
-        return False
+        return None
 
 
 def human_click(page, locator, timeout: int = 8000, hurry: bool = False,
                 logger=None) -> bool:
-    """移动 → 悬停 → 短暂停顿 → 按下。
-    元素在 React 重渲染时可能一直「不稳定」，逐级降级：正常点 → force → 直接派发事件。"""
+    """移动 → 悬停 → 短暂停顿 → 按下 → 按住一会儿 → 松开。
+
+    按住时长 55~190ms（真实点击的按下-释放间隔），不是零毫秒的合成事件。
+    元素在 React 重渲染时可能一直「不稳定」，逐级降级：正常点 → force → 直接派发事件。
+    """
     try:
         if not hurry:
             human_move(page, locator)
             dwell(0.08, 0.45, "落点悬停", mode=0.18, logger=logger)
+            try:
+                locator.hover(timeout=timeout)
+                # hover 可能把元素滚进视口，落点要按滚动后的框重算
+                box = locator.bounding_box()
+                if box:
+                    mx, my = _aim(box)
+                    page.mouse.move(mx, my)
+                page.mouse.down()
+                time.sleep(tri(0.055, 0.19, 0.10))
+                page.mouse.up()
+                return True
+            except Exception as exc:
+                if logger:
+                    logger(f"按压式点击失败，改用元素点击: {exc.__class__.__name__}")
         locator.click(timeout=timeout)
         return True
     except Exception as exc:

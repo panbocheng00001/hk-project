@@ -38,7 +38,7 @@ http_flow.py — BOOKING 换驾照预约：纯 HTTP 全流程（不开浏览器�
 退出码
 ------
   0 有名额/成功   10 链路通但无名额   20 没探到（结构变化/解析失败）
-  30 官方 5xx     40 出口被 WAF 限制   41 WAF 412 挑战
+  30 官方 5xx     40 出口被限流或命中静态规则（403/405/429）   41 WAF 412 挑战
   42 会话没放行   43 eventId 失效     44 人机校验
 
 实测踩过的坑（都写在代码里）
@@ -60,24 +60,18 @@ VERIFY_TLS = os.environ.get("BOOKING_INSECURE_TLS", "") not in ("1", "true", "ye
 
 # TLS 画像说明
 # -------------
-# curl_cffi 支持指定 TLS/HTTP2 特征预设（对应库参数）。
-# 本项目**不默认启用**这一项：
-#   · 默认用 curl_cffi 自身的 TLS 栈发请求；
-#   · 需要时通过环境变量 BOOKING_TLS_PROFILE 显式指定（例如 chrome131）。
-# 如果某个出口在默认 TLS 下拿不到正常响应，说明该出口与站点不兼容，
-# 正确做法是换出口或回到浏览器路径，而不是把 TLS 画像改成别的浏览器。
+# 默认使用与 UA 同一主版本的 curl_cffi 画像（waf_profile.DEFAULT_MAJOR），
+# 让 JA3/JA4、HTTP/2 SETTINGS、Sec-CH-UA、UA 四处指向同一个浏览器版本。
+# 关闭方式：BOOKING_TLS_PROFILE=none 或 --tls-profile none（配合 --http1 走普通 TLS/1.1）。
+# 换出口永远优先于换画像：同一出口换画像本身就是一次特征跳变。
 
 def tls_profile(explicit: str = "") -> str:
-    """解析本次要用的 TLS 画像。默认空（用 curl_cffi 默认栈）。
+    """解析本次要用的 TLS 画像名；空串表示不指定画像。
 
-    显式指定优先级：参数 > 环境变量 BOOKING_TLS_PROFILE。
-    返回空字符串表示"不指定"。
+    优先级：参数 > BOOKING_TLS_PROFILE > 与主版本号同源的默认画像（chrome<major>）。
+    显式写 none/off/0/default 时返回空串。
     """
-    import os
-    val = (explicit or os.environ.get("BOOKING_TLS_PROFILE", "") or "").strip()
-    if val.lower() in ("none", "off", "0", "default"):
-        return ""
-    return val
+    return wp.resolve_tls(explicit)
 
 import argparse
 import json
@@ -90,8 +84,8 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse, parse_qs
 
+import waf_profile as wp
 from throttle import Throttle, ThrottleTripped
-from tls_profile import tls_kwargs
 
 BASE = Path(__file__).resolve().parent
 RUNS = BASE / "runs"
@@ -100,8 +94,9 @@ LOG_DIR = RUNS / "http_flow"
 LOG_DIR.mkdir(exist_ok=True)
 
 # ------------------------------------------------------------------ 站点常量
-UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-      "(KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36")
+# 身份只有一个来源：waf_profile。UA / sec-ch-ua / TLS 画像名都由同一个主版本号生成。
+PROFILE = wp.profile()
+UA = PROFILE.ua
 
 ABS3 = "https://abs3.example.test"
 ABS4 = "https://abs4.example.test"
@@ -123,6 +118,8 @@ STATUS_CMD = ("https://abs1.example.test/tdab2/tdabs_di_external/AdminServlet_tc
 WAF_MARKERS = ("$_ts", "$_ts.cd", "nsd=", "HIK0kat3rt9x")   # 挑战页正文标记（前缀匹配 O/P）
 RESTRICTED_MARKERS = ("access has been restricted", "Restricted access",
                       "iCloud Private Relay", "Zscaler")
+# WAF 挡回的四种状态码：412=挑战页，403/405=静态规则，429=频率限制。
+BLOCK_STATUS = (403, 405, 412, 429)
 
 # 验证码检测：只看「可交互的元素」或「服务端明确拒绝」，不看 CSP 里的域名
 # （第 1 步页面的 CSP 里本来就有 service.captcha.example.test，只按字符串匹配会天天误报）
@@ -230,7 +227,9 @@ class Sniper:
         self.timeout = timeout
 
         # 节流 / 熔断（_gate 与 _get/_post 都依赖它；之前漏赋值，第一次请求就会 AttributeError）
-        self.th = Throttle(min_interval=min_interval,
+        # max_per_minute 是滑动窗口保险丝：min_interval=3s 的理论上限是 20 次/分钟，
+        # 这里压到 18，避免长时间轮询把出口顶在阈值上。
+        self.th = Throttle(min_interval=min_interval, max_per_minute=18,
                            log=lambda m, lv="·": self.log(m, lv))
 
         # 环境参数与协议版本：某些出口（认证型转发代理）不支持 BoringSSL 的 h2/ALPS，
@@ -242,7 +241,9 @@ class Sniper:
                 self._hv = CurlHttpVersion.V1_1
             except Exception:
                 self._hv = None
-        self.tls_name = "" if (tls_pref or "").lower() in ("none", "off", "0", "") else tls_pref
+        self.tls_name = tls_profile(tls_pref)
+        # UA 与画像同源：指定 chrome131 就用 131 的 UA/sec-ch-ua；不指定则用默认主版本。
+        self.p = wp.profile(self._major_of_tls(self.tls_name))
 
         if session is not None:
             # R1：外部注入的对齐会话，头部/环境参数/代理都已按票复现，不许覆盖
@@ -254,7 +255,12 @@ class Sniper:
             return
 
         kwargs: dict[str, Any] = dict(verify=VERIFY_TLS)
-        kwargs.update(tls_kwargs(self.tls_name))
+        tls_kw = wp.session_kwargs(self.p, enabled=bool(self.tls_name),
+                                   name=self.tls_name)
+        kwargs.update(tls_kw)
+        if self.tls_name and not tls_kw:
+            self.log(f"   TLS 画像 {self.tls_name} 不被当前 curl_cffi 支持，"
+                     f"改用库默认栈（UA 仍是 Chrome/{self.p.major}）", "!")
         # 代理：直连时**不要传** proxies 键（curl_cffi 0.13 传 {} 会让 libcurl 读野指针，
         # 报 `Failed to connect to 0.0.0.5 port 1080`）；传代理时 dict 由 self 强引用。
         self._proxies: dict[str, str] | None = (
@@ -264,15 +270,25 @@ class Sniper:
         else:
             kwargs["trust_env"] = False
         self.s = cr.Session(**kwargs)
-        self.s.headers.update({
-            "User-Agent": UA,
-            "Accept-Language": "zh-CN,zh;q=0.9",
-            "Accept": ("text/html,application/xhtml+xml,application/xml;q=0.9,"
-                       "image/avif,image/webp,*/*;q=0.8"),
-        })
+        # 头顺序按 document 的物理顺序一次写完；后续每类请求只改自己那几个头。
+        wp.apply_headers(self.s.headers, wp.header_plan("document", self.p))
+        for issue in wp.audit(self.p, tls_name=self.tls_name, ua=self.p.ua):
+            self.log(f"   身份自检：{issue}", "!")
         self.ctx = QueueCtx()
         self.auto_rescue = auto_rescue
         self.rescue_timeout = rescue_timeout
+
+    @staticmethod
+    def _major_of_tls(name: str) -> int | None:
+        """从 chrome131 这样的画像名里取出主版本号；取不到返回 None。"""
+        if name.startswith("chrome") and name[len("chrome"):].isdigit():
+            return int(name[len("chrome"):])
+        return None
+
+    def _headers(self, kind: str, **kw: Any) -> dict[str, str]:
+        """按请求类型取一份头部字典（顺序即 wp.header_plan 的顺序）。"""
+        return wp.request_headers(kind, self.p, **kw)
+
 
     # ------------------------------------------------------------ 基础请求
     @staticmethod
@@ -306,30 +322,31 @@ class Sniper:
         return f"{type(e).__name__}: {s[:120]}"
 
     def _retry(self, fn, times: int = 2):
-        """代理链路首包常见 502/连接重置，补一次再判死。"""
+        """代理链路首包常见 502/连接重置，补一次再判死；退避带抖动。"""
         last = None
         for i in range(times):
             try:
                 r = fn()
                 if i + 1 < times and r.status_code in (502, 503, 504):
                     self.log(f"   首包 {r.status_code}，重试一次", "~")
-                    time.sleep(0.6)
+                    time.sleep(0.6 * (2 ** i) + random.uniform(0.0, 0.4))
                     continue
                 return r
             except Exception as e:
                 last = e
                 if i + 1 < times:
                     self.log(f"   连接异常：{self.explain_exc(e)}，重试一次", "~")
-                    time.sleep(0.8)
+                    time.sleep(0.8 * (2 ** i) + random.uniform(0.0, 0.6))
         if last:
             raise last
         return r
 
     def _gate(self, r):
-        """每个响应都过一遍节流记账：412 记一次并退避，正常就清零。"""
-        if getattr(r, "status_code", 0) == 412:
+        """每个响应都过一遍节流记账：挡回（403/405/412/429）记一次并退避，正常就清零。"""
+        code = getattr(r, "status_code", 0)
+        if code in BLOCK_STATUS:
             try:
-                self.th.on_412()
+                self.th.on_block(code)
             except ThrottleTripped as e:
                 raise SystemExit(f"节流熔断：{e}")
         else:
@@ -355,8 +372,12 @@ class Sniper:
         if r.status_code == 412 or any(m in text for m in WAF_MARKERS):
             self._handoff_waf(r)
             return 41
-        if any(m.lower() in text.lower() for m in RESTRICTED_MARKERS):
-            self._handoff_waf(r, restricted=True)
+        # 403/405/429：WAF 的静态规则或频率限制。与 412 分开记，
+        # 因为处置不同——412 要等人过挑战，403/429 要换出口或降频。
+        if r.status_code in BLOCK_STATUS or any(
+                m.lower() in text.lower() for m in RESTRICTED_MARKERS):
+            restricted = r.status_code != 412
+            self._handoff_waf(r, restricted=restricted)
             return 40
         if r.status_code in (502, 503, 504):
             return 30
@@ -374,7 +395,7 @@ class Sniper:
             from handoff import save as handoff_save
             kind = "restricted-exit" if restricted else "waf-412-challenge"
             handoff_save(kind, self, html=(r.text or "")[:200000],
-                         todo=("出口被限流，换出口或等窗口；"
+                         todo=("出口被限流或命中静态规则（403/405/429），换出口或降频；"
                                if restricted else
                                "WAF 412 挑战窗口，等窗口开（edge_window_watch）或浏览器接力；"),
                          extra={"status": getattr(r, "status_code", 0),
@@ -542,8 +563,9 @@ class Sniper:
     # ------------------------------------------------------------ ③ 取号
     def enqueue(self) -> int:
         url = f"{ABS4}/spa-api/queue/{self.ctx.customer}/{self.ctx.event}/enqueue"
-        r = self._post(url, json={}, headers={
-            "Accept": "application/json", "Origin": ABS3, "Referer": ABS3 + "/"})
+        r = self._post(url, json={}, headers=self._headers(
+            "json", origin=ABS3, cross_site=True, referer=ABS3 + "/",
+            content_type="application/json"))
         code = self.classify(r)
         if code:
             self.log(f"③ enqueue 失败 {r.status_code} → {code}", "!")
@@ -591,8 +613,8 @@ class Sniper:
                f"{self.ctx.queue_id}/status"
                f"?cid=en-US&l={self.STATUS_BODY['layoutName']}"
                f"&targetUrl={self._https_target()}&sdkVersion=")
-        headers = {"Accept": "application/json", "Referer": ABS3 + "/",
-                   "Content-Type": "application/json", "Origin": ABS4}
+        headers = self._headers("json", origin=ABS4, cross_site=True,
+                                referer=ABS3 + "/", content_type="application/json")
         cached = getattr(self, "_qi_header", {}).get(self.ctx.queue_id)
         if cached:
             headers[self.QUEUE_ITEM_HEADER] = cached
@@ -798,17 +820,15 @@ class Sniper:
                 "storedAppointmentIssuingCountry": "CN",
                 "storedAppointmentAuthType": "withOutIas",
                 "isAuthConfirm": "Y",
-                "userAgent": UA.lower(),
+                "userAgent": self.p.ua.lower(),
             })
             if app.get("phone"):
                 fields["storedAppointmentPhoneNumber"] = app["phone"]
         fields["captchaToken"] = captcha_token or fields.get("captchaToken", "")
 
-        r1 = self._post(url, data=fields, allow_redirects=False, headers={
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Origin": ABS1,
-            "Referer": STEP1_ENTRY,
-        })
+        r1 = self._post(url, data=fields, allow_redirects=False, headers=self._headers(
+            "form", origin=ABS1, cross_site=True, referer=STEP1_ENTRY,
+            content_type="application/x-www-form-urlencoded"))
         code = self.classify(r1)
         if code:
             return code, ""
@@ -846,7 +866,8 @@ class Sniper:
         """
         expiry = time.strftime("%d-%m-%Y")
         url = STATUS_CMD.format(expiry=expiry)
-        r = self._get(url, allow_redirects=False, headers={"Referer": STEP1_ENTRY})
+        r = self._get(url, allow_redirects=False, headers=self._headers(
+            "document", referer=STEP1_ENTRY, site="same-origin"))
         code = self.classify(r)
         if code:
             return {"error": code}
@@ -975,10 +996,10 @@ class Sniper:
         if form is None:
             return self.step1(app=app)
         form = self.apply_applicant(form, app) if app else dict(form)
-        r = self._post(QUOTA_CMD, data=form, headers={
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Referer": ABS3 + "/", "Origin": ABS3,
-        }, allow_redirects=False)
+        r = self._post(QUOTA_CMD, data=form, headers=self._headers(
+            "form", origin=ABS3, cross_site=True, referer=ABS3 + "/",
+            content_type="application/x-www-form-urlencoded"),
+            allow_redirects=False)
         code = self.classify(r)
         if code:
             return code, ""
@@ -1037,7 +1058,8 @@ def main() -> int:
                     help="--align 首次画像发现的请求上限（默认 3，别再往上加）")
     ap.add_argument("--proxy", default="", help="出口代理，例如 http://ip:port 或 http://u:p@ip:port")
     ap.add_argument("--tls-profile", default="",
-                    help="curl_cffi 画像；认证型转发代理不支持 h2/ALPS 时用 none")
+                    help="curl_cffi 画像名；缺省用与 UA 同主的 chrome<major>，"
+                         "none=用库默认栈（认证型转发代理不支持 h2/ALPS 时配 --http1）")
     ap.add_argument("--http1", action="store_true", help="强制 HTTP/1.1（配合 --tls-profile none）")
     ap.add_argument("--worker", default="", help="config.json 里的申请人 id（w1..w4）")
     ap.add_argument("--minutes", type=float, default=10.0, help="--watch 观察窗口（分钟）")

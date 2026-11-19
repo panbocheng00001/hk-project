@@ -30,6 +30,7 @@
 | 改完验证码代码后怎么确认"还能跑通" | `booking-lab/docs/CAPTCHA_REGRESS.md` |
 | 人工交接的耗时口径与提醒节奏 | `booking-lab/docs/CAPTCHA_HANDOFF_SLA.md` |
 | 把 SPA 页面跑起来、按页抓内容、脱敏后再贴给别的模型 | `booking-lab/docs/PAGEKIT.md` |
+| 纯 HTTP 链路的 UA / Sec-CH-UA / TLS 画像 / 头顺序由谁决定 | [`WAF_ALIGNMENT.md`](WAF_ALIGNMENT.md) |
 | 识别精度、轨迹档案、站点口径 | `captcha-lab/README.md` |
 | 从"识别对"到"线上跑通"的完整链路 | `captcha-lab/docs/INTEGRATION.md` |
 | 复刻题服务怎么起、怎么加题 | `booking-lab/captcha_mock/README.md` |
@@ -50,5 +51,5 @@
 
 ```bash
 python tools/wording_lint.py --root .        # 文案 0 block
-pwsh -File tools/check.ps1                   # lint + 71 passed + 166 passed
+pwsh -File tools/check.ps1                   # lint + 115 passed + 166 passed
 ```

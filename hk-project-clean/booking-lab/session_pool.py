@@ -56,6 +56,8 @@ import time
 from pathlib import Path
 from queue import Empty, Queue
 
+import waf_profile as wp
+
 BASE = Path(__file__).resolve().parent
 RUNS = BASE / "runs"
 DB_PATH = RUNS / "pool.sqlite3"
@@ -537,13 +539,16 @@ class SlotClient:
 
     @staticmethod
     def _default_tls_profile() -> str:
-        """默认不指定 TLS 画像。
+        """默认不指定 TLS 画像，除非环境变量显式给了 BOOKING_TLS_PROFILE。
 
-        原实现会挑一个浏览器预设（DEFAULT_CHROME），让纯 HTTP 请求的 TLS 特征
-        与浏览器一致。这里改成默认空：需要时由调用方显式传入，
-        或用环境变量 BOOKING_TLS_PROFILE 指定（见 tls_profile()）。
+        票据由本机浏览器（CfT）铸出，UA 与它一致；curl_cffi 不一定内置同一主版本的
+        画像名，硬套一个更低的画像会让「UA ↔ TLS」反而更矛盾。需要时显式指定，
+        并按 waf_profile.audit() 的提示确认主版本对得上。
         """
-        return tls_profile()
+        raw = (os.environ.get("BOOKING_TLS_PROFILE", "") or "").strip()
+        if raw.lower() in ("", "none", "off", "0", "default"):
+            return ""
+        return raw
 
     # -- 取票 --------------------------------------------------------------
     def acquire(self) -> dict:
@@ -570,7 +575,28 @@ class SlotClient:
         return s
 
     def _build_session(self, s: dict) -> None:
-        sess = self._cr.Session(tls_pref=self.tls_name)
+        """按票复现 UA 与头部顺序，并把票里的 cookie 灌进同一个 Session。
+
+        票据与三样东西绑定：出口、UA、Cookie。这里少对齐一样，票就可能当场作废。
+        """
+        ua = (s.get("ua") or "").strip() or DEFAULT_UA
+        prof = wp.from_user_agent(ua)
+        kw: dict = {"verify": self.verify}
+        applied = wp.session_kwargs(prof, enabled=bool(self.tls_name), name=self.tls_name)
+        kw.update(applied)
+        prox = self._proxies()
+        if prox:
+            kw["proxies"] = prox
+        else:
+            kw["trust_env"] = False
+        sess = self._cr.Session(**kw)
+        wp.apply_headers(sess.headers, wp.header_plan("document", prof))
+        if self.tls_name and not applied:
+            _log("票 %s：TLS 画像 %s 不受支持，改用库默认栈（UA 与票一致）",
+                 s.get("ip_id"), self.tls_name)
+        for issue in wp.audit(prof, tls_name=self.tls_name if applied else "",
+                              ua=prof.ua, require_tls=bool(self.tls_name)):
+            _log("票 %s 身份自检：%s", s.get("ip_id"), issue)
         for c in json.loads(s["cookies"] or "[]"):
             if not c.get("name"):
                 continue
@@ -601,7 +627,7 @@ class SlotClient:
            method=method, code=r.status_code, ms=round((time.time() - t0) * 1000),
            url=url[:150], retry=not retry, ok=r.status_code < 400)
 
-        bad = r.status_code in (403, 412) or (
+        bad = r.status_code in (403, 405, 412, 429) or (
             r.status_code in (301, 302, 303) and "lang=en" in (r.headers.get("Location") or ""))
         if bad:
             self.store.mark(self.slot["ip_id"], "dead", f"HTTP {r.status_code}")

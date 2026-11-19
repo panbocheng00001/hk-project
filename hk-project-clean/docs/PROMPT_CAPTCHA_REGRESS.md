@@ -39,7 +39,7 @@
 【已实测，直接采信】
 - 现有脚本输出形如：通过 20/20 = 100.0%，提交误差 mean=0.225px max=0.540px
 - 页面判分对象：window.__grade = {ok, pass, truth_dx, submitted_dx, diff, sliderDx}
-- 基线：booking-lab 96 passed（python -m pytest captcha_flow\tests tests -q）
+- 基线：booking-lab 115 passed（python -m pytest captcha_flow\tests tests -q）
         captcha-lab 166 passed（python -m pytest -q）
 - 复刻题服务：node booking-lab/captcha_mock/server.js -> 127.0.0.1:8777
 - 一个真坑（本次要修的正是它）：页面 load 时自己调 newChallenge() 且不传 seed，服务端每次随机出题；
@@ -69,7 +69,7 @@
 
 【硬约束（违反即返工）】
 1. 不新增/不修改任何识别算法、判据、容差；captcha-lab 只被调用，一行都不改；
-2. 不改 captcha_flow/ 任何文件；96 passed 不能变少；
+2. 不改 captcha_flow/ 任何文件；115 passed 不能变少；
 3. 不改 captcha_mock 的判据、接口与容差——它是基准；
 4. 统计口径只依赖 captcha_auto 的返回值与 window.__grade，不自己重新算位移；
 5. 不引入第三方依赖（numpy 之外只允许标准库 + 已有的 playwright）；
@@ -77,7 +77,7 @@
 7. 失败必须打印失败题号与 note，不允许静默跳过。
 
 【验收（逐条跑，把输出贴出来）】
-1. cd booking-lab && python -m pytest captcha_flow\tests tests -q            -> 96 passed（不少于）
+1. cd booking-lab && python -m pytest captcha_flow\tests tests -q            -> 115 passed（不少于）
 2. cd booking-lab && python -m pytest tests\test_captcha_regress_offline.py -q -> 新增用例全绿
 3. cd booking-lab && python tools\captcha_regress.py --n 5                  -> 服务未起时退出码 3 并打印启动命令
 4. 另开窗口：cd booking-lab\captcha_mock && node server.js

@@ -11,7 +11,7 @@
 
 | 目录 | 是什么 | 入口 | 测试 |
 |---|---|---|---|
-| [`booking-lab/`](booking-lab/README.md) | 表单填写、会话票据池、412 挑战处理、验证码交接与可选加速、浏览器扩展、页面摘要外发 | `fill_form.py` / `http_flow.py` / `ext_server.py` / `pagekit/` | 96 passed |
+| [`booking-lab/`](booking-lab/README.md) | 表单填写、会话票据池、412 挑战处理、验证码交接与可选加速、浏览器扩展、页面摘要外发 | `fill_form.py` / `http_flow.py` / `ext_server.py` / `pagekit/` | 115 passed |
 | [`captcha-lab/`](captcha-lab/README.md) | 图片 → 位移 → 轨迹 → 载荷；HTTP 服务与 CLI；出题与鲁棒性评测 | `python -m solver` | 166 passed |
 
 依赖方向只有一个：`booking-lab` 通过 [`captcha_lab_bridge.py`](booking-lab/captcha_lab_bridge.py) 调用 `captcha-lab`。
@@ -43,7 +43,7 @@ cd booking-lab && python tools/captcha_regress.py --n 30
 pwsh -File tools/check.ps1
 ```
 
-实测基线（2026-11-15，本机）：`96 passed`（12s）、`166 passed`（13s）、文案 lint `0 block`。
+实测基线（2026-11-19，本机）：`115 passed`（无 Playwright 内核时 112 passed + 3 项端到端 error）、`166 passed`、文案 lint `0 block`。
 
 ---
 

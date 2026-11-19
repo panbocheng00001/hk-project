@@ -46,7 +46,7 @@
 - 黄金样本 captcha-lab/tests/data/waf_canvas.png：
   python -m solver waf --image tests/data/waf_canvas.png --track-w 400 --handle-w 34
   -> 实心中心 104.5px / 空心中心 335.0px / dx=230.50 / slider_dx=210.91
-- 基线：booking-lab 96 passed（python -m pytest captcha_flow\tests tests -q）
+- 基线：booking-lab 115 passed（python -m pytest captcha_flow\tests tests -q）
         captcha-lab 166 passed（python -m pytest -q）
 - 本机系统代理 127.0.0.1:10808 会连回环请求一起接管，对 127.0.0.1 的 httpx 必须 trust_env=False，
   否则 /challenge 返回 503 空响应，看着像算法崩了，其实请求没到 Node。
@@ -72,7 +72,7 @@ D. 最后贴：改动清单（文件 + 一句话）+ 下面 5 条验收的完整
 6. 不写说明性、立场性或免责性段落替代实现。
 
 【验收（逐条跑，把输出贴出来）】
-1. cd booking-lab && python -m pytest captcha_flow\tests tests -q          -> 96 passed（不少于）
+1. cd booking-lab && python -m pytest captcha_flow\tests tests -q          -> 115 passed（不少于）
 2. cd captcha-lab && python -m pytest -q                                  -> 166 passed（不少于）
 3. cd captcha-lab && python -m solver waf --image tests/data/waf_canvas.png --track-w 400 --handle-w 34
                                                                           -> dx=230.50 / slider_dx=210.91
@@ -98,7 +98,7 @@ captcha_flow/policy.py、booking-lab/tests/test_captcha_auto_e2e.py。
 口径：range=max(10,400-34)=366，slider_dx=dx*range/bmp_w，容差 3px；
 黄金样本 dx=230.50 / slider_dx=210.91；对 127.0.0.1 的 httpx 用 trust_env=False（否则 503）。
 约束：不碰 captcha_flow、失败必须回落人工并打日志、不加依赖、不写外部域名。
-验收：booking-lab 96 passed、captcha-lab 166 passed、bench_captcha_auto.py 20 通过 20/20、
+验收：booking-lab 115 passed、captcha-lab 166 passed、bench_captcha_auto.py 20 通过 20/20、
 CAPTCHA_AUTO=0 时零拖动且全绿。
 ```
 

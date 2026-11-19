@@ -184,6 +184,6 @@ python -m pagekit digest --snapshot runs/pagekit/<时间戳>/home.snapshot.json
 ```bash
 cd booking-lab
 python -m pytest tests/test_pagekit_redact.py tests/test_pagekit_digest.py -q   # 16 passed
-python -m pytest captcha_flow/tests tests -q                                    # 96 passed
+python -m pytest captcha_flow/tests tests -q                                    # 115 passed
 cd .. && python tools/wording_lint.py --root .                                 # block 0
 ```

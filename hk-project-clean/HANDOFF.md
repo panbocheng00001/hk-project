@@ -9,7 +9,7 @@
 
 | 项 | 值 | 复现命令 |
 |---|---|---|
-| `booking-lab` 测试 | **96 passed**（55 决策/交接 + 3 端到端 + 14 回归闸门 + 8 报表 + 16 pagekit） | `cd booking-lab && python -m pytest captcha_flow/tests tests -q` |
+| `booking-lab` 测试 | **115 passed**（55 决策/交接 + 3 端到端 + 14 回归闸门 + 8 报表 + 16 pagekit + 19 身份/节流） | `cd booking-lab && python -m pytest captcha_flow/tests tests -q` |
 | 复刻题回归闸门 | **30/30**，误差 mean 0.247 / max 0.530px | `cd booking-lab && python tools/captcha_regress.py --n 30` |
 | `captcha-lab` 测试 | **166 passed** | `cd captcha-lab && python -m pytest -q` |
 | 识别口径 | dx=230.50 / slider_dx=210.91 | `python -m solver waf --image tests/data/waf_canvas.png --track-w 400 --handle-w 34` |
@@ -61,9 +61,9 @@
 | `booking-lab/pagekit/cli.py`、`__main__.py`（新） | `open / walk / digest / redact / verify`，退出码 0/2/3/4/5 | `python -m pagekit verify --in …` |
 | `booking-lab/pagekit/mcp_server.py`（新） | stdio MCP 工具面（`page_open`/`page_click`/`redact_text`/`verify_text` …），零第三方依赖 | `'{"jsonrpc":"2.0","id":1,"method":"tools/list"}' \| python -m pagekit.mcp_server` |
 | `booking-lab/pagekit/terms.example.json`、`steps.example.json`（新） | 词表与步骤格式示例，仓内一律 `example.test` 占位 | 同上 |
-| `booking-lab/tests/test_pagekit_redact.py`、`test_pagekit_digest.py`（新） | 16 项离线用例：遮得住、幂等、报告不含原文、摘要结构、截断口径 | `96 passed` |
+| `booking-lab/tests/test_pagekit_redact.py`、`test_pagekit_digest.py`（新） | 16 项离线用例：遮得住、幂等、报告不含原文、摘要结构、截断口径 | `115 passed` |
 | `booking-lab/docs/PAGEKIT.md`（新） | 三条命令、产出物清单、词表、规则表、MCP 配置、退出码、不变量 | 文档 |
-| `AGENTS.md`、`README.md`、`docs/*`、`booking-lab/README.md`、`booking-lab/docs/CAPTCHA_AUTO.md` | 把陈旧口径 `71 passed` 改成实测 `96 passed`（W9：文档与代码冲突以代码为准） | `python -m pytest captcha_flow/tests tests -q` |
+| `AGENTS.md`、`README.md`、`docs/*`、`booking-lab/README.md`、`booking-lab/docs/CAPTCHA_AUTO.md` | 把陈旧口径 `71 passed` 改成当时的实测值（W9：文档与代码冲突以代码为准） | `python -m pytest captcha_flow/tests tests -q` |
 
 ---
 
@@ -102,7 +102,7 @@
 
 ```bash
 python tools/wording_lint.py --root .      # 0 block
-pwsh -File tools/check.ps1                 # lint + 96 + 166
+pwsh -File tools/check.ps1                 # lint + 115 + 166
 ```
 
 第一条命中会返回非 0，可以直接挂 CI。文档与代码冲突时以代码为准，并在同一次提交里修文档。
