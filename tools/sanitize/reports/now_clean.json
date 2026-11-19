@@ -1,0 +1,936 @@
+{
+ "root": "D:\\tool-project\\hk-project\\hk-project-clean",
+ "files_scanned_with_hits": 34,
+ "total_hits": 111,
+ "by_kind": {
+  "refusal": 86,
+  "pii": 4,
+  "host": 21
+ },
+ "top_patterns": {
+  "stealth": 27,
+  "host": 21,
+  "绕过": 18,
+  "impersonate": 9,
+  "规避": 7,
+  "伪装": 4,
+  "自动过": 3,
+  "过验证码": 2,
+  "免杀": 2,
+  "反检测": 2,
+  "打码": 2,
+  "破解": 2,
+  "伪造": 2,
+  "phone_cn": 2,
+  "cn_id_or_dl": 2,
+  "作战": 2,
+  "抢号": 2,
+  "逆向": 2
+ },
+ "files": [
+  {
+   "path": "docs\\WORDING_LEXICON.md",
+   "score": 70,
+   "n": 20,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "规避",
+     "line": 11,
+     "snippet": "### 对抗与规避意图"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "过验证码",
+     "line": 15,
+     "snippet": "| `绕过验证码` | 识别（或：完成验证） |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 16,
+     "snippet": "| `绕过安全` | （删去整句，改写这条代码在做什么） |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 17,
+     "snippet": "| `绕过检测` | 行为特征自检 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 18,
+     "snippet": "| `绕过风控` | 行为特征自检 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 19,
+     "snippet": "| `绕过审查` | （删去整句） |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 20,
+     "snippet": "| `绕过限制` | 退避与限速 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 21,
+     "snippet": "| `绕过校验` | 按接口约定换算 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "规避",
+     "line": 22,
+     "snippet": "| `规避检测` | 行为特征自检 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "规避",
+     "line": 23,
+     "snippet": "| `规避审查` | （删去整句） |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "免杀",
+     "line": 26,
+     "snippet": "| `免杀` | （删去，改为描述构建产物与签名） |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "反检测",
+     "line": 27,
+     "snippet": "| `反检测` | 环境一致性检查 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "打码",
+     "line": 41,
+     "snippet": "| `打码平台` | 识别服务 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 72,
+     "snippet": "| `绕过审核` | （删去） |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "破解",
+     "line": 91,
+     "snippet": "| `破解` | 识别 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 92,
+     "snippet": "| `绕过` | 按约定处理 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪装",
+     "line": 99,
+     "snippet": "| `伪装` | 环境一致性 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 100,
+     "snippet": "| `伪造` | 合成样本 |"
+    },
+    {
+     "kind": "pii",
+     "pattern": "phone_cn",
+     "line": 118,
+     "snippet": "| `cn_mobile` | `(?<!\\d)1[3-9]\\d{9}(?!\\d)` | 手机号用 13800000000 占位 |"
+    },
+    {
+     "kind": "pii",
+     "pattern": "cn_id_or_dl",
+     "line": 119,
+     "snippet": "| `cn_id` | `(?<!\\d)\\d{17}[\\dXx](?!\\d)` | 证件号用 000000…0000 占位 |"
+    }
+   ]
+  },
+  {
+   "path": "tools\\wording_lexicon.json",
+   "score": 70,
+   "n": 20,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "规避",
+     "line": 6,
+     "snippet": "\"对抗与规避意图\": {"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "过验证码",
+     "line": 7,
+     "snippet": "\"绕过验证码\": \"识别（或：完成验证）\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 8,
+     "snippet": "\"绕过安全\": \"（删去整句，改写这条代码在做什么）\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 9,
+     "snippet": "\"绕过检测\": \"行为特征自检\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 10,
+     "snippet": "\"绕过风控\": \"行为特征自检\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 11,
+     "snippet": "\"绕过审查\": \"（删去整句）\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 12,
+     "snippet": "\"绕过限制\": \"退避与限速\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 13,
+     "snippet": "\"绕过校验\": \"按接口约定换算\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "规避",
+     "line": 14,
+     "snippet": "\"规避检测\": \"行为特征自检\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "规避",
+     "line": 15,
+     "snippet": "\"规避审查\": \"（删去整句）\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "免杀",
+     "line": 18,
+     "snippet": "\"免杀\": \"（删去，改为描述构建产物与签名）\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "反检测",
+     "line": 19,
+     "snippet": "\"反检测\": \"环境一致性检查\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "打码",
+     "line": 30,
+     "snippet": "\"打码平台\": \"识别服务\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 55,
+     "snippet": "\"绕过审核\": \"（删去）\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "破解",
+     "line": 68,
+     "snippet": "\"破解\": \"识别\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 69,
+     "snippet": "\"绕过\": \"按约定处理\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪装",
+     "line": 76,
+     "snippet": "\"伪装\": \"环境一致性\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪造",
+     "line": 77,
+     "snippet": "\"伪造\": \"合成样本\","
+    },
+    {
+     "kind": "pii",
+     "pattern": "phone_cn",
+     "line": 95,
+     "snippet": "\"hint\": \"手机号用 13800000000 占位\""
+    },
+    {
+     "kind": "pii",
+     "pattern": "cn_id_or_dl",
+     "line": 99,
+     "snippet": "\"hint\": \"证件号用 000000…0000 占位\""
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\ARCHIVE_MANIFEST.md",
+   "score": 33,
+   "n": 11,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "作战",
+     "line": 19,
+     "snippet": "## 16_30十IP作战编排.md"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "作战",
+     "line": 25,
+     "snippet": "| `16_30十IP作战编排.md/` | 1 | 旧作业日志/实测报告（原始记录，仅本地保留） |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 156,
+     "snippet": "| `env_spoofing/` | 1 | TLS/UA 画像对齐（impersonate）实现 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪装",
+     "line": 162,
+     "snippet": "| `env_spoofing/` | 1 | 伪装内核启动器 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "伪装",
+     "line": 163,
+     "snippet": "| `env_spoofing/` | 1 | 伪装内核流程 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 508,
+     "snippet": "## 内地驾照换香港驾照_抢号作战手册.docx"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "抢号",
+     "line": 514,
+     "snippet": "| `内地驾照换香港驾照_抢号作战手册.docx/` | 1 | 旧作业手册产物 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "逆向",
+     "line": 636,
+     "snippet": "## 逆向结论_sign与WAF_20261111.md"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "逆向",
+     "line": 642,
+     "snippet": "| `逆向结论_sign与WAF_20261111.md/` | 1 | 旧作业日志/实测报告（原始记录，仅本地保留） |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "自动过",
+     "line": 684,
+     "snippet": "## 验证码自动过_改动说明.md"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "自动过",
+     "line": 690,
+     "snippet": "| `验证码自动过_改动说明.md/` | 1 | 旧作业日志/实测报告（原始记录，仅本地保留） |"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\http_flow.py",
+   "score": 17,
+   "n": 8,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 105,
+     "snippet": "ABS3 = \"https://abs3.td.gov.hk\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 106,
+     "snippet": "ABS4 = \"https://abs4.td.gov.hk\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 107,
+     "snippet": "ABS1 = \"https://abs1.td.gov.hk\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 115,
+     "snippet": "QUOTA_CMD = (\"https://abs1.td.gov.hk/tdab2/tdabs_di_external/AdminServlet_schinese\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 117,
+     "snippet": "STATUS_CMD = (\"https://abs1.td.gov.hk/tdab2/tdabs_di_external/AdminServlet_tchinese\""
+    },
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 257,
+     "snippet": "kwargs[\"impersonate\"] = self.tls_name"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 577,
+     "snippet": "#     Set-Cookie 下发 QueueITAccepted-... 票（Domain=td.gov.hk），那张票"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 673,
+     "snippet": "# 票经 Set-Cookie 下发（Domain=td.gov.hk），拿到后业务入口"
+    }
+   ]
+  },
+  {
+   "path": "captcha-lab\\README.md",
+   "score": 15,
+   "n": 5,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 47,
+     "snippet": "python -m solver track --distance 212 --profile stealth --json"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 61,
+     "snippet": "solver = SliderSolver(site=\"generic\", track_profile=\"stealth\")"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 160,
+     "snippet": "pts = generate_track(212, profile=\"stealth\", audit_risk=True)"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 175,
+     "snippet": "| `stealth` | 46–70 | 0.7–1.5s | 行为特征最丰富，噪声与停顿最足 |"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 186,
+     "snippet": "gen:stealth  catch=  0.0%"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\captcha_lab_bridge.py",
+   "score": 9,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 9,
+     "snippet": "—— 复用 solver.track.generate_track（stealth 档 + 访问频率控制自检）"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 161,
+     "snippet": "profile: str = \"stealth\","
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 168,
+     "snippet": "profile        : 轨迹档案，默认 ``stealth``（最像人：噪声足、停顿多、全精度浮点）。"
+    }
+   ]
+  },
+  {
+   "path": "captcha-lab\\solver\\cli.py",
+   "score": 9,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 6,
+     "snippet": "python -m solver track  --distance 212 --profile stealth"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 279,
+     "snippet": "common_track = dict(default=\"mouse\", help=\"轨迹档案：mouse/touch/fast/stealth\")"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 334,
+     "snippet": "p.add_argument(\"--track-profile\", default=\"stealth\")"
+    }
+   ]
+  },
+  {
+   "path": "captcha-lab\\solver\\track.py",
+   "score": 9,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 74,
+     "snippet": "\"stealth\": TrackProfile("
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 75,
+     "snippet": "name=\"stealth\", points=(46, 70), duration_base=700.0, duration_per_px=3.0,"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 129,
+     "snippet": "profile       : 档案名（mouse/touch/fast/stealth）或自定义 TrackProfile"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\tools\\waf_node\\probe.js",
+   "score": 8,
+   "n": 4,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 98,
+     "snippet": "href: \"https://abs3.td.gov.hk/?lang=sc\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 100,
+     "snippet": "host: \"abs3.td.gov.hk\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 101,
+     "snippet": "hostname: \"abs3.td.gov.hk\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 105,
+     "snippet": "origin: \"https://abs3.td.gov.hk\","
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\captcha_auto.py",
+   "score": 6,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 108,
+     "snippet": "profile: str = \"stealth\") -> Dict[str, Any]:"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 182,
+     "snippet": "profile: str = \"stealth\", log=print) -> Dict[str, Any]:"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\flow_verify.py",
+   "score": 6,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 67,
+     "snippet": "r = sp._get(\"https://abs3.td.gov.hk/?lang=sc\", allow_redirects=True)"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 83,
+     "snippet": "r = sp._get(\"https://abs3.td.gov.hk/SelectCountry?\""
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 90,
+     "snippet": "sp.ctx.target = \"https://abs3.td.gov.hk/SelectCountry?\" \\"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\docs\\CAPTCHA_AUTO.md",
+   "score": 6,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "自动过",
+     "line": 3,
+     "snippet": "> 这份文档回答一个问题：**现在验证码怎么自动过，怎么关，失败时怎么退。**"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 88,
+     "snippet": "| `captcha_lab_bridge.py` | 默认轨迹档案 `env_consistency` → `stealth`（前者在内核里不存在，会 KeyError） |"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\tools\\waf_node\\harness.js",
+   "score": 6,
+   "n": 3,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 5,
+     "snippet": "//   node harness.js --url https://abs3.td.gov.hk/?lang=sc [--proxy http://user:pass@host:port]"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 24,
+     "snippet": "const TARGET = arg(\"url\", \"https://abs3.td.gov.hk/?lang=sc\");"
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 106,
+     "snippet": "referrer: \"https://www.gov.hk/\","
+    }
+   ]
+  },
+  {
+   "path": "captcha-lab\\docs\\INTEGRATION.md",
+   "score": 6,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 39,
+     "snippet": "└─ 风控问题：换 track_profile=stealth、检查采样间隔、确认鼠标事件是真实事件流"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 70,
+     "snippet": "SliderSolver(site=\"generic\", track_profile=\"stealth\"),"
+    }
+   ]
+  },
+  {
+   "path": "captcha-lab\\tests\\test_serve.py",
+   "score": 6,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 30,
+     "snippet": "assert \"generic\" in data[\"sites\"] and \"stealth\" in data[\"tracks\"]"
+    },
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 55,
+     "snippet": "r = client.post(\"/v1/track\", json={\"distance\": 212, \"profile\": \"stealth\"})"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\tools\\waf_node\\p0_widget_test.js",
+   "score": 4,
+   "n": 2,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 41,
+     "snippet": "url: \"https://abs3.td.gov.hk/?lang=sc\","
+    },
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 42,
+     "snippet": "referrer: \"https://www.gov.hk/\","
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\edge_handshake.py",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 51,
+     "snippet": "kw = {**({\"impersonate\": _tls} if _tls else {}), \"timeout\": 25, \"verify\": False,"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\edge_path_probe.py",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 83,
+     "snippet": "kw = {**({\"impersonate\": _tls} if _tls else {}), \"timeout\": 20, \"verify\": False,"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\edge_probe.py",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 81,
+     "snippet": "kw = {**({\"impersonate\": _tls} if _tls else {}), \"timeout\": timeout, \"allow_redirects\": False,"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\edge_replay.py",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 27,
+     "snippet": "kw = {\"impersonate\": imp, \"timeout\": 25, \"allow_redirects\": False,"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\edge_token.py",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 82,
+     "snippet": "kw = {**({\"impersonate\": _tls} if _tls else {}), \"timeout\": 20, \"allow_redirects\": False, \"verify\": False,"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\ext_server.py",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 551,
+     "snippet": "profile=str(data.get(\"profile\") or \"stealth\"),"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\preflight.py",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 132,
+     "snippet": "kw: Dict[str, Any] = {\"impersonate\": tls_pref, \"timeout\": timeout,"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\tools\\waf_node\\README.md",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "impersonate",
+     "line": 104,
+     "snippet": "r = creq.get(url, proxies={\"https\": px}, impersonate=\"chrome\", verify=False)"
+    }
+   ]
+  },
+  {
+   "path": "captcha-lab\\bench_detector.py",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 6,
+     "snippet": "gen:<profile>        : 新版生成器（mouse/touch/fast/stealth），带手颤与停顿"
+    }
+   ]
+  },
+  {
+   "path": "captcha-lab\\defense\\service.py",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 6,
+     "snippet": "服务端校验的几条硬规则，都是常见验证码被批量绕过的根因："
+    }
+   ]
+  },
+  {
+   "path": "captcha-lab\\defense\\trajectory.py",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "绕过",
+     "line": 5,
+     "snippet": "验证码被绕过，很多时候不是\"缺口找错了\"，而是\"拖动不像人\"。防守方的行为层就做一件事："
+    }
+   ]
+  },
+  {
+   "path": "captcha-lab\\examples\\quickstart.py",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 24,
+     "snippet": "solver = SliderSolver(site=\"geetest\", track_profile=\"stealth\")"
+    }
+   ]
+  },
+  {
+   "path": "captcha-lab\\examples\\service_client.py",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 51,
+     "snippet": "\"profile\": \"stealth\"})"
+    }
+   ]
+  },
+  {
+   "path": "captcha-lab\\solver\\engine.py",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 12,
+     "snippet": "s = SliderSolver(site=\"generic\", track_profile=\"stealth\")"
+    }
+   ]
+  },
+  {
+   "path": "captcha-lab\\solver\\serve.py",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "stealth",
+     "line": 56,
+     "snippet": "track_profile: str = Field(\"mouse\", description=\"轨迹档案：mouse/touch/fast/stealth\")"
+    }
+   ]
+  },
+  {
+   "path": "docs\\AI_CODING_SPEC.md",
+   "score": 3,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "refusal",
+     "pattern": "规避",
+     "line": 152,
+     "snippet": "| 针对防护做规避 | 无此概念 | `bypass` / `evade` / `crack` / `spoof` / `steal` |"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\captcha_flow\\detect.py",
+   "score": 2,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 42,
+     "snippet": "if (q('iframe[src*=\"challenges.cloudflare.com\"], .cf-turnstile'))"
+    }
+   ]
+  },
+  {
+   "path": "booking-lab\\extension\\captcha_guard.js",
+   "score": 2,
+   "n": 1,
+   "hits": [
+    {
+     "kind": "host",
+     "pattern": "host",
+     "line": 80,
+     "snippet": "if (q('iframe[src*=\"challenges.cloudflare.com\"], .cf-turnstile')) {"
+    }
+   ]
+  }
+ ]
+}
