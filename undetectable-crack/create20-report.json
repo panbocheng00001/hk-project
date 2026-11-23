@@ -1,0 +1,42 @@
+{
+  "api": "http://127.0.0.1:15000",
+  "created": [
+    {
+      "name": "fp_01_windows_chrome",
+      "id": "1a54276636e24271",
+      "fp": {
+        "os": "windows",
+        "browser": "chrome",
+        "language": "en-US",
+        "timezone": "America/New_York",
+        "geolocation": "40.7128:-74.0060",
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "name": "fp_02_windows_edge",
+      "id": "da79d2de3c88488a",
+      "fp": {
+        "os": "windows",
+        "browser": "edge",
+        "language": "en-GB",
+        "timezone": "Europe/London",
+        "geolocation": "51.5074:-0.1278",
+        "resolution": "1600x900"
+      }
+    },
+    {
+      "name": "fp_03_windows_firefox",
+      "id": "876162c5209a4e8e",
+      "fp": {
+        "os": "windows",
+        "browser": "firefox",
+        "language": "de-DE",
+        "timezone": "Europe/Berlin",
+        "geolocation": "52.5200:13.4050",
+        "resolution": "1366x768"
+      }
+    }
+  ],
+  "failed": []
+}
